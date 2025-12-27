@@ -52,7 +52,7 @@ sbatch --export=DATASET_ID=dataset4,SAMPLE_ID=background ... run_scoring.sh
 
 The final stage processes the raw prediction chunks. It stitches them into a unified dataset, backfills metadata, and performs the mathematical reduction to gene-level metrics.
 
-**Key Calculation: Predicted Genetic Variance ()**
+**Predicted Genetic Variance**
 For every gene, we calculate the cumulative variance explained by the model using the formula:
 
 $$ V_{G,pred} = \sum_{i \in \text{variants}} 2 \cdot p_i \cdot (1 - p_i) \cdot \beta_i^2 $$
