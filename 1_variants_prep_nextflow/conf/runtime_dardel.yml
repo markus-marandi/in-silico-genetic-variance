@@ -1,0 +1,8 @@
+# TODO: install spark and hail on Dardel and update paths
+spark_conf: /mnt/sdb/markus_files/gene_exp/11_prep_variants/spark_conf.json
+tmp_dir: /cfs/klemming/scratch/m/mmarandi/tmp
+gnomad_ht: gs://gcp-public-data--gnomad/release/4.1/ht/genomes/gnomad.genomes.v4.1.sites.ht/
+gcs_connector_jar: /cfs/klemming/scratch/m/mmarandi/hadoop-connectors/gcs/target/gcs-connector-3.0.0-SNAPSHOT-shaded.jar
+hail_home: /cfs/klemming/scratch/m/mmarandi/hail
+conda_bin: /cfs/klemming/projects/snic/lappalainen_lab1/users/mmarandi/conda-envs/alphagenome/bin/conda
+conda_env: /cfs/klemming/projects/snic/lappalainen_lab1/users/mmarandi/conda-envs/alphagenome  # set NXF_CONDA to conda_bin when running

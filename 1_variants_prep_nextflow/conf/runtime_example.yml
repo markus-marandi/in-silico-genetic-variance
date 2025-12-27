@@ -1,0 +1,5 @@
+spark_conf: conf/spark_local.json
+tmp_dir: ./tmp
+gnomad_ht: gs://gcp-public-data--gnomad/release/4.1/ht/genomes/gnomad.genomes.v4.1.sites.ht/
+gcs_connector_jar: /opt/gcs/gcs-connector-hadoop3-latest.jar
+hail_home: /opt/hail

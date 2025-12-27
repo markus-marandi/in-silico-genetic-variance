@@ -1,0 +1,13 @@
+# export NXF_CONDA=/mnt/sdb/packages/miniconda3/bin/conda
+#  nextflow run main.nf -profile conda \
+#    --genelist /mnt/sdb/markus_files/gene_exp/initial/dataset7_test.txt \
+#    --mane /mnt/sdb/markus_files/gene_exp/initial/MANE.GRCh38.v1.4.summary.txt \
+#    --runtime_conf conf/runtime_oligo.yml
+
+spark_conf: /mnt/sdb/markus_files/gene_exp/11_prep_variants/spark_conf.json
+tmp_dir: /mnt/sdb/tmp
+gnomad_ht: gs://gcp-public-data--gnomad/release/4.1/ht/genomes/gnomad.genomes.v4.1.sites.ht/
+gcs_connector_jar: /mnt/sdb/markus_files/hadoop-connectors/gcs/target/gcs-connector-3.0.0-SNAPSHOT-shaded.jar
+hail_home: /mnt/sdb/markus_files/hail
+conda_bin: /mnt/sdb/packages/miniconda3/bin/conda
+conda_env: /mnt/sdb/packages/miniconda3/envs/skat_env  # set NXF_CONDA to conda_bin when running

@@ -1,0 +1,11 @@
+{
+  "spark.app.name": "hail_export_per_gene",
+  "spark.hadoop.google.cloud.auth.type": "APPLICATION_DEFAULT",
+  "spark.driver.memory": "8g",
+  "spark.executor.memory": "8g",
+  "spark.executor.instances": "2",
+  "spark.executor.cores": "2",
+  "spark.local.dir": "{TMP_DIR}"
+}
+
+

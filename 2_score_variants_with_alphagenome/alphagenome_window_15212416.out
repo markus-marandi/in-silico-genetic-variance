@@ -1,0 +1,3211 @@
+Job started on nid001015 at Sat 27 Dec 2025 10:45:18 AM CET
+Switching PrgEnv-cray.
+Switching cce.
+Switching cray-dsmml.
+Switching cray-libsci.
+Switching cray-mpich.
+Switching craype.
+Switching perftools-base.
+Python 3.10.18
+using api key var API_KEY_1674_PERSONAL, job 2/3
+api client ready in 0.3s
+loaded 380 genes from /cfs/klemming/scratch/m/mmarandi/intermediate_input/dataset5_null/background_gene_set_380.tsv
+job 2/3 raw slice 601728-1203456 aligned to 601728-1203456 of 1805062 variants
+start batch 1203328-1203456 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1203328_1203456.tsv.gz in 0.0s, progress 1203456/1805062
+start batch 1203200-1203328 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1203200_1203328.tsv.gz in 0.0s, progress 1203328/1805062
+start batch 1203072-1203200 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1203072_1203200.tsv.gz in 0.0s, progress 1203200/1805062
+start batch 1202944-1203072 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1202944_1203072.tsv.gz in 0.0s, progress 1203072/1805062
+start batch 1202816-1202944 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1202816_1202944.tsv.gz in 0.0s, progress 1202944/1805062
+start batch 1202688-1202816 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1202688_1202816.tsv.gz in 0.0s, progress 1202816/1805062
+start batch 1202560-1202688 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1202560_1202688.tsv.gz in 0.0s, progress 1202688/1805062
+start batch 1202432-1202560 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1202432_1202560.tsv.gz in 0.0s, progress 1202560/1805062
+start batch 1202304-1202432 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1202304_1202432.tsv.gz in 0.0s, progress 1202432/1805062
+start batch 1202176-1202304 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1202176_1202304.tsv.gz in 0.0s, progress 1202304/1805062
+start batch 1202048-1202176 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1202048_1202176.tsv.gz in 0.0s, progress 1202176/1805062
+start batch 1201920-1202048 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1201920_1202048.tsv.gz in 0.0s, progress 1202048/1805062
+start batch 1201792-1201920 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1201792_1201920.tsv.gz in 0.0s, progress 1201920/1805062
+start batch 1201664-1201792 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1201664_1201792.tsv.gz in 0.0s, progress 1201792/1805062
+start batch 1201536-1201664 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1201536_1201664.tsv.gz in 0.0s, progress 1201664/1805062
+start batch 1201408-1201536 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1201408_1201536.tsv.gz in 0.0s, progress 1201536/1805062
+start batch 1201280-1201408 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1201280_1201408.tsv.gz in 0.0s, progress 1201408/1805062
+start batch 1201152-1201280 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1201152_1201280.tsv.gz in 0.0s, progress 1201280/1805062
+start batch 1201024-1201152 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1201024_1201152.tsv.gz in 0.0s, progress 1201152/1805062
+start batch 1200896-1201024 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1200896_1201024.tsv.gz in 0.0s, progress 1201024/1805062
+start batch 1200768-1200896 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1200768_1200896.tsv.gz in 0.0s, progress 1200896/1805062
+start batch 1200640-1200768 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1200640_1200768.tsv.gz in 0.0s, progress 1200768/1805062
+start batch 1200512-1200640 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1200512_1200640.tsv.gz in 0.0s, progress 1200640/1805062
+start batch 1200384-1200512 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1200384_1200512.tsv.gz in 0.0s, progress 1200512/1805062
+start batch 1200256-1200384 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1200256_1200384.tsv.gz in 0.0s, progress 1200384/1805062
+start batch 1200128-1200256 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1200128_1200256.tsv.gz in 0.0s, progress 1200256/1805062
+start batch 1200000-1200128 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1200000_1200128.tsv.gz in 0.0s, progress 1200128/1805062
+start batch 1199872-1200000 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1199872_1200000.tsv.gz in 0.0s, progress 1200000/1805062
+start batch 1199744-1199872 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1199744_1199872.tsv.gz in 0.0s, progress 1199872/1805062
+start batch 1199616-1199744 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1199616_1199744.tsv.gz in 0.0s, progress 1199744/1805062
+start batch 1199488-1199616 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1199488_1199616.tsv.gz in 0.0s, progress 1199616/1805062
+start batch 1199360-1199488 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1199360_1199488.tsv.gz in 0.0s, progress 1199488/1805062
+start batch 1199232-1199360 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1199232_1199360.tsv.gz in 0.0s, progress 1199360/1805062
+start batch 1199104-1199232 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1199104_1199232.tsv.gz in 0.0s, progress 1199232/1805062
+start batch 1198976-1199104 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1198976_1199104.tsv.gz in 0.0s, progress 1199104/1805062
+start batch 1198848-1198976 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1198848_1198976.tsv.gz in 0.0s, progress 1198976/1805062
+start batch 1198720-1198848 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1198720_1198848.tsv.gz in 0.0s, progress 1198848/1805062
+start batch 1198592-1198720 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1198592_1198720.tsv.gz in 0.0s, progress 1198720/1805062
+start batch 1198464-1198592 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1198464_1198592.tsv.gz in 0.0s, progress 1198592/1805062
+start batch 1198336-1198464 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1198336_1198464.tsv.gz in 0.0s, progress 1198464/1805062
+start batch 1198208-1198336 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1198208_1198336.tsv.gz in 0.0s, progress 1198336/1805062
+start batch 1198080-1198208 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1198080_1198208.tsv.gz in 0.0s, progress 1198208/1805062
+start batch 1197952-1198080 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1197952_1198080.tsv.gz in 0.0s, progress 1198080/1805062
+start batch 1197824-1197952 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1197824_1197952.tsv.gz in 0.0s, progress 1197952/1805062
+start batch 1197696-1197824 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1197696_1197824.tsv.gz in 0.0s, progress 1197824/1805062
+start batch 1197568-1197696 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.0s
+wrote chunk_1197568_1197696.tsv.gz in 0.0s, progress 1197696/1805062
+start batch 1197440-1197568 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1197440_1197568.tsv.gz in 0.0s, progress 1197568/1805062
+start batch 1197312-1197440 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1197312_1197440.tsv.gz in 0.0s, progress 1197440/1805062
+start batch 1197184-1197312 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1197184_1197312.tsv.gz in 0.0s, progress 1197312/1805062
+start batch 1197056-1197184 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1197056_1197184.tsv.gz in 0.0s, progress 1197184/1805062
+start batch 1196928-1197056 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.0s
+wrote chunk_1196928_1197056.tsv.gz in 0.0s, progress 1197056/1805062
+start batch 1196800-1196928 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.9s
+wrote chunk_1196800_1196928.tsv.gz in 0.0s, progress 1196928/1805062
+start batch 1196672-1196800 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1196672_1196800.tsv.gz in 0.0s, progress 1196800/1805062
+start batch 1196544-1196672 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1196544_1196672.tsv.gz in 0.0s, progress 1196672/1805062
+start batch 1196416-1196544 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1196416_1196544.tsv.gz in 0.0s, progress 1196544/1805062
+start batch 1196288-1196416 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1196288_1196416.tsv.gz in 0.0s, progress 1196416/1805062
+start batch 1196160-1196288 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1196160_1196288.tsv.gz in 0.0s, progress 1196288/1805062
+start batch 1196032-1196160 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1196032_1196160.tsv.gz in 0.0s, progress 1196160/1805062
+start batch 1195904-1196032 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1195904_1196032.tsv.gz in 0.0s, progress 1196032/1805062
+start batch 1195776-1195904 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1195776_1195904.tsv.gz in 0.0s, progress 1195904/1805062
+start batch 1195648-1195776 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1195648_1195776.tsv.gz in 0.0s, progress 1195776/1805062
+start batch 1195520-1195648 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1195520_1195648.tsv.gz in 0.0s, progress 1195648/1805062
+start batch 1195392-1195520 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1195392_1195520.tsv.gz in 0.0s, progress 1195520/1805062
+start batch 1195264-1195392 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1195264_1195392.tsv.gz in 0.0s, progress 1195392/1805062
+start batch 1195136-1195264 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1195136_1195264.tsv.gz in 0.0s, progress 1195264/1805062
+start batch 1195008-1195136 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1195008_1195136.tsv.gz in 0.0s, progress 1195136/1805062
+start batch 1194880-1195008 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1194880_1195008.tsv.gz in 0.0s, progress 1195008/1805062
+start batch 1194752-1194880 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1194752_1194880.tsv.gz in 0.0s, progress 1194880/1805062
+start batch 1194624-1194752 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1194624_1194752.tsv.gz in 0.0s, progress 1194752/1805062
+start batch 1194496-1194624 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1194496_1194624.tsv.gz in 0.0s, progress 1194624/1805062
+start batch 1194368-1194496 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1194368_1194496.tsv.gz in 0.0s, progress 1194496/1805062
+start batch 1194240-1194368 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1194240_1194368.tsv.gz in 0.0s, progress 1194368/1805062
+start batch 1194112-1194240 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1194112_1194240.tsv.gz in 0.0s, progress 1194240/1805062
+start batch 1193984-1194112 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.0s
+wrote chunk_1193984_1194112.tsv.gz in 0.0s, progress 1194112/1805062
+start batch 1193856-1193984 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.1s
+wrote chunk_1193856_1193984.tsv.gz in 0.0s, progress 1193984/1805062
+start batch 1193728-1193856 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.1s
+wrote chunk_1193728_1193856.tsv.gz in 0.0s, progress 1193856/1805062
+start batch 1193600-1193728 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.1s
+wrote chunk_1193600_1193728.tsv.gz in 0.0s, progress 1193728/1805062
+start batch 1193472-1193600 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.8s
+wrote chunk_1193472_1193600.tsv.gz in 0.0s, progress 1193600/1805062
+start batch 1193344-1193472 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.7s
+wrote chunk_1193344_1193472.tsv.gz in 0.0s, progress 1193472/1805062
+start batch 1193216-1193344 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.9s
+wrote chunk_1193216_1193344.tsv.gz in 0.0s, progress 1193344/1805062
+start batch 1193088-1193216 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.9s
+wrote chunk_1193088_1193216.tsv.gz in 0.0s, progress 1193216/1805062
+start batch 1192960-1193088 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.0s
+wrote chunk_1192960_1193088.tsv.gz in 0.0s, progress 1193088/1805062
+start batch 1192832-1192960 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.9s
+wrote chunk_1192832_1192960.tsv.gz in 0.0s, progress 1192960/1805062
+start batch 1192704-1192832 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.5s
+wrote chunk_1192704_1192832.tsv.gz in 0.0s, progress 1192832/1805062
+start batch 1192576-1192704 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1192576_1192704.tsv.gz in 0.0s, progress 1192704/1805062
+start batch 1192448-1192576 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1192448_1192576.tsv.gz in 0.0s, progress 1192576/1805062
+start batch 1192320-1192448 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1192320_1192448.tsv.gz in 0.0s, progress 1192448/1805062
+start batch 1192192-1192320 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.8s
+wrote chunk_1192192_1192320.tsv.gz in 0.0s, progress 1192320/1805062
+start batch 1192064-1192192 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.9s
+wrote chunk_1192064_1192192.tsv.gz in 0.0s, progress 1192192/1805062
+start batch 1191936-1192064 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.3s
+wrote chunk_1191936_1192064.tsv.gz in 0.0s, progress 1192064/1805062
+start batch 1191808-1191936 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.9s
+wrote chunk_1191808_1191936.tsv.gz in 0.0s, progress 1191936/1805062
+start batch 1191680-1191808 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.6s
+wrote chunk_1191680_1191808.tsv.gz in 0.0s, progress 1191808/1805062
+start batch 1191552-1191680 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.8s
+wrote chunk_1191552_1191680.tsv.gz in 0.0s, progress 1191680/1805062
+start batch 1191424-1191552 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.9s
+wrote chunk_1191424_1191552.tsv.gz in 0.0s, progress 1191552/1805062
+start batch 1191296-1191424 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.1s
+wrote chunk_1191296_1191424.tsv.gz in 0.0s, progress 1191424/1805062
+start batch 1191168-1191296 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.3s
+wrote chunk_1191168_1191296.tsv.gz in 0.0s, progress 1191296/1805062
+start batch 1191040-1191168 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.9s
+wrote chunk_1191040_1191168.tsv.gz in 0.0s, progress 1191168/1805062
+start batch 1190912-1191040 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.9s
+wrote chunk_1190912_1191040.tsv.gz in 0.0s, progress 1191040/1805062
+start batch 1190784-1190912 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.6s
+wrote chunk_1190784_1190912.tsv.gz in 0.0s, progress 1190912/1805062
+start batch 1190656-1190784 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.9s
+wrote chunk_1190656_1190784.tsv.gz in 0.0s, progress 1190784/1805062
+start batch 1190528-1190656 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.5s
+wrote chunk_1190528_1190656.tsv.gz in 0.0s, progress 1190656/1805062
+start batch 1190400-1190528 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1190400_1190528.tsv.gz in 0.0s, progress 1190528/1805062
+start batch 1190272-1190400 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1190272_1190400.tsv.gz in 0.0s, progress 1190400/1805062
+start batch 1190144-1190272 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1190144_1190272.tsv.gz in 0.0s, progress 1190272/1805062
+start batch 1190016-1190144 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1190016_1190144.tsv.gz in 0.0s, progress 1190144/1805062
+start batch 1189888-1190016 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.5s
+wrote chunk_1189888_1190016.tsv.gz in 0.0s, progress 1190016/1805062
+start batch 1189760-1189888 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1189760_1189888.tsv.gz in 0.0s, progress 1189888/1805062
+start batch 1189632-1189760 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.1s
+wrote chunk_1189632_1189760.tsv.gz in 0.0s, progress 1189760/1805062
+start batch 1189504-1189632 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.1s
+wrote chunk_1189504_1189632.tsv.gz in 0.0s, progress 1189632/1805062
+start batch 1189376-1189504 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1189376_1189504.tsv.gz in 0.0s, progress 1189504/1805062
+start batch 1189248-1189376 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1189248_1189376.tsv.gz in 0.0s, progress 1189376/1805062
+start batch 1189120-1189248 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1189120_1189248.tsv.gz in 0.0s, progress 1189248/1805062
+start batch 1188992-1189120 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1188992_1189120.tsv.gz in 0.0s, progress 1189120/1805062
+start batch 1188864-1188992 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1188864_1188992.tsv.gz in 0.0s, progress 1188992/1805062
+start batch 1188736-1188864 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1188736_1188864.tsv.gz in 0.0s, progress 1188864/1805062
+start batch 1188608-1188736 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1188608_1188736.tsv.gz in 0.0s, progress 1188736/1805062
+start batch 1188480-1188608 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1188480_1188608.tsv.gz in 0.0s, progress 1188608/1805062
+start batch 1188352-1188480 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1188352_1188480.tsv.gz in 0.0s, progress 1188480/1805062
+start batch 1188224-1188352 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1188224_1188352.tsv.gz in 0.0s, progress 1188352/1805062
+start batch 1188096-1188224 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1188096_1188224.tsv.gz in 0.0s, progress 1188224/1805062
+start batch 1187968-1188096 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1187968_1188096.tsv.gz in 0.0s, progress 1188096/1805062
+start batch 1187840-1187968 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1187840_1187968.tsv.gz in 0.0s, progress 1187968/1805062
+start batch 1187712-1187840 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1187712_1187840.tsv.gz in 0.0s, progress 1187840/1805062
+start batch 1187584-1187712 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1187584_1187712.tsv.gz in 0.0s, progress 1187712/1805062
+start batch 1187456-1187584 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1187456_1187584.tsv.gz in 0.0s, progress 1187584/1805062
+start batch 1187328-1187456 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1187328_1187456.tsv.gz in 0.0s, progress 1187456/1805062
+start batch 1187200-1187328 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1187200_1187328.tsv.gz in 0.0s, progress 1187328/1805062
+start batch 1187072-1187200 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1187072_1187200.tsv.gz in 0.0s, progress 1187200/1805062
+start batch 1186944-1187072 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.0s
+wrote chunk_1186944_1187072.tsv.gz in 0.0s, progress 1187072/1805062
+start batch 1186816-1186944 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1186816_1186944.tsv.gz in 0.0s, progress 1186944/1805062
+start batch 1186688-1186816 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1186688_1186816.tsv.gz in 0.0s, progress 1186816/1805062
+start batch 1186560-1186688 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.8s
+wrote chunk_1186560_1186688.tsv.gz in 0.0s, progress 1186688/1805062
+start batch 1186432-1186560 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1186432_1186560.tsv.gz in 0.0s, progress 1186560/1805062
+start batch 1186304-1186432 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1186304_1186432.tsv.gz in 0.0s, progress 1186432/1805062
+start batch 1186176-1186304 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1186176_1186304.tsv.gz in 0.0s, progress 1186304/1805062
+start batch 1186048-1186176 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1186048_1186176.tsv.gz in 0.0s, progress 1186176/1805062
+start batch 1185920-1186048 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1185920_1186048.tsv.gz in 0.0s, progress 1186048/1805062
+start batch 1185792-1185920 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1185792_1185920.tsv.gz in 0.0s, progress 1185920/1805062
+start batch 1185664-1185792 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1185664_1185792.tsv.gz in 0.0s, progress 1185792/1805062
+start batch 1185536-1185664 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.0s
+wrote chunk_1185536_1185664.tsv.gz in 0.0s, progress 1185664/1805062
+start batch 1185408-1185536 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1185408_1185536.tsv.gz in 0.0s, progress 1185536/1805062
+start batch 1185280-1185408 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1185280_1185408.tsv.gz in 0.0s, progress 1185408/1805062
+start batch 1185152-1185280 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1185152_1185280.tsv.gz in 0.0s, progress 1185280/1805062
+start batch 1185024-1185152 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.0s
+wrote chunk_1185024_1185152.tsv.gz in 0.0s, progress 1185152/1805062
+start batch 1184896-1185024 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1184896_1185024.tsv.gz in 0.0s, progress 1185024/1805062
+start batch 1184768-1184896 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1184768_1184896.tsv.gz in 0.0s, progress 1184896/1805062
+start batch 1184640-1184768 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1184640_1184768.tsv.gz in 0.0s, progress 1184768/1805062
+start batch 1184512-1184640 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1184512_1184640.tsv.gz in 0.0s, progress 1184640/1805062
+start batch 1184384-1184512 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1184384_1184512.tsv.gz in 0.0s, progress 1184512/1805062
+start batch 1184256-1184384 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1184256_1184384.tsv.gz in 0.0s, progress 1184384/1805062
+start batch 1184128-1184256 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1184128_1184256.tsv.gz in 0.0s, progress 1184256/1805062
+start batch 1184000-1184128 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1184000_1184128.tsv.gz in 0.0s, progress 1184128/1805062
+start batch 1183872-1184000 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1183872_1184000.tsv.gz in 0.0s, progress 1184000/1805062
+start batch 1183744-1183872 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1183744_1183872.tsv.gz in 0.0s, progress 1183872/1805062
+start batch 1183616-1183744 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1183616_1183744.tsv.gz in 0.0s, progress 1183744/1805062
+start batch 1183488-1183616 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1183488_1183616.tsv.gz in 0.0s, progress 1183616/1805062
+start batch 1183360-1183488 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1183360_1183488.tsv.gz in 0.0s, progress 1183488/1805062
+start batch 1183232-1183360 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1183232_1183360.tsv.gz in 0.0s, progress 1183360/1805062
+start batch 1183104-1183232 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1183104_1183232.tsv.gz in 0.0s, progress 1183232/1805062
+start batch 1182976-1183104 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1182976_1183104.tsv.gz in 0.0s, progress 1183104/1805062
+start batch 1182848-1182976 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1182848_1182976.tsv.gz in 0.0s, progress 1182976/1805062
+start batch 1182720-1182848 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1182720_1182848.tsv.gz in 0.0s, progress 1182848/1805062
+start batch 1182592-1182720 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1182592_1182720.tsv.gz in 0.0s, progress 1182720/1805062
+start batch 1182464-1182592 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1182464_1182592.tsv.gz in 0.0s, progress 1182592/1805062
+start batch 1182336-1182464 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1182336_1182464.tsv.gz in 0.0s, progress 1182464/1805062
+start batch 1182208-1182336 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1182208_1182336.tsv.gz in 0.0s, progress 1182336/1805062
+start batch 1182080-1182208 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1182080_1182208.tsv.gz in 0.0s, progress 1182208/1805062
+start batch 1181952-1182080 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1181952_1182080.tsv.gz in 0.0s, progress 1182080/1805062
+start batch 1181824-1181952 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1181824_1181952.tsv.gz in 0.0s, progress 1181952/1805062
+start batch 1181696-1181824 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1181696_1181824.tsv.gz in 0.0s, progress 1181824/1805062
+start batch 1181568-1181696 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1181568_1181696.tsv.gz in 0.0s, progress 1181696/1805062
+start batch 1181440-1181568 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1181440_1181568.tsv.gz in 0.0s, progress 1181568/1805062
+start batch 1181312-1181440 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1181312_1181440.tsv.gz in 0.0s, progress 1181440/1805062
+start batch 1181184-1181312 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1181184_1181312.tsv.gz in 0.0s, progress 1181312/1805062
+start batch 1181056-1181184 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1181056_1181184.tsv.gz in 0.0s, progress 1181184/1805062
+start batch 1180928-1181056 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1180928_1181056.tsv.gz in 0.0s, progress 1181056/1805062
+start batch 1180800-1180928 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1180800_1180928.tsv.gz in 0.0s, progress 1180928/1805062
+start batch 1180672-1180800 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1180672_1180800.tsv.gz in 0.0s, progress 1180800/1805062
+start batch 1180544-1180672 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1180544_1180672.tsv.gz in 0.0s, progress 1180672/1805062
+start batch 1180416-1180544 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1180416_1180544.tsv.gz in 0.0s, progress 1180544/1805062
+start batch 1180288-1180416 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1180288_1180416.tsv.gz in 0.0s, progress 1180416/1805062
+start batch 1180160-1180288 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1180160_1180288.tsv.gz in 0.0s, progress 1180288/1805062
+start batch 1180032-1180160 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1180032_1180160.tsv.gz in 0.0s, progress 1180160/1805062
+start batch 1179904-1180032 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1179904_1180032.tsv.gz in 0.0s, progress 1180032/1805062
+start batch 1179776-1179904 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1179776_1179904.tsv.gz in 0.0s, progress 1179904/1805062
+start batch 1179648-1179776 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1179648_1179776.tsv.gz in 0.0s, progress 1179776/1805062
+start batch 1179520-1179648 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1179520_1179648.tsv.gz in 0.0s, progress 1179648/1805062
+start batch 1179392-1179520 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1179392_1179520.tsv.gz in 0.0s, progress 1179520/1805062
+start batch 1179264-1179392 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1179264_1179392.tsv.gz in 0.0s, progress 1179392/1805062
+start batch 1179136-1179264 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1179136_1179264.tsv.gz in 0.0s, progress 1179264/1805062
+start batch 1179008-1179136 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1179008_1179136.tsv.gz in 0.0s, progress 1179136/1805062
+start batch 1178880-1179008 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1178880_1179008.tsv.gz in 0.0s, progress 1179008/1805062
+start batch 1178752-1178880 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1178752_1178880.tsv.gz in 0.0s, progress 1178880/1805062
+start batch 1178624-1178752 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1178624_1178752.tsv.gz in 0.0s, progress 1178752/1805062
+start batch 1178496-1178624 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1178496_1178624.tsv.gz in 0.0s, progress 1178624/1805062
+start batch 1178368-1178496 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1178368_1178496.tsv.gz in 0.0s, progress 1178496/1805062
+start batch 1178240-1178368 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1178240_1178368.tsv.gz in 0.0s, progress 1178368/1805062
+start batch 1178112-1178240 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1178112_1178240.tsv.gz in 0.0s, progress 1178240/1805062
+start batch 1177984-1178112 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1177984_1178112.tsv.gz in 0.0s, progress 1178112/1805062
+start batch 1177856-1177984 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1177856_1177984.tsv.gz in 0.0s, progress 1177984/1805062
+start batch 1177728-1177856 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1177728_1177856.tsv.gz in 0.0s, progress 1177856/1805062
+start batch 1177600-1177728 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1177600_1177728.tsv.gz in 0.0s, progress 1177728/1805062
+start batch 1177472-1177600 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1177472_1177600.tsv.gz in 0.0s, progress 1177600/1805062
+start batch 1177344-1177472 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1177344_1177472.tsv.gz in 0.0s, progress 1177472/1805062
+start batch 1177216-1177344 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.0s
+wrote chunk_1177216_1177344.tsv.gz in 0.0s, progress 1177344/1805062
+start batch 1177088-1177216 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1177088_1177216.tsv.gz in 0.0s, progress 1177216/1805062
+start batch 1176960-1177088 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1176960_1177088.tsv.gz in 0.0s, progress 1177088/1805062
+start batch 1176832-1176960 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1176832_1176960.tsv.gz in 0.0s, progress 1176960/1805062
+start batch 1176704-1176832 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1176704_1176832.tsv.gz in 0.0s, progress 1176832/1805062
+start batch 1176576-1176704 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1176576_1176704.tsv.gz in 0.0s, progress 1176704/1805062
+start batch 1176448-1176576 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1176448_1176576.tsv.gz in 0.0s, progress 1176576/1805062
+start batch 1176320-1176448 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.9s
+wrote chunk_1176320_1176448.tsv.gz in 0.0s, progress 1176448/1805062
+start batch 1176192-1176320 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1176192_1176320.tsv.gz in 0.0s, progress 1176320/1805062
+start batch 1176064-1176192 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1176064_1176192.tsv.gz in 0.0s, progress 1176192/1805062
+start batch 1175936-1176064 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1175936_1176064.tsv.gz in 0.0s, progress 1176064/1805062
+start batch 1175808-1175936 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1175808_1175936.tsv.gz in 0.0s, progress 1175936/1805062
+start batch 1175680-1175808 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1175680_1175808.tsv.gz in 0.0s, progress 1175808/1805062
+start batch 1175552-1175680 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1175552_1175680.tsv.gz in 0.0s, progress 1175680/1805062
+start batch 1175424-1175552 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1175424_1175552.tsv.gz in 0.0s, progress 1175552/1805062
+start batch 1175296-1175424 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1175296_1175424.tsv.gz in 0.0s, progress 1175424/1805062
+start batch 1175168-1175296 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1175168_1175296.tsv.gz in 0.0s, progress 1175296/1805062
+start batch 1175040-1175168 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1175040_1175168.tsv.gz in 0.0s, progress 1175168/1805062
+start batch 1174912-1175040 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.7s
+wrote chunk_1174912_1175040.tsv.gz in 0.0s, progress 1175040/1805062
+start batch 1174784-1174912 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.6s
+wrote chunk_1174784_1174912.tsv.gz in 0.0s, progress 1174912/1805062
+start batch 1174656-1174784 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.6s
+wrote chunk_1174656_1174784.tsv.gz in 0.0s, progress 1174784/1805062
+start batch 1174528-1174656 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1174528_1174656.tsv.gz in 0.0s, progress 1174656/1805062
+start batch 1174400-1174528 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1174400_1174528.tsv.gz in 0.0s, progress 1174528/1805062
+start batch 1174272-1174400 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.5s
+wrote chunk_1174272_1174400.tsv.gz in 0.0s, progress 1174400/1805062
+start batch 1174144-1174272 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1174144_1174272.tsv.gz in 0.0s, progress 1174272/1805062
+start batch 1174016-1174144 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1174016_1174144.tsv.gz in 0.0s, progress 1174144/1805062
+start batch 1173888-1174016 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.5s
+wrote chunk_1173888_1174016.tsv.gz in 0.0s, progress 1174016/1805062
+start batch 1173760-1173888 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.7s
+wrote chunk_1173760_1173888.tsv.gz in 0.0s, progress 1173888/1805062
+start batch 1173632-1173760 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1173632_1173760.tsv.gz in 0.0s, progress 1173760/1805062
+start batch 1173504-1173632 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1173504_1173632.tsv.gz in 0.0s, progress 1173632/1805062
+start batch 1173376-1173504 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1173376_1173504.tsv.gz in 0.0s, progress 1173504/1805062
+start batch 1173248-1173376 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1173248_1173376.tsv.gz in 0.0s, progress 1173376/1805062
+start batch 1173120-1173248 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.0s
+wrote chunk_1173120_1173248.tsv.gz in 0.0s, progress 1173248/1805062
+start batch 1172992-1173120 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.0s
+wrote chunk_1172992_1173120.tsv.gz in 0.0s, progress 1173120/1805062
+start batch 1172864-1172992 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.1s
+wrote chunk_1172864_1172992.tsv.gz in 0.0s, progress 1172992/1805062
+start batch 1172736-1172864 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1172736_1172864.tsv.gz in 0.0s, progress 1172864/1805062
+start batch 1172608-1172736 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1172608_1172736.tsv.gz in 0.0s, progress 1172736/1805062
+start batch 1172480-1172608 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.1s
+wrote chunk_1172480_1172608.tsv.gz in 0.0s, progress 1172608/1805062
+start batch 1172352-1172480 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1172352_1172480.tsv.gz in 0.0s, progress 1172480/1805062
+start batch 1172224-1172352 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.7s
+wrote chunk_1172224_1172352.tsv.gz in 0.0s, progress 1172352/1805062
+start batch 1172096-1172224 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1172096_1172224.tsv.gz in 0.0s, progress 1172224/1805062
+start batch 1171968-1172096 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1171968_1172096.tsv.gz in 0.0s, progress 1172096/1805062
+start batch 1171840-1171968 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1171840_1171968.tsv.gz in 0.0s, progress 1171968/1805062
+start batch 1171712-1171840 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.6s
+wrote chunk_1171712_1171840.tsv.gz in 0.0s, progress 1171840/1805062
+start batch 1171584-1171712 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.5s
+wrote chunk_1171584_1171712.tsv.gz in 0.0s, progress 1171712/1805062
+start batch 1171456-1171584 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1171456_1171584.tsv.gz in 0.0s, progress 1171584/1805062
+start batch 1171328-1171456 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.1s
+wrote chunk_1171328_1171456.tsv.gz in 0.0s, progress 1171456/1805062
+start batch 1171200-1171328 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1171200_1171328.tsv.gz in 0.0s, progress 1171328/1805062
+start batch 1171072-1171200 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1171072_1171200.tsv.gz in 0.0s, progress 1171200/1805062
+start batch 1170944-1171072 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1170944_1171072.tsv.gz in 0.0s, progress 1171072/1805062
+start batch 1170816-1170944 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1170816_1170944.tsv.gz in 0.0s, progress 1170944/1805062
+start batch 1170688-1170816 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1170688_1170816.tsv.gz in 0.0s, progress 1170816/1805062
+start batch 1170560-1170688 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1170560_1170688.tsv.gz in 0.0s, progress 1170688/1805062
+start batch 1170432-1170560 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.8s
+wrote chunk_1170432_1170560.tsv.gz in 0.0s, progress 1170560/1805062
+start batch 1170304-1170432 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1170304_1170432.tsv.gz in 0.0s, progress 1170432/1805062
+start batch 1170176-1170304 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1170176_1170304.tsv.gz in 0.0s, progress 1170304/1805062
+start batch 1170048-1170176 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1170048_1170176.tsv.gz in 0.0s, progress 1170176/1805062
+start batch 1169920-1170048 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1169920_1170048.tsv.gz in 0.0s, progress 1170048/1805062
+start batch 1169792-1169920 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1169792_1169920.tsv.gz in 0.0s, progress 1169920/1805062
+start batch 1169664-1169792 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.0s
+wrote chunk_1169664_1169792.tsv.gz in 0.0s, progress 1169792/1805062
+start batch 1169536-1169664 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1169536_1169664.tsv.gz in 0.0s, progress 1169664/1805062
+start batch 1169408-1169536 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1169408_1169536.tsv.gz in 0.0s, progress 1169536/1805062
+start batch 1169280-1169408 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1169280_1169408.tsv.gz in 0.0s, progress 1169408/1805062
+start batch 1169152-1169280 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1169152_1169280.tsv.gz in 0.0s, progress 1169280/1805062
+start batch 1169024-1169152 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1169024_1169152.tsv.gz in 0.0s, progress 1169152/1805062
+start batch 1168896-1169024 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1168896_1169024.tsv.gz in 0.0s, progress 1169024/1805062
+start batch 1168768-1168896 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1168768_1168896.tsv.gz in 0.0s, progress 1168896/1805062
+start batch 1168640-1168768 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1168640_1168768.tsv.gz in 0.0s, progress 1168768/1805062
+start batch 1168512-1168640 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1168512_1168640.tsv.gz in 0.0s, progress 1168640/1805062
+start batch 1168384-1168512 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1168384_1168512.tsv.gz in 0.0s, progress 1168512/1805062
+start batch 1168256-1168384 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1168256_1168384.tsv.gz in 0.0s, progress 1168384/1805062
+start batch 1168128-1168256 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1168128_1168256.tsv.gz in 0.0s, progress 1168256/1805062
+start batch 1168000-1168128 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1168000_1168128.tsv.gz in 0.0s, progress 1168128/1805062
+start batch 1167872-1168000 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1167872_1168000.tsv.gz in 0.0s, progress 1168000/1805062
+start batch 1167744-1167872 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1167744_1167872.tsv.gz in 0.0s, progress 1167872/1805062
+start batch 1167616-1167744 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1167616_1167744.tsv.gz in 0.0s, progress 1167744/1805062
+start batch 1167488-1167616 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1167488_1167616.tsv.gz in 0.0s, progress 1167616/1805062
+start batch 1167360-1167488 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1167360_1167488.tsv.gz in 0.0s, progress 1167488/1805062
+start batch 1167232-1167360 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.7s
+wrote chunk_1167232_1167360.tsv.gz in 0.0s, progress 1167360/1805062
+start batch 1167104-1167232 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.7s
+wrote chunk_1167104_1167232.tsv.gz in 0.0s, progress 1167232/1805062
+start batch 1166976-1167104 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.8s
+wrote chunk_1166976_1167104.tsv.gz in 0.0s, progress 1167104/1805062
+start batch 1166848-1166976 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.5s
+wrote chunk_1166848_1166976.tsv.gz in 0.0s, progress 1166976/1805062
+start batch 1166720-1166848 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.8s
+wrote chunk_1166720_1166848.tsv.gz in 0.0s, progress 1166848/1805062
+start batch 1166592-1166720 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.9s
+wrote chunk_1166592_1166720.tsv.gz in 0.0s, progress 1166720/1805062
+start batch 1166464-1166592 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.6s
+wrote chunk_1166464_1166592.tsv.gz in 0.0s, progress 1166592/1805062
+start batch 1166336-1166464 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.7s
+wrote chunk_1166336_1166464.tsv.gz in 0.0s, progress 1166464/1805062
+start batch 1166208-1166336 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.7s
+wrote chunk_1166208_1166336.tsv.gz in 0.0s, progress 1166336/1805062
+start batch 1166080-1166208 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.7s
+wrote chunk_1166080_1166208.tsv.gz in 0.0s, progress 1166208/1805062
+start batch 1165952-1166080 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.6s
+wrote chunk_1165952_1166080.tsv.gz in 0.0s, progress 1166080/1805062
+start batch 1165824-1165952 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.0s
+wrote chunk_1165824_1165952.tsv.gz in 0.0s, progress 1165952/1805062
+start batch 1165696-1165824 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.8s
+wrote chunk_1165696_1165824.tsv.gz in 0.0s, progress 1165824/1805062
+start batch 1165568-1165696 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.8s
+wrote chunk_1165568_1165696.tsv.gz in 0.0s, progress 1165696/1805062
+start batch 1165440-1165568 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1165440_1165568.tsv.gz in 0.0s, progress 1165568/1805062
+start batch 1165312-1165440 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1165312_1165440.tsv.gz in 0.0s, progress 1165440/1805062
+start batch 1165184-1165312 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1165184_1165312.tsv.gz in 0.0s, progress 1165312/1805062
+start batch 1165056-1165184 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.4s
+wrote chunk_1165056_1165184.tsv.gz in 0.0s, progress 1165184/1805062
+start batch 1164928-1165056 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.8s
+wrote chunk_1164928_1165056.tsv.gz in 0.0s, progress 1165056/1805062
+start batch 1164800-1164928 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1164800_1164928.tsv.gz in 0.0s, progress 1164928/1805062
+start batch 1164672-1164800 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1164672_1164800.tsv.gz in 0.0s, progress 1164800/1805062
+start batch 1164544-1164672 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.8s
+wrote chunk_1164544_1164672.tsv.gz in 0.0s, progress 1164672/1805062
+start batch 1164416-1164544 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.6s
+wrote chunk_1164416_1164544.tsv.gz in 0.0s, progress 1164544/1805062
+start batch 1164288-1164416 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1164288_1164416.tsv.gz in 0.0s, progress 1164416/1805062
+start batch 1164160-1164288 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1164160_1164288.tsv.gz in 0.0s, progress 1164288/1805062
+start batch 1164032-1164160 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1164032_1164160.tsv.gz in 0.0s, progress 1164160/1805062
+start batch 1163904-1164032 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1163904_1164032.tsv.gz in 0.0s, progress 1164032/1805062
+start batch 1163776-1163904 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1163776_1163904.tsv.gz in 0.0s, progress 1163904/1805062
+start batch 1163648-1163776 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1163648_1163776.tsv.gz in 0.0s, progress 1163776/1805062
+start batch 1163520-1163648 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1163520_1163648.tsv.gz in 0.0s, progress 1163648/1805062
+start batch 1163392-1163520 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1163392_1163520.tsv.gz in 0.0s, progress 1163520/1805062
+start batch 1163264-1163392 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1163264_1163392.tsv.gz in 0.0s, progress 1163392/1805062
+start batch 1163136-1163264 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1163136_1163264.tsv.gz in 0.0s, progress 1163264/1805062
+start batch 1163008-1163136 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1163008_1163136.tsv.gz in 0.0s, progress 1163136/1805062
+start batch 1162880-1163008 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1162880_1163008.tsv.gz in 0.0s, progress 1163008/1805062
+start batch 1162752-1162880 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1162752_1162880.tsv.gz in 0.0s, progress 1162880/1805062
+start batch 1162624-1162752 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1162624_1162752.tsv.gz in 0.0s, progress 1162752/1805062
+start batch 1162496-1162624 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1162496_1162624.tsv.gz in 0.0s, progress 1162624/1805062
+start batch 1162368-1162496 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1162368_1162496.tsv.gz in 0.0s, progress 1162496/1805062
+start batch 1162240-1162368 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1162240_1162368.tsv.gz in 0.0s, progress 1162368/1805062
+start batch 1162112-1162240 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1162112_1162240.tsv.gz in 0.0s, progress 1162240/1805062
+start batch 1161984-1162112 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1161984_1162112.tsv.gz in 0.0s, progress 1162112/1805062
+start batch 1161856-1161984 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1161856_1161984.tsv.gz in 0.0s, progress 1161984/1805062
+start batch 1161728-1161856 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1161728_1161856.tsv.gz in 0.0s, progress 1161856/1805062
+start batch 1161600-1161728 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1161600_1161728.tsv.gz in 0.0s, progress 1161728/1805062
+start batch 1161472-1161600 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1161472_1161600.tsv.gz in 0.0s, progress 1161600/1805062
+start batch 1161344-1161472 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1161344_1161472.tsv.gz in 0.0s, progress 1161472/1805062
+start batch 1161216-1161344 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1161216_1161344.tsv.gz in 0.0s, progress 1161344/1805062
+start batch 1161088-1161216 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1161088_1161216.tsv.gz in 0.0s, progress 1161216/1805062
+start batch 1160960-1161088 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1160960_1161088.tsv.gz in 0.0s, progress 1161088/1805062
+start batch 1160832-1160960 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1160832_1160960.tsv.gz in 0.0s, progress 1160960/1805062
+start batch 1160704-1160832 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1160704_1160832.tsv.gz in 0.0s, progress 1160832/1805062
+start batch 1160576-1160704 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1160576_1160704.tsv.gz in 0.0s, progress 1160704/1805062
+start batch 1160448-1160576 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1160448_1160576.tsv.gz in 0.0s, progress 1160576/1805062
+start batch 1160320-1160448 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1160320_1160448.tsv.gz in 0.0s, progress 1160448/1805062
+start batch 1160192-1160320 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1160192_1160320.tsv.gz in 0.0s, progress 1160320/1805062
+start batch 1160064-1160192 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1160064_1160192.tsv.gz in 0.0s, progress 1160192/1805062
+start batch 1159936-1160064 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.6s
+wrote chunk_1159936_1160064.tsv.gz in 0.0s, progress 1160064/1805062
+start batch 1159808-1159936 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1159808_1159936.tsv.gz in 0.0s, progress 1159936/1805062
+start batch 1159680-1159808 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.1s
+wrote chunk_1159680_1159808.tsv.gz in 0.0s, progress 1159808/1805062
+start batch 1159552-1159680 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1159552_1159680.tsv.gz in 0.0s, progress 1159680/1805062
+start batch 1159424-1159552 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.8s
+wrote chunk_1159424_1159552.tsv.gz in 0.0s, progress 1159552/1805062
+start batch 1159296-1159424 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1159296_1159424.tsv.gz in 0.0s, progress 1159424/1805062
+start batch 1159168-1159296 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1159168_1159296.tsv.gz in 0.0s, progress 1159296/1805062
+start batch 1159040-1159168 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.6s
+wrote chunk_1159040_1159168.tsv.gz in 0.0s, progress 1159168/1805062
+start batch 1158912-1159040 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1158912_1159040.tsv.gz in 0.0s, progress 1159040/1805062
+start batch 1158784-1158912 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1158784_1158912.tsv.gz in 0.0s, progress 1158912/1805062
+start batch 1158656-1158784 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1158656_1158784.tsv.gz in 0.0s, progress 1158784/1805062
+start batch 1158528-1158656 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1158528_1158656.tsv.gz in 0.0s, progress 1158656/1805062
+start batch 1158400-1158528 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1158400_1158528.tsv.gz in 0.0s, progress 1158528/1805062
+start batch 1158272-1158400 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.8s
+wrote chunk_1158272_1158400.tsv.gz in 0.0s, progress 1158400/1805062
+start batch 1158144-1158272 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1158144_1158272.tsv.gz in 0.0s, progress 1158272/1805062
+start batch 1158016-1158144 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1158016_1158144.tsv.gz in 0.0s, progress 1158144/1805062
+start batch 1157888-1158016 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1157888_1158016.tsv.gz in 0.0s, progress 1158016/1805062
+start batch 1157760-1157888 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1157760_1157888.tsv.gz in 0.0s, progress 1157888/1805062
+start batch 1157632-1157760 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1157632_1157760.tsv.gz in 0.0s, progress 1157760/1805062
+start batch 1157504-1157632 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1157504_1157632.tsv.gz in 0.0s, progress 1157632/1805062
+start batch 1157376-1157504 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1157376_1157504.tsv.gz in 0.0s, progress 1157504/1805062
+start batch 1157248-1157376 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.1s
+wrote chunk_1157248_1157376.tsv.gz in 0.0s, progress 1157376/1805062
+start batch 1157120-1157248 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.0s
+wrote chunk_1157120_1157248.tsv.gz in 0.0s, progress 1157248/1805062
+start batch 1156992-1157120 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1156992_1157120.tsv.gz in 0.0s, progress 1157120/1805062
+start batch 1156864-1156992 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1156864_1156992.tsv.gz in 0.0s, progress 1156992/1805062
+start batch 1156736-1156864 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1156736_1156864.tsv.gz in 0.0s, progress 1156864/1805062
+start batch 1156608-1156736 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.1s
+wrote chunk_1156608_1156736.tsv.gz in 0.0s, progress 1156736/1805062
+start batch 1156480-1156608 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.0s
+wrote chunk_1156480_1156608.tsv.gz in 0.0s, progress 1156608/1805062
+start batch 1156352-1156480 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1156352_1156480.tsv.gz in 0.0s, progress 1156480/1805062
+start batch 1156224-1156352 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.8s
+wrote chunk_1156224_1156352.tsv.gz in 0.0s, progress 1156352/1805062
+start batch 1156096-1156224 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1156096_1156224.tsv.gz in 0.0s, progress 1156224/1805062
+start batch 1155968-1156096 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1155968_1156096.tsv.gz in 0.0s, progress 1156096/1805062
+start batch 1155840-1155968 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1155840_1155968.tsv.gz in 0.0s, progress 1155968/1805062
+start batch 1155712-1155840 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.5s
+wrote chunk_1155712_1155840.tsv.gz in 0.0s, progress 1155840/1805062
+start batch 1155584-1155712 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.8s
+wrote chunk_1155584_1155712.tsv.gz in 0.0s, progress 1155712/1805062
+start batch 1155456-1155584 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1155456_1155584.tsv.gz in 0.0s, progress 1155584/1805062
+start batch 1155328-1155456 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1155328_1155456.tsv.gz in 0.0s, progress 1155456/1805062
+start batch 1155200-1155328 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1155200_1155328.tsv.gz in 0.0s, progress 1155328/1805062
+start batch 1155072-1155200 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.8s
+wrote chunk_1155072_1155200.tsv.gz in 0.0s, progress 1155200/1805062
+start batch 1154944-1155072 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1154944_1155072.tsv.gz in 0.0s, progress 1155072/1805062
+start batch 1154816-1154944 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1154816_1154944.tsv.gz in 0.0s, progress 1154944/1805062
+start batch 1154688-1154816 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.9s
+wrote chunk_1154688_1154816.tsv.gz in 0.0s, progress 1154816/1805062
+start batch 1154560-1154688 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1154560_1154688.tsv.gz in 0.0s, progress 1154688/1805062
+start batch 1154432-1154560 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1154432_1154560.tsv.gz in 0.0s, progress 1154560/1805062
+start batch 1154304-1154432 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1154304_1154432.tsv.gz in 0.0s, progress 1154432/1805062
+start batch 1154176-1154304 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1154176_1154304.tsv.gz in 0.0s, progress 1154304/1805062
+start batch 1154048-1154176 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1154048_1154176.tsv.gz in 0.0s, progress 1154176/1805062
+start batch 1153920-1154048 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1153920_1154048.tsv.gz in 0.0s, progress 1154048/1805062
+start batch 1153792-1153920 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1153792_1153920.tsv.gz in 0.0s, progress 1153920/1805062
+start batch 1153664-1153792 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1153664_1153792.tsv.gz in 0.0s, progress 1153792/1805062
+start batch 1153536-1153664 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1153536_1153664.tsv.gz in 0.0s, progress 1153664/1805062
+start batch 1153408-1153536 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1153408_1153536.tsv.gz in 0.0s, progress 1153536/1805062
+start batch 1153280-1153408 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1153280_1153408.tsv.gz in 0.0s, progress 1153408/1805062
+start batch 1153152-1153280 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1153152_1153280.tsv.gz in 0.0s, progress 1153280/1805062
+start batch 1153024-1153152 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1153024_1153152.tsv.gz in 0.0s, progress 1153152/1805062
+start batch 1152896-1153024 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1152896_1153024.tsv.gz in 0.0s, progress 1153024/1805062
+start batch 1152768-1152896 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1152768_1152896.tsv.gz in 0.0s, progress 1152896/1805062
+start batch 1152640-1152768 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1152640_1152768.tsv.gz in 0.0s, progress 1152768/1805062
+start batch 1152512-1152640 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1152512_1152640.tsv.gz in 0.0s, progress 1152640/1805062
+start batch 1152384-1152512 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1152384_1152512.tsv.gz in 0.0s, progress 1152512/1805062
+start batch 1152256-1152384 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1152256_1152384.tsv.gz in 0.0s, progress 1152384/1805062
+start batch 1152128-1152256 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1152128_1152256.tsv.gz in 0.0s, progress 1152256/1805062
+start batch 1152000-1152128 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1152000_1152128.tsv.gz in 0.0s, progress 1152128/1805062
+start batch 1151872-1152000 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1151872_1152000.tsv.gz in 0.0s, progress 1152000/1805062
+start batch 1151744-1151872 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.8s
+wrote chunk_1151744_1151872.tsv.gz in 0.0s, progress 1151872/1805062
+start batch 1151616-1151744 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1151616_1151744.tsv.gz in 0.0s, progress 1151744/1805062
+start batch 1151488-1151616 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.0s
+wrote chunk_1151488_1151616.tsv.gz in 0.0s, progress 1151616/1805062
+start batch 1151360-1151488 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.0s
+wrote chunk_1151360_1151488.tsv.gz in 0.0s, progress 1151488/1805062
+start batch 1151232-1151360 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1151232_1151360.tsv.gz in 0.0s, progress 1151360/1805062
+start batch 1151104-1151232 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1151104_1151232.tsv.gz in 0.0s, progress 1151232/1805062
+start batch 1150976-1151104 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.1s
+wrote chunk_1150976_1151104.tsv.gz in 0.0s, progress 1151104/1805062
+start batch 1150848-1150976 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1150848_1150976.tsv.gz in 0.0s, progress 1150976/1805062
+start batch 1150720-1150848 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1150720_1150848.tsv.gz in 0.0s, progress 1150848/1805062
+start batch 1150592-1150720 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1150592_1150720.tsv.gz in 0.0s, progress 1150720/1805062
+start batch 1150464-1150592 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1150464_1150592.tsv.gz in 0.0s, progress 1150592/1805062
+start batch 1150336-1150464 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1150336_1150464.tsv.gz in 0.0s, progress 1150464/1805062
+start batch 1150208-1150336 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1150208_1150336.tsv.gz in 0.0s, progress 1150336/1805062
+start batch 1150080-1150208 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.8s
+wrote chunk_1150080_1150208.tsv.gz in 0.0s, progress 1150208/1805062
+start batch 1149952-1150080 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1149952_1150080.tsv.gz in 0.0s, progress 1150080/1805062
+start batch 1149824-1149952 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1149824_1149952.tsv.gz in 0.0s, progress 1149952/1805062
+start batch 1149696-1149824 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1149696_1149824.tsv.gz in 0.0s, progress 1149824/1805062
+start batch 1149568-1149696 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1149568_1149696.tsv.gz in 0.0s, progress 1149696/1805062
+start batch 1149440-1149568 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1149440_1149568.tsv.gz in 0.0s, progress 1149568/1805062
+start batch 1149312-1149440 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1149312_1149440.tsv.gz in 0.0s, progress 1149440/1805062
+start batch 1149184-1149312 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.5s
+wrote chunk_1149184_1149312.tsv.gz in 0.0s, progress 1149312/1805062
+start batch 1149056-1149184 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1149056_1149184.tsv.gz in 0.0s, progress 1149184/1805062
+start batch 1148928-1149056 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1148928_1149056.tsv.gz in 0.0s, progress 1149056/1805062
+start batch 1148800-1148928 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1148800_1148928.tsv.gz in 0.0s, progress 1148928/1805062
+start batch 1148672-1148800 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1148672_1148800.tsv.gz in 0.0s, progress 1148800/1805062
+start batch 1148544-1148672 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1148544_1148672.tsv.gz in 0.0s, progress 1148672/1805062
+start batch 1148416-1148544 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1148416_1148544.tsv.gz in 0.0s, progress 1148544/1805062
+start batch 1148288-1148416 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1148288_1148416.tsv.gz in 0.0s, progress 1148416/1805062
+start batch 1148160-1148288 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1148160_1148288.tsv.gz in 0.0s, progress 1148288/1805062
+start batch 1148032-1148160 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1148032_1148160.tsv.gz in 0.0s, progress 1148160/1805062
+start batch 1147904-1148032 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1147904_1148032.tsv.gz in 0.0s, progress 1148032/1805062
+start batch 1147776-1147904 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1147776_1147904.tsv.gz in 0.0s, progress 1147904/1805062
+start batch 1147648-1147776 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1147648_1147776.tsv.gz in 0.0s, progress 1147776/1805062
+start batch 1147520-1147648 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1147520_1147648.tsv.gz in 0.0s, progress 1147648/1805062
+start batch 1147392-1147520 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1147392_1147520.tsv.gz in 0.0s, progress 1147520/1805062
+start batch 1147264-1147392 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1147264_1147392.tsv.gz in 0.0s, progress 1147392/1805062
+start batch 1147136-1147264 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1147136_1147264.tsv.gz in 0.0s, progress 1147264/1805062
+start batch 1147008-1147136 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1147008_1147136.tsv.gz in 0.0s, progress 1147136/1805062
+start batch 1146880-1147008 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1146880_1147008.tsv.gz in 0.0s, progress 1147008/1805062
+start batch 1146752-1146880 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1146752_1146880.tsv.gz in 0.0s, progress 1146880/1805062
+start batch 1146624-1146752 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1146624_1146752.tsv.gz in 0.0s, progress 1146752/1805062
+start batch 1146496-1146624 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1146496_1146624.tsv.gz in 0.0s, progress 1146624/1805062
+start batch 1146368-1146496 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1146368_1146496.tsv.gz in 0.0s, progress 1146496/1805062
+start batch 1146240-1146368 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1146240_1146368.tsv.gz in 0.1s, progress 1146368/1805062
+start batch 1146112-1146240 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1146112_1146240.tsv.gz in 0.0s, progress 1146240/1805062
+start batch 1145984-1146112 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1145984_1146112.tsv.gz in 0.0s, progress 1146112/1805062
+start batch 1145856-1145984 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1145856_1145984.tsv.gz in 0.0s, progress 1145984/1805062
+start batch 1145728-1145856 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1145728_1145856.tsv.gz in 0.0s, progress 1145856/1805062
+start batch 1145600-1145728 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1145600_1145728.tsv.gz in 0.0s, progress 1145728/1805062
+start batch 1145472-1145600 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1145472_1145600.tsv.gz in 0.0s, progress 1145600/1805062
+start batch 1145344-1145472 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1145344_1145472.tsv.gz in 0.0s, progress 1145472/1805062
+start batch 1145216-1145344 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1145216_1145344.tsv.gz in 0.0s, progress 1145344/1805062
+start batch 1145088-1145216 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1145088_1145216.tsv.gz in 0.0s, progress 1145216/1805062
+start batch 1144960-1145088 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1144960_1145088.tsv.gz in 0.0s, progress 1145088/1805062
+start batch 1144832-1144960 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1144832_1144960.tsv.gz in 0.0s, progress 1144960/1805062
+start batch 1144704-1144832 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1144704_1144832.tsv.gz in 0.0s, progress 1144832/1805062
+start batch 1144576-1144704 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1144576_1144704.tsv.gz in 0.0s, progress 1144704/1805062
+start batch 1144448-1144576 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1144448_1144576.tsv.gz in 0.0s, progress 1144576/1805062
+start batch 1144320-1144448 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1144320_1144448.tsv.gz in 0.0s, progress 1144448/1805062
+start batch 1144192-1144320 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1144192_1144320.tsv.gz in 0.0s, progress 1144320/1805062
+start batch 1144064-1144192 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1144064_1144192.tsv.gz in 0.0s, progress 1144192/1805062
+start batch 1143936-1144064 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1143936_1144064.tsv.gz in 0.0s, progress 1144064/1805062
+start batch 1143808-1143936 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1143808_1143936.tsv.gz in 0.0s, progress 1143936/1805062
+start batch 1143680-1143808 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1143680_1143808.tsv.gz in 0.0s, progress 1143808/1805062
+start batch 1143552-1143680 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1143552_1143680.tsv.gz in 0.0s, progress 1143680/1805062
+start batch 1143424-1143552 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1143424_1143552.tsv.gz in 0.0s, progress 1143552/1805062
+start batch 1143296-1143424 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1143296_1143424.tsv.gz in 0.0s, progress 1143424/1805062
+start batch 1143168-1143296 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1143168_1143296.tsv.gz in 0.0s, progress 1143296/1805062
+start batch 1143040-1143168 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1143040_1143168.tsv.gz in 0.0s, progress 1143168/1805062
+start batch 1142912-1143040 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1142912_1143040.tsv.gz in 0.0s, progress 1143040/1805062
+start batch 1142784-1142912 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1142784_1142912.tsv.gz in 0.0s, progress 1142912/1805062
+start batch 1142656-1142784 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1142656_1142784.tsv.gz in 0.0s, progress 1142784/1805062
+start batch 1142528-1142656 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1142528_1142656.tsv.gz in 0.0s, progress 1142656/1805062
+start batch 1142400-1142528 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1142400_1142528.tsv.gz in 0.0s, progress 1142528/1805062
+start batch 1142272-1142400 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1142272_1142400.tsv.gz in 0.0s, progress 1142400/1805062
+start batch 1142144-1142272 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1142144_1142272.tsv.gz in 0.0s, progress 1142272/1805062
+start batch 1142016-1142144 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1142016_1142144.tsv.gz in 0.0s, progress 1142144/1805062
+start batch 1141888-1142016 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1141888_1142016.tsv.gz in 0.0s, progress 1142016/1805062
+start batch 1141760-1141888 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.7s
+wrote chunk_1141760_1141888.tsv.gz in 0.0s, progress 1141888/1805062
+start batch 1141632-1141760 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1141632_1141760.tsv.gz in 0.0s, progress 1141760/1805062
+start batch 1141504-1141632 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.7s
+wrote chunk_1141504_1141632.tsv.gz in 0.0s, progress 1141632/1805062
+start batch 1141376-1141504 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1141376_1141504.tsv.gz in 0.0s, progress 1141504/1805062
+start batch 1141248-1141376 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.8s
+wrote chunk_1141248_1141376.tsv.gz in 0.0s, progress 1141376/1805062
+start batch 1141120-1141248 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1141120_1141248.tsv.gz in 0.0s, progress 1141248/1805062
+start batch 1140992-1141120 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1140992_1141120.tsv.gz in 0.0s, progress 1141120/1805062
+start batch 1140864-1140992 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.7s
+wrote chunk_1140864_1140992.tsv.gz in 0.0s, progress 1140992/1805062
+start batch 1140736-1140864 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.6s
+wrote chunk_1140736_1140864.tsv.gz in 0.0s, progress 1140864/1805062
+start batch 1140608-1140736 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1140608_1140736.tsv.gz in 0.0s, progress 1140736/1805062
+start batch 1140480-1140608 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1140480_1140608.tsv.gz in 0.0s, progress 1140608/1805062
+start batch 1140352-1140480 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.5s
+wrote chunk_1140352_1140480.tsv.gz in 0.0s, progress 1140480/1805062
+start batch 1140224-1140352 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1140224_1140352.tsv.gz in 0.0s, progress 1140352/1805062
+start batch 1140096-1140224 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.0s
+wrote chunk_1140096_1140224.tsv.gz in 0.0s, progress 1140224/1805062
+start batch 1139968-1140096 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.6s
+wrote chunk_1139968_1140096.tsv.gz in 0.0s, progress 1140096/1805062
+start batch 1139840-1139968 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1139840_1139968.tsv.gz in 0.0s, progress 1139968/1805062
+start batch 1139712-1139840 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.6s
+wrote chunk_1139712_1139840.tsv.gz in 0.0s, progress 1139840/1805062
+start batch 1139584-1139712 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1139584_1139712.tsv.gz in 0.0s, progress 1139712/1805062
+start batch 1139456-1139584 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.0s
+wrote chunk_1139456_1139584.tsv.gz in 0.0s, progress 1139584/1805062
+start batch 1139328-1139456 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.6s
+wrote chunk_1139328_1139456.tsv.gz in 0.0s, progress 1139456/1805062
+start batch 1139200-1139328 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1139200_1139328.tsv.gz in 0.0s, progress 1139328/1805062
+start batch 1139072-1139200 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1139072_1139200.tsv.gz in 0.0s, progress 1139200/1805062
+start batch 1138944-1139072 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.7s
+wrote chunk_1138944_1139072.tsv.gz in 0.0s, progress 1139072/1805062
+start batch 1138816-1138944 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1138816_1138944.tsv.gz in 0.0s, progress 1138944/1805062
+start batch 1138688-1138816 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1138688_1138816.tsv.gz in 0.0s, progress 1138816/1805062
+start batch 1138560-1138688 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1138560_1138688.tsv.gz in 0.0s, progress 1138688/1805062
+start batch 1138432-1138560 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 27.6s
+wrote chunk_1138432_1138560.tsv.gz in 0.0s, progress 1138560/1805062
+start batch 1138304-1138432 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.9s
+wrote chunk_1138304_1138432.tsv.gz in 0.0s, progress 1138432/1805062
+start batch 1138176-1138304 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.8s
+wrote chunk_1138176_1138304.tsv.gz in 0.0s, progress 1138304/1805062
+start batch 1138048-1138176 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.7s
+wrote chunk_1138048_1138176.tsv.gz in 0.0s, progress 1138176/1805062
+start batch 1137920-1138048 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.1s
+wrote chunk_1137920_1138048.tsv.gz in 0.0s, progress 1138048/1805062
+start batch 1137792-1137920 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1137792_1137920.tsv.gz in 0.0s, progress 1137920/1805062
+start batch 1137664-1137792 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.8s
+wrote chunk_1137664_1137792.tsv.gz in 0.0s, progress 1137792/1805062
+start batch 1137536-1137664 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1137536_1137664.tsv.gz in 0.0s, progress 1137664/1805062
+start batch 1137408-1137536 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1137408_1137536.tsv.gz in 0.0s, progress 1137536/1805062
+start batch 1137280-1137408 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1137280_1137408.tsv.gz in 0.0s, progress 1137408/1805062
+start batch 1137152-1137280 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1137152_1137280.tsv.gz in 0.0s, progress 1137280/1805062
+start batch 1137024-1137152 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1137024_1137152.tsv.gz in 0.0s, progress 1137152/1805062
+start batch 1136896-1137024 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.5s
+wrote chunk_1136896_1137024.tsv.gz in 0.0s, progress 1137024/1805062
+start batch 1136768-1136896 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1136768_1136896.tsv.gz in 0.0s, progress 1136896/1805062
+start batch 1136640-1136768 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.5s
+wrote chunk_1136640_1136768.tsv.gz in 0.0s, progress 1136768/1805062
+start batch 1136512-1136640 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1136512_1136640.tsv.gz in 0.1s, progress 1136640/1805062
+start batch 1136384-1136512 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.4s
+wrote chunk_1136384_1136512.tsv.gz in 0.0s, progress 1136512/1805062
+start batch 1136256-1136384 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1136256_1136384.tsv.gz in 0.0s, progress 1136384/1805062
+start batch 1136128-1136256 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.5s
+wrote chunk_1136128_1136256.tsv.gz in 0.0s, progress 1136256/1805062
+start batch 1136000-1136128 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1136000_1136128.tsv.gz in 0.0s, progress 1136128/1805062
+start batch 1135872-1136000 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1135872_1136000.tsv.gz in 0.0s, progress 1136000/1805062
+start batch 1135744-1135872 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1135744_1135872.tsv.gz in 0.0s, progress 1135872/1805062
+start batch 1135616-1135744 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1135616_1135744.tsv.gz in 0.0s, progress 1135744/1805062
+start batch 1135488-1135616 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1135488_1135616.tsv.gz in 0.0s, progress 1135616/1805062
+start batch 1135360-1135488 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1135360_1135488.tsv.gz in 0.0s, progress 1135488/1805062
+start batch 1135232-1135360 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1135232_1135360.tsv.gz in 0.0s, progress 1135360/1805062
+start batch 1135104-1135232 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1135104_1135232.tsv.gz in 0.0s, progress 1135232/1805062
+start batch 1134976-1135104 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1134976_1135104.tsv.gz in 0.0s, progress 1135104/1805062
+start batch 1134848-1134976 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1134848_1134976.tsv.gz in 0.0s, progress 1134976/1805062
+start batch 1134720-1134848 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1134720_1134848.tsv.gz in 0.0s, progress 1134848/1805062
+start batch 1134592-1134720 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1134592_1134720.tsv.gz in 0.0s, progress 1134720/1805062
+start batch 1134464-1134592 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1134464_1134592.tsv.gz in 0.0s, progress 1134592/1805062
+start batch 1134336-1134464 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1134336_1134464.tsv.gz in 0.0s, progress 1134464/1805062
+start batch 1134208-1134336 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1134208_1134336.tsv.gz in 0.0s, progress 1134336/1805062
+start batch 1134080-1134208 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1134080_1134208.tsv.gz in 0.0s, progress 1134208/1805062
+start batch 1133952-1134080 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1133952_1134080.tsv.gz in 0.0s, progress 1134080/1805062
+start batch 1133824-1133952 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1133824_1133952.tsv.gz in 0.0s, progress 1133952/1805062
+start batch 1133696-1133824 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1133696_1133824.tsv.gz in 0.0s, progress 1133824/1805062
+start batch 1133568-1133696 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1133568_1133696.tsv.gz in 0.0s, progress 1133696/1805062
+start batch 1133440-1133568 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1133440_1133568.tsv.gz in 0.0s, progress 1133568/1805062
+start batch 1133312-1133440 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1133312_1133440.tsv.gz in 0.0s, progress 1133440/1805062
+start batch 1133184-1133312 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1133184_1133312.tsv.gz in 0.0s, progress 1133312/1805062
+start batch 1133056-1133184 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1133056_1133184.tsv.gz in 0.0s, progress 1133184/1805062
+start batch 1132928-1133056 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1132928_1133056.tsv.gz in 0.0s, progress 1133056/1805062
+start batch 1132800-1132928 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1132800_1132928.tsv.gz in 0.0s, progress 1132928/1805062
+start batch 1132672-1132800 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1132672_1132800.tsv.gz in 0.0s, progress 1132800/1805062
+start batch 1132544-1132672 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1132544_1132672.tsv.gz in 0.0s, progress 1132672/1805062
+start batch 1132416-1132544 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1132416_1132544.tsv.gz in 0.0s, progress 1132544/1805062
+start batch 1132288-1132416 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1132288_1132416.tsv.gz in 0.0s, progress 1132416/1805062
+start batch 1132160-1132288 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1132160_1132288.tsv.gz in 0.0s, progress 1132288/1805062
+start batch 1132032-1132160 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1132032_1132160.tsv.gz in 0.0s, progress 1132160/1805062
+start batch 1131904-1132032 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1131904_1132032.tsv.gz in 0.0s, progress 1132032/1805062
+start batch 1131776-1131904 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1131776_1131904.tsv.gz in 0.0s, progress 1131904/1805062
+start batch 1131648-1131776 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1131648_1131776.tsv.gz in 0.0s, progress 1131776/1805062
+start batch 1131520-1131648 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1131520_1131648.tsv.gz in 0.0s, progress 1131648/1805062
+start batch 1131392-1131520 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1131392_1131520.tsv.gz in 0.0s, progress 1131520/1805062
+start batch 1131264-1131392 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1131264_1131392.tsv.gz in 0.0s, progress 1131392/1805062
+start batch 1131136-1131264 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1131136_1131264.tsv.gz in 0.0s, progress 1131264/1805062
+start batch 1131008-1131136 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1131008_1131136.tsv.gz in 0.0s, progress 1131136/1805062
+start batch 1130880-1131008 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1130880_1131008.tsv.gz in 0.0s, progress 1131008/1805062
+start batch 1130752-1130880 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1130752_1130880.tsv.gz in 0.0s, progress 1130880/1805062
+start batch 1130624-1130752 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1130624_1130752.tsv.gz in 0.0s, progress 1130752/1805062
+start batch 1130496-1130624 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1130496_1130624.tsv.gz in 0.0s, progress 1130624/1805062
+start batch 1130368-1130496 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1130368_1130496.tsv.gz in 0.0s, progress 1130496/1805062
+start batch 1130240-1130368 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1130240_1130368.tsv.gz in 0.0s, progress 1130368/1805062
+start batch 1130112-1130240 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1130112_1130240.tsv.gz in 0.0s, progress 1130240/1805062
+start batch 1129984-1130112 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1129984_1130112.tsv.gz in 0.0s, progress 1130112/1805062
+start batch 1129856-1129984 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1129856_1129984.tsv.gz in 0.0s, progress 1129984/1805062
+start batch 1129728-1129856 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1129728_1129856.tsv.gz in 0.0s, progress 1129856/1805062
+start batch 1129600-1129728 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1129600_1129728.tsv.gz in 0.0s, progress 1129728/1805062
+start batch 1129472-1129600 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1129472_1129600.tsv.gz in 0.0s, progress 1129600/1805062
+start batch 1129344-1129472 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1129344_1129472.tsv.gz in 0.0s, progress 1129472/1805062
+start batch 1129216-1129344 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1129216_1129344.tsv.gz in 0.0s, progress 1129344/1805062
+start batch 1129088-1129216 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1129088_1129216.tsv.gz in 0.0s, progress 1129216/1805062
+start batch 1128960-1129088 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1128960_1129088.tsv.gz in 0.0s, progress 1129088/1805062
+start batch 1128832-1128960 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1128832_1128960.tsv.gz in 0.0s, progress 1128960/1805062
+start batch 1128704-1128832 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1128704_1128832.tsv.gz in 0.0s, progress 1128832/1805062
+start batch 1128576-1128704 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1128576_1128704.tsv.gz in 0.0s, progress 1128704/1805062
+start batch 1128448-1128576 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1128448_1128576.tsv.gz in 0.0s, progress 1128576/1805062
+start batch 1128320-1128448 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1128320_1128448.tsv.gz in 0.0s, progress 1128448/1805062
+start batch 1128192-1128320 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1128192_1128320.tsv.gz in 0.1s, progress 1128320/1805062
+start batch 1128064-1128192 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1128064_1128192.tsv.gz in 0.0s, progress 1128192/1805062
+start batch 1127936-1128064 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1127936_1128064.tsv.gz in 0.0s, progress 1128064/1805062
+start batch 1127808-1127936 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1127808_1127936.tsv.gz in 0.0s, progress 1127936/1805062
+start batch 1127680-1127808 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1127680_1127808.tsv.gz in 0.0s, progress 1127808/1805062
+start batch 1127552-1127680 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1127552_1127680.tsv.gz in 0.0s, progress 1127680/1805062
+start batch 1127424-1127552 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1127424_1127552.tsv.gz in 0.0s, progress 1127552/1805062
+start batch 1127296-1127424 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1127296_1127424.tsv.gz in 0.0s, progress 1127424/1805062
+start batch 1127168-1127296 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1127168_1127296.tsv.gz in 0.0s, progress 1127296/1805062
+start batch 1127040-1127168 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1127040_1127168.tsv.gz in 0.0s, progress 1127168/1805062
+start batch 1126912-1127040 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1126912_1127040.tsv.gz in 0.0s, progress 1127040/1805062
+start batch 1126784-1126912 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1126784_1126912.tsv.gz in 0.0s, progress 1126912/1805062
+start batch 1126656-1126784 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1126656_1126784.tsv.gz in 0.0s, progress 1126784/1805062
+start batch 1126528-1126656 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1126528_1126656.tsv.gz in 0.0s, progress 1126656/1805062
+start batch 1126400-1126528 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1126400_1126528.tsv.gz in 0.0s, progress 1126528/1805062
+start batch 1126272-1126400 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1126272_1126400.tsv.gz in 0.0s, progress 1126400/1805062
+start batch 1126144-1126272 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1126144_1126272.tsv.gz in 0.0s, progress 1126272/1805062
+start batch 1126016-1126144 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1126016_1126144.tsv.gz in 0.0s, progress 1126144/1805062
+start batch 1125888-1126016 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1125888_1126016.tsv.gz in 0.0s, progress 1126016/1805062
+start batch 1125760-1125888 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1125760_1125888.tsv.gz in 0.0s, progress 1125888/1805062
+start batch 1125632-1125760 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1125632_1125760.tsv.gz in 0.0s, progress 1125760/1805062
+start batch 1125504-1125632 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.9s
+wrote chunk_1125504_1125632.tsv.gz in 0.0s, progress 1125632/1805062
+start batch 1125376-1125504 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1125376_1125504.tsv.gz in 0.0s, progress 1125504/1805062
+start batch 1125248-1125376 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1125248_1125376.tsv.gz in 0.0s, progress 1125376/1805062
+start batch 1125120-1125248 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1125120_1125248.tsv.gz in 0.0s, progress 1125248/1805062
+start batch 1124992-1125120 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1124992_1125120.tsv.gz in 0.0s, progress 1125120/1805062
+start batch 1124864-1124992 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1124864_1124992.tsv.gz in 0.0s, progress 1124992/1805062
+start batch 1124736-1124864 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1124736_1124864.tsv.gz in 0.0s, progress 1124864/1805062
+start batch 1124608-1124736 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1124608_1124736.tsv.gz in 0.0s, progress 1124736/1805062
+start batch 1124480-1124608 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1124480_1124608.tsv.gz in 0.0s, progress 1124608/1805062
+start batch 1124352-1124480 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1124352_1124480.tsv.gz in 0.0s, progress 1124480/1805062
+start batch 1124224-1124352 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1124224_1124352.tsv.gz in 0.0s, progress 1124352/1805062
+start batch 1124096-1124224 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1124096_1124224.tsv.gz in 0.0s, progress 1124224/1805062
+start batch 1123968-1124096 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1123968_1124096.tsv.gz in 0.0s, progress 1124096/1805062
+start batch 1123840-1123968 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1123840_1123968.tsv.gz in 0.0s, progress 1123968/1805062
+start batch 1123712-1123840 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1123712_1123840.tsv.gz in 0.0s, progress 1123840/1805062
+start batch 1123584-1123712 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.9s
+wrote chunk_1123584_1123712.tsv.gz in 0.0s, progress 1123712/1805062
+start batch 1123456-1123584 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1123456_1123584.tsv.gz in 0.0s, progress 1123584/1805062
+start batch 1123328-1123456 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1123328_1123456.tsv.gz in 0.0s, progress 1123456/1805062
+start batch 1123200-1123328 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1123200_1123328.tsv.gz in 0.0s, progress 1123328/1805062
+start batch 1123072-1123200 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1123072_1123200.tsv.gz in 0.0s, progress 1123200/1805062
+start batch 1122944-1123072 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1122944_1123072.tsv.gz in 0.0s, progress 1123072/1805062
+start batch 1122816-1122944 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1122816_1122944.tsv.gz in 0.0s, progress 1122944/1805062
+start batch 1122688-1122816 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1122688_1122816.tsv.gz in 0.0s, progress 1122816/1805062
+start batch 1122560-1122688 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1122560_1122688.tsv.gz in 0.0s, progress 1122688/1805062
+start batch 1122432-1122560 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1122432_1122560.tsv.gz in 0.0s, progress 1122560/1805062
+start batch 1122304-1122432 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1122304_1122432.tsv.gz in 0.0s, progress 1122432/1805062
+start batch 1122176-1122304 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1122176_1122304.tsv.gz in 0.0s, progress 1122304/1805062
+start batch 1122048-1122176 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1122048_1122176.tsv.gz in 0.0s, progress 1122176/1805062
+start batch 1121920-1122048 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1121920_1122048.tsv.gz in 0.0s, progress 1122048/1805062
+start batch 1121792-1121920 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1121792_1121920.tsv.gz in 0.0s, progress 1121920/1805062
+start batch 1121664-1121792 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1121664_1121792.tsv.gz in 0.0s, progress 1121792/1805062
+start batch 1121536-1121664 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1121536_1121664.tsv.gz in 0.0s, progress 1121664/1805062
+start batch 1121408-1121536 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1121408_1121536.tsv.gz in 0.0s, progress 1121536/1805062
+start batch 1121280-1121408 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1121280_1121408.tsv.gz in 0.0s, progress 1121408/1805062
+start batch 1121152-1121280 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1121152_1121280.tsv.gz in 0.0s, progress 1121280/1805062
+start batch 1121024-1121152 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1121024_1121152.tsv.gz in 0.0s, progress 1121152/1805062
+start batch 1120896-1121024 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.5s
+wrote chunk_1120896_1121024.tsv.gz in 0.0s, progress 1121024/1805062
+start batch 1120768-1120896 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.6s
+wrote chunk_1120768_1120896.tsv.gz in 0.0s, progress 1120896/1805062
+start batch 1120640-1120768 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.8s
+wrote chunk_1120640_1120768.tsv.gz in 0.0s, progress 1120768/1805062
+start batch 1120512-1120640 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.5s
+wrote chunk_1120512_1120640.tsv.gz in 0.0s, progress 1120640/1805062
+start batch 1120384-1120512 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.7s
+wrote chunk_1120384_1120512.tsv.gz in 0.0s, progress 1120512/1805062
+start batch 1120256-1120384 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1120256_1120384.tsv.gz in 0.0s, progress 1120384/1805062
+start batch 1120128-1120256 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1120128_1120256.tsv.gz in 0.0s, progress 1120256/1805062
+start batch 1120000-1120128 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.7s
+wrote chunk_1120000_1120128.tsv.gz in 0.0s, progress 1120128/1805062
+start batch 1119872-1120000 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.4s
+wrote chunk_1119872_1120000.tsv.gz in 0.0s, progress 1120000/1805062
+start batch 1119744-1119872 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1119744_1119872.tsv.gz in 0.0s, progress 1119872/1805062
+start batch 1119616-1119744 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1119616_1119744.tsv.gz in 0.0s, progress 1119744/1805062
+start batch 1119488-1119616 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1119488_1119616.tsv.gz in 0.0s, progress 1119616/1805062
+start batch 1119360-1119488 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.2s
+wrote chunk_1119360_1119488.tsv.gz in 0.0s, progress 1119488/1805062
+start batch 1119232-1119360 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1119232_1119360.tsv.gz in 0.0s, progress 1119360/1805062
+start batch 1119104-1119232 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1119104_1119232.tsv.gz in 0.0s, progress 1119232/1805062
+start batch 1118976-1119104 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1118976_1119104.tsv.gz in 0.0s, progress 1119104/1805062
+start batch 1118848-1118976 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1118848_1118976.tsv.gz in 0.0s, progress 1118976/1805062
+start batch 1118720-1118848 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1118720_1118848.tsv.gz in 0.0s, progress 1118848/1805062
+start batch 1118592-1118720 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1118592_1118720.tsv.gz in 0.0s, progress 1118720/1805062
+start batch 1118464-1118592 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1118464_1118592.tsv.gz in 0.0s, progress 1118592/1805062
+start batch 1118336-1118464 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1118336_1118464.tsv.gz in 0.0s, progress 1118464/1805062
+start batch 1118208-1118336 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1118208_1118336.tsv.gz in 0.0s, progress 1118336/1805062
+start batch 1118080-1118208 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1118080_1118208.tsv.gz in 0.0s, progress 1118208/1805062
+start batch 1117952-1118080 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1117952_1118080.tsv.gz in 0.0s, progress 1118080/1805062
+start batch 1117824-1117952 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1117824_1117952.tsv.gz in 0.0s, progress 1117952/1805062
+start batch 1117696-1117824 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1117696_1117824.tsv.gz in 0.0s, progress 1117824/1805062
+start batch 1117568-1117696 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.1s
+wrote chunk_1117568_1117696.tsv.gz in 0.0s, progress 1117696/1805062
+start batch 1117440-1117568 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1117440_1117568.tsv.gz in 0.0s, progress 1117568/1805062
+start batch 1117312-1117440 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1117312_1117440.tsv.gz in 0.0s, progress 1117440/1805062
+start batch 1117184-1117312 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1117184_1117312.tsv.gz in 0.0s, progress 1117312/1805062
+start batch 1117056-1117184 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1117056_1117184.tsv.gz in 0.0s, progress 1117184/1805062
+start batch 1116928-1117056 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1116928_1117056.tsv.gz in 0.0s, progress 1117056/1805062
+start batch 1116800-1116928 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1116800_1116928.tsv.gz in 0.0s, progress 1116928/1805062
+start batch 1116672-1116800 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1116672_1116800.tsv.gz in 0.0s, progress 1116800/1805062
+start batch 1116544-1116672 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1116544_1116672.tsv.gz in 0.0s, progress 1116672/1805062
+start batch 1116416-1116544 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1116416_1116544.tsv.gz in 0.0s, progress 1116544/1805062
+start batch 1116288-1116416 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1116288_1116416.tsv.gz in 0.0s, progress 1116416/1805062
+start batch 1116160-1116288 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1116160_1116288.tsv.gz in 0.0s, progress 1116288/1805062
+start batch 1116032-1116160 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1116032_1116160.tsv.gz in 0.0s, progress 1116160/1805062
+start batch 1115904-1116032 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1115904_1116032.tsv.gz in 0.0s, progress 1116032/1805062
+start batch 1115776-1115904 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1115776_1115904.tsv.gz in 0.0s, progress 1115904/1805062
+start batch 1115648-1115776 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1115648_1115776.tsv.gz in 0.2s, progress 1115776/1805062
+start batch 1115520-1115648 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1115520_1115648.tsv.gz in 0.0s, progress 1115648/1805062
+start batch 1115392-1115520 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1115392_1115520.tsv.gz in 0.0s, progress 1115520/1805062
+start batch 1115264-1115392 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1115264_1115392.tsv.gz in 0.0s, progress 1115392/1805062
+start batch 1115136-1115264 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1115136_1115264.tsv.gz in 0.0s, progress 1115264/1805062
+start batch 1115008-1115136 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1115008_1115136.tsv.gz in 0.0s, progress 1115136/1805062
+start batch 1114880-1115008 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1114880_1115008.tsv.gz in 0.0s, progress 1115008/1805062
+start batch 1114752-1114880 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1114752_1114880.tsv.gz in 0.0s, progress 1114880/1805062
+start batch 1114624-1114752 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1114624_1114752.tsv.gz in 0.0s, progress 1114752/1805062
+start batch 1114496-1114624 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1114496_1114624.tsv.gz in 0.0s, progress 1114624/1805062
+start batch 1114368-1114496 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1114368_1114496.tsv.gz in 0.0s, progress 1114496/1805062
+start batch 1114240-1114368 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1114240_1114368.tsv.gz in 0.0s, progress 1114368/1805062
+start batch 1114112-1114240 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1114112_1114240.tsv.gz in 0.0s, progress 1114240/1805062
+start batch 1113984-1114112 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1113984_1114112.tsv.gz in 0.0s, progress 1114112/1805062
+start batch 1113856-1113984 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1113856_1113984.tsv.gz in 0.0s, progress 1113984/1805062
+start batch 1113728-1113856 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1113728_1113856.tsv.gz in 0.0s, progress 1113856/1805062
+start batch 1113600-1113728 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1113600_1113728.tsv.gz in 0.0s, progress 1113728/1805062
+start batch 1113472-1113600 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1113472_1113600.tsv.gz in 0.0s, progress 1113600/1805062
+start batch 1113344-1113472 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1113344_1113472.tsv.gz in 0.0s, progress 1113472/1805062
+start batch 1113216-1113344 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1113216_1113344.tsv.gz in 0.0s, progress 1113344/1805062
+start batch 1113088-1113216 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1113088_1113216.tsv.gz in 0.0s, progress 1113216/1805062
+start batch 1112960-1113088 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1112960_1113088.tsv.gz in 0.0s, progress 1113088/1805062
+start batch 1112832-1112960 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1112832_1112960.tsv.gz in 0.0s, progress 1112960/1805062
+start batch 1112704-1112832 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1112704_1112832.tsv.gz in 0.0s, progress 1112832/1805062
+start batch 1112576-1112704 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1112576_1112704.tsv.gz in 0.0s, progress 1112704/1805062
+start batch 1112448-1112576 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1112448_1112576.tsv.gz in 0.0s, progress 1112576/1805062
+start batch 1112320-1112448 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1112320_1112448.tsv.gz in 0.0s, progress 1112448/1805062
+start batch 1112192-1112320 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.8s
+wrote chunk_1112192_1112320.tsv.gz in 0.0s, progress 1112320/1805062
+start batch 1112064-1112192 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1112064_1112192.tsv.gz in 0.0s, progress 1112192/1805062
+start batch 1111936-1112064 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.1s
+wrote chunk_1111936_1112064.tsv.gz in 0.0s, progress 1112064/1805062
+start batch 1111808-1111936 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1111808_1111936.tsv.gz in 0.0s, progress 1111936/1805062
+start batch 1111680-1111808 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1111680_1111808.tsv.gz in 0.0s, progress 1111808/1805062
+start batch 1111552-1111680 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1111552_1111680.tsv.gz in 0.0s, progress 1111680/1805062
+start batch 1111424-1111552 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1111424_1111552.tsv.gz in 0.0s, progress 1111552/1805062
+start batch 1111296-1111424 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1111296_1111424.tsv.gz in 0.0s, progress 1111424/1805062
+start batch 1111168-1111296 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1111168_1111296.tsv.gz in 0.0s, progress 1111296/1805062
+start batch 1111040-1111168 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1111040_1111168.tsv.gz in 0.0s, progress 1111168/1805062
+start batch 1110912-1111040 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1110912_1111040.tsv.gz in 0.0s, progress 1111040/1805062
+start batch 1110784-1110912 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1110784_1110912.tsv.gz in 0.0s, progress 1110912/1805062
+start batch 1110656-1110784 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1110656_1110784.tsv.gz in 0.1s, progress 1110784/1805062
+start batch 1110528-1110656 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1110528_1110656.tsv.gz in 0.0s, progress 1110656/1805062
+start batch 1110400-1110528 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1110400_1110528.tsv.gz in 0.0s, progress 1110528/1805062
+start batch 1110272-1110400 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1110272_1110400.tsv.gz in 0.0s, progress 1110400/1805062
+start batch 1110144-1110272 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1110144_1110272.tsv.gz in 0.0s, progress 1110272/1805062
+start batch 1110016-1110144 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.3s
+wrote chunk_1110016_1110144.tsv.gz in 0.0s, progress 1110144/1805062
+start batch 1109888-1110016 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1109888_1110016.tsv.gz in 0.0s, progress 1110016/1805062
+start batch 1109760-1109888 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1109760_1109888.tsv.gz in 0.0s, progress 1109888/1805062
+start batch 1109632-1109760 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1109632_1109760.tsv.gz in 0.0s, progress 1109760/1805062
+start batch 1109504-1109632 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1109504_1109632.tsv.gz in 0.0s, progress 1109632/1805062
+start batch 1109376-1109504 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1109376_1109504.tsv.gz in 0.0s, progress 1109504/1805062
+start batch 1109248-1109376 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1109248_1109376.tsv.gz in 0.0s, progress 1109376/1805062
+start batch 1109120-1109248 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1109120_1109248.tsv.gz in 0.0s, progress 1109248/1805062
+start batch 1108992-1109120 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1108992_1109120.tsv.gz in 0.0s, progress 1109120/1805062
+start batch 1108864-1108992 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1108864_1108992.tsv.gz in 0.0s, progress 1108992/1805062
+start batch 1108736-1108864 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1108736_1108864.tsv.gz in 0.0s, progress 1108864/1805062
+start batch 1108608-1108736 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.3s
+wrote chunk_1108608_1108736.tsv.gz in 0.0s, progress 1108736/1805062
+start batch 1108480-1108608 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1108480_1108608.tsv.gz in 0.0s, progress 1108608/1805062
+start batch 1108352-1108480 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.1s
+wrote chunk_1108352_1108480.tsv.gz in 0.0s, progress 1108480/1805062
+start batch 1108224-1108352 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.2s
+wrote chunk_1108224_1108352.tsv.gz in 0.0s, progress 1108352/1805062
+start batch 1108096-1108224 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 23.9s
+wrote chunk_1108096_1108224.tsv.gz in 0.0s, progress 1108224/1805062
+start batch 1107968-1108096 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1107968_1108096.tsv.gz in 0.0s, progress 1108096/1805062
+start batch 1107840-1107968 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1107840_1107968.tsv.gz in 0.0s, progress 1107968/1805062
+start batch 1107712-1107840 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1107712_1107840.tsv.gz in 0.0s, progress 1107840/1805062
+start batch 1107584-1107712 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.0s
+wrote chunk_1107584_1107712.tsv.gz in 0.0s, progress 1107712/1805062
+start batch 1107456-1107584 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.5s
+wrote chunk_1107456_1107584.tsv.gz in 0.0s, progress 1107584/1805062
+start batch 1107328-1107456 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1107328_1107456.tsv.gz in 0.0s, progress 1107456/1805062
+start batch 1107200-1107328 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1107200_1107328.tsv.gz in 0.0s, progress 1107328/1805062
+start batch 1107072-1107200 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1107072_1107200.tsv.gz in 0.0s, progress 1107200/1805062
+start batch 1106944-1107072 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1106944_1107072.tsv.gz in 0.0s, progress 1107072/1805062
+start batch 1106816-1106944 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1106816_1106944.tsv.gz in 0.0s, progress 1106944/1805062
+start batch 1106688-1106816 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1106688_1106816.tsv.gz in 0.1s, progress 1106816/1805062
+start batch 1106560-1106688 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1106560_1106688.tsv.gz in 0.0s, progress 1106688/1805062
+start batch 1106432-1106560 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1106432_1106560.tsv.gz in 0.0s, progress 1106560/1805062
+start batch 1106304-1106432 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.6s
+wrote chunk_1106304_1106432.tsv.gz in 0.0s, progress 1106432/1805062
+start batch 1106176-1106304 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1106176_1106304.tsv.gz in 0.0s, progress 1106304/1805062
+start batch 1106048-1106176 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1106048_1106176.tsv.gz in 0.0s, progress 1106176/1805062
+start batch 1105920-1106048 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1105920_1106048.tsv.gz in 0.0s, progress 1106048/1805062
+start batch 1105792-1105920 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.0s
+wrote chunk_1105792_1105920.tsv.gz in 0.0s, progress 1105920/1805062
+start batch 1105664-1105792 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1105664_1105792.tsv.gz in 0.0s, progress 1105792/1805062
+start batch 1105536-1105664 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.6s
+wrote chunk_1105536_1105664.tsv.gz in 0.0s, progress 1105664/1805062
+start batch 1105408-1105536 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1105408_1105536.tsv.gz in 0.0s, progress 1105536/1805062
+start batch 1105280-1105408 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.7s
+wrote chunk_1105280_1105408.tsv.gz in 0.0s, progress 1105408/1805062
+start batch 1105152-1105280 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1105152_1105280.tsv.gz in 0.0s, progress 1105280/1805062
+start batch 1105024-1105152 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.9s
+wrote chunk_1105024_1105152.tsv.gz in 0.0s, progress 1105152/1805062
+start batch 1104896-1105024 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1104896_1105024.tsv.gz in 0.0s, progress 1105024/1805062
+start batch 1104768-1104896 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1104768_1104896.tsv.gz in 0.0s, progress 1104896/1805062
+start batch 1104640-1104768 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1104640_1104768.tsv.gz in 0.0s, progress 1104768/1805062
+start batch 1104512-1104640 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 24.8s
+wrote chunk_1104512_1104640.tsv.gz in 0.0s, progress 1104640/1805062
+start batch 1104384-1104512 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.1s
+wrote chunk_1104384_1104512.tsv.gz in 0.0s, progress 1104512/1805062
+start batch 1104256-1104384 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1104256_1104384.tsv.gz in 0.0s, progress 1104384/1805062
+start batch 1104128-1104256 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1104128_1104256.tsv.gz in 0.0s, progress 1104256/1805062
+start batch 1104000-1104128 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1104000_1104128.tsv.gz in 0.0s, progress 1104128/1805062
+start batch 1103872-1104000 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1103872_1104000.tsv.gz in 0.0s, progress 1104000/1805062
+start batch 1103744-1103872 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1103744_1103872.tsv.gz in 0.0s, progress 1103872/1805062
+start batch 1103616-1103744 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.8s
+wrote chunk_1103616_1103744.tsv.gz in 0.0s, progress 1103744/1805062
+start batch 1103488-1103616 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1103488_1103616.tsv.gz in 0.0s, progress 1103616/1805062
+start batch 1103360-1103488 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1103360_1103488.tsv.gz in 0.0s, progress 1103488/1805062
+start batch 1103232-1103360 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1103232_1103360.tsv.gz in 0.0s, progress 1103360/1805062
+start batch 1103104-1103232 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1103104_1103232.tsv.gz in 0.0s, progress 1103232/1805062
+start batch 1102976-1103104 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.3s
+wrote chunk_1102976_1103104.tsv.gz in 0.0s, progress 1103104/1805062
+start batch 1102848-1102976 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1102848_1102976.tsv.gz in 0.0s, progress 1102976/1805062
+start batch 1102720-1102848 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1102720_1102848.tsv.gz in 0.0s, progress 1102848/1805062
+start batch 1102592-1102720 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1102592_1102720.tsv.gz in 0.0s, progress 1102720/1805062
+start batch 1102464-1102592 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.2s
+wrote chunk_1102464_1102592.tsv.gz in 0.0s, progress 1102592/1805062
+start batch 1102336-1102464 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1102336_1102464.tsv.gz in 0.0s, progress 1102464/1805062
+start batch 1102208-1102336 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1102208_1102336.tsv.gz in 0.0s, progress 1102336/1805062
+start batch 1102080-1102208 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1102080_1102208.tsv.gz in 0.0s, progress 1102208/1805062
+start batch 1101952-1102080 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1101952_1102080.tsv.gz in 0.0s, progress 1102080/1805062
+start batch 1101824-1101952 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.6s
+wrote chunk_1101824_1101952.tsv.gz in 0.0s, progress 1101952/1805062
+start batch 1101696-1101824 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.5s
+wrote chunk_1101696_1101824.tsv.gz in 0.0s, progress 1101824/1805062
+start batch 1101568-1101696 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.4s
+wrote chunk_1101568_1101696.tsv.gz in 0.0s, progress 1101696/1805062
+start batch 1101440-1101568 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.7s
+wrote chunk_1101440_1101568.tsv.gz in 0.0s, progress 1101568/1805062
+start batch 1101312-1101440 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 26.0s
+wrote chunk_1101312_1101440.tsv.gz in 0.0s, progress 1101440/1805062
+start batch 1101184-1101312 size 128
+gm score L=1048576 n=128 start
+gm score L=1048576 done in 25.9s
+wrote chunk_1101184_1101312.tsv.gz in 0.0s, progress 1101312/1805062
+start batch 1101056-1101184 size 128
+gm score L=1048576 n=128 start

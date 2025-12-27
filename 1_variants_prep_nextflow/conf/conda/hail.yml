@@ -1,0 +1,14 @@
+name: hail-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pandas=2.2.3
+  - pyspark=3.5.4
+  - numpy=1.26.4
+  - openjdk=17
+  - pip
+  - pip:
+      - hail==0.2.133
+
+
