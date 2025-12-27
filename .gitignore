@@ -210,3 +210,6 @@ __marimo__/
 2_score_variants_with_alphagenome/*.out
 2_score_variants_with_alphagenome/*.err
 1_variants_prep_nextflow/.nextflow/*
+# Alphagenome outputs
+2_score_variants_with_alphagenome/*.out
+2_score_variants_with_alphagenome/*.err
