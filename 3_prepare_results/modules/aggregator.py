@@ -38,6 +38,15 @@ def aggregate_genes(
     # collect schema once safely
     schema_cols = set(lf.collect_schema().names())
 
+    # normalize af column name when provided as af_x/af_y
+    if "AF" not in schema_cols:
+        for af_alias in ("AF_x", "AF_y"):
+            if af_alias in schema_cols:
+                lf = lf.rename({af_alias: "AF"})
+                schema_cols.remove(af_alias)
+                schema_cols.add("AF")
+                break
+
     # 3. validation
     required_cols = {"raw_score", "AF"}
     missing = required_cols.difference(schema_cols)
@@ -73,7 +82,7 @@ def aggregate_genes(
     # dedupe variant rows keeping highest abs_score per variant
     # this drastically reduces row count before expensive spatial logic
     lf = (
-        lf.sort_by("abs_score", descending=True, nulls_last=True)
+        lf.sort("abs_score", descending=True, nulls_last=True)
         .unique(subset=["variant_id"], keep="first", maintain_order=True)
     )
 

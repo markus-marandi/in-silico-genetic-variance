@@ -18,4 +18,12 @@ outputs
 
 # Background
 
-`python pipeline_runner.py --chunks-dir /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/02_chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv --gnomad-af /cfs/.../gnomad.parquet`
+`python pipeline_runner.py --chunks-dir /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/02_chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv `
+
+# Background NULL 
+
+`python pipeline_runner.py --chunks-dir /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/02_chunks/chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv `
+
+# Clingen NULL
+
+`python pipeline_runner.py --chunks-dir/cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/02_chunks/chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv `

@@ -120,11 +120,25 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--gene-list", type=Path, help="optional gene whitelist (one id per line)")
     parser.add_argument("--gnomad-af", type=Path, help="optional gnomAD parquet with CHROM,POS,REF,ALT,AF")
     parser.add_argument("--variants-af", type=Path, help="initial variants tsv/tsv.gz with AF (defaults to 01_inputs/variants.tsv.gz)")
+    parser.add_argument("--variants-parquet", type=Path, help="existing variants parquet to aggregate directly")
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
+
+    if args.variants_parquet:
+        base_root = Path(args.root_dir) if args.root_dir else Path(
+            os.getenv("ROOT_DIR") or os.getenv("PDC_TMP") or "/cfs/klemming/scratch/m/mmarandi"
+        )
+        variant_path = Path(args.variants_parquet).resolve()
+        gene_path = Path(args.gene_out).resolve() if args.gene_out else variant_path.with_name(f"{variant_path.stem}_genes.parquet")
+
+        print(f"aggregating genes from existing parquet {variant_path}...")
+        aggregate_genes(variant_path, gene_path, base_ref=base_root, is_ism=False)
+        print("done.")
+        return
+
     spec = PipelineSpec.from_args(
         dataset_id=args.dataset_id or os.getenv("DATASET_ID"),
         sample_id=args.sample_id or os.getenv("SAMPLE_ID"),
