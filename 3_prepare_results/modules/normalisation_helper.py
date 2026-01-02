@@ -1,8 +1,12 @@
 from collections import defaultdict
-import pandas as pd
+import gzip
 import re
 from pathlib import Path
 from typing import Any, Iterable
+
+import pandas as pd
+import polars as pl
+from polars.exceptions import ComputeError
 
 
 def strip_ensembl_version(gene_id: str) -> str:
@@ -482,21 +486,67 @@ def load_vgh_metrics(metrics_path: Path) -> pd.DataFrame:
         'tau',
         'vg_eqtl',
     ]
-    df = pd.read_csv(
-        metrics_path,
-        sep='\t',
-        na_values=['NA', 'NaN', ''],
-        keep_default_na=True,
-        compression='infer',
-        index_col=False,
+
+    read_kwargs = dict(
+        separator='\t',
+        has_header=True,
+        null_values=['NA', 'NaN', ''],
     )
-    if 'vgh' not in df.columns:
+
+    try:
+        lf = pl.read_csv(metrics_path, ignore_errors=False, **read_kwargs)
+    except ComputeError as exc:
+        # detect ragged lines and report explicitly
+        expected_cols = None
+        ragged_count = 0
+        ragged_examples: list[str] = []
+        opener = gzip.open if metrics_path.suffix in {'.gz', '.bgz'} else open
+
+        with opener(metrics_path, 'rt', encoding='utf-8', errors='replace') as fh:
+            for idx, line in enumerate(fh, start=1):
+                if idx == 1:
+                    expected_cols = len(line.rstrip('\n').split('\t'))
+                    continue
+                if not line.strip():
+                    continue
+                parts = line.rstrip('\n').split('\t')
+                if expected_cols is not None and len(parts) != expected_cols:
+                    ragged_count += 1
+                    if len(ragged_examples) < 5:
+                        preview = '\t'.join(parts[:5])
+                        ragged_examples.append(
+                            f"line {idx}: fields={len(parts)} expected={expected_cols} preview={preview}"
+                        )
+
+        if expected_cols is None:
+            expected_cols = 0
+
+        print("warning: vgh parse error ->", exc)
+        print(
+            f"warning: vgh ragged rows dropped={ragged_count}, expected_cols={expected_cols}, "
+            "examples (first 5):"
+        )
+        for example in ragged_examples:
+            print(f"warning:   {example}")
+
+        lf = pl.read_csv(
+            metrics_path,
+            ignore_errors=True,
+            truncate_ragged_lines=True,
+            **read_kwargs,
+        )
+
+    if 'vgh' not in lf.columns:
         raise ValueError('vgh column not found in VGH metrics file')
-    df = df.rename(columns={'vgh': 'gene_id'})
-    df['gene_id'] = df['gene_id'].astype(str).map(strip_ensembl_version)
-    for col in metrics:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors='coerce')
-    present_metrics = [c for c in metrics if c in df.columns]
+
+    lf = lf.rename({'vgh': 'gene_id'}).with_columns(
+        pl.col('gene_id').cast(pl.Utf8).str.split('.').list.get(0)
+    )
+
+    cast_cols = [c for c in metrics if c in lf.columns]
+    if cast_cols:
+        lf = lf.with_columns(pl.col(cast_cols).cast(pl.Float64, strict=False))
+
+    present_metrics = [c for c in metrics if c in lf.columns]
     cols = ['gene_id'] + present_metrics
-    return df[cols].drop_duplicates('gene_id')
+    return lf.select(cols).unique('gene_id').to_pandas()

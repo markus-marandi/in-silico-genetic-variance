@@ -4,6 +4,7 @@ from pathlib import Path
 import polars as pl
 
 from .external_data_loader import ExternalDataLoader
+from .normalisation_helper import strip_ensembl_version
 
 
 def _load_gene_meta(base: Path) -> tuple[pl.DataFrame, pl.DataFrame, pl.DataFrame, pl.DataFrame]:
@@ -27,6 +28,7 @@ def aggregate_genes(
     out_path: Path,
     base_ref: Path,
     is_ism: bool,
+    gene_list_path: Path | None = None,
 ) -> None:
     """aggregate variant parquet to gene metrics with predicted vg and descriptive stats."""
     # 1. load metadata (eager)
@@ -67,6 +69,16 @@ def aggregate_genes(
     else:
         lf = lf.with_columns(gene_norm=pl.lit(None))
         gene_col = "gene_norm"
+
+    # optional gene whitelist
+    if gene_list_path and gene_list_path.exists():
+        gene_whitelist = {
+            strip_ensembl_version(line.strip())
+            for line in gene_list_path.read_text().splitlines()
+            if line.strip()
+        }
+        if gene_whitelist:
+            lf = lf.filter(pl.col(gene_col).is_in(gene_whitelist))
 
     # 5. attach spatial info (lazy join)
     gtf_spatial = gtf.lazy().select(

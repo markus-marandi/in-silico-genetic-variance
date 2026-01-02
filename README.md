@@ -52,6 +52,8 @@ sbatch --export=DATASET_ID=dataset4,SAMPLE_ID=background ... run_scoring.sh
 
 The final stage processes the raw prediction chunks. It stitches them into a unified dataset, backfills metadata, and performs the mathematical reduction to gene-level metrics.
 
+![Downstream Diagram](docs/figs/Downstream%20aggregation%20workflow%3A%20Integrating%20variant%20predictions%20with%20external%20biological%20priors.png)
+
 **Predicted Genetic Variance**
 For every gene, we calculate the cumulative variance explained by the model using the formula:
 

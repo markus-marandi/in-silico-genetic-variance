@@ -133,9 +133,16 @@ def main() -> None:
         )
         variant_path = Path(args.variants_parquet).resolve()
         gene_path = Path(args.gene_out).resolve() if args.gene_out else variant_path.with_name(f"{variant_path.stem}_genes.parquet")
+        gene_list = Path(args.gene_list).resolve() if args.gene_list else None
 
         print(f"aggregating genes from existing parquet {variant_path}...")
-        aggregate_genes(variant_path, gene_path, base_ref=base_root, is_ism=False)
+        aggregate_genes(
+            variant_path,
+            gene_path,
+            base_ref=base_root,
+            is_ism=False,
+            gene_list_path=gene_list,
+        )
         print("done.")
         return
 
@@ -174,7 +181,13 @@ def main() -> None:
 
     is_ism = spec.is_ism or not has_af
     print(f"Aggregating genes (ISM mode={is_ism})...")
-    aggregate_genes(spec.variant_output, spec.gene_output, base_ref=spec.root_dir, is_ism=is_ism)
+    aggregate_genes(
+        spec.variant_output,
+        spec.gene_output,
+        base_ref=spec.root_dir,
+        is_ism=is_ism,
+        gene_list_path=gene_list,
+    )
     print("Done.")
 
 if __name__ == "__main__":

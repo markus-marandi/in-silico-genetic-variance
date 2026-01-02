@@ -18,12 +18,18 @@ outputs
 
 # Background
 
-`python pipeline_runner.py --chunks-dir /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/02_chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv `
+`python pipeline_runner.py --chunks-dir /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/02_chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_gene_set_380.tsv --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/background_genes_20260102.parquet`
+
+`python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/background_variants_20260102.parquet --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_gene_set_380.tsv --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/background_genes_20260102.parquet`
+
+# Clingen
+
+`python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/clingen_alphagenome_scores_all_aggs_variantids_long.backfilled.parquet --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/01_inputs/ClinGen_gene_curation_list_GRCh38.ensg.txt --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/clingen_genes_20260102.parquet`
 
 # Background NULL 
 
-`python pipeline_runner.py --chunks-dir /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/02_chunks/chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv `
+`python pipeline_runner.py --chunks-dir /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/02_chunks/chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_gene_set_380.tsv `
 
 # Clingen NULL
 
-`python pipeline_runner.py --chunks-dir/cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/02_chunks/chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv `
+`python pipeline_runner.py --chunks-dir/cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/02_chunks/chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv --gene-list cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/01_inputs/ClinGen_gene_curation_list_GRCh38.ensg.txt`
