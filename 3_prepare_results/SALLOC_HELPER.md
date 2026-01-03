@@ -1,12 +1,12 @@
 # 1. Allocate resources
 salloc \
   -A naiss2025-5-479 \
-  -J alphagenome_filtering_int \
+  -J alphagenome_variant_int \
   -t 1:00:00 \
   -p shared \
   -n 1 \
   -c 2 \
-  --mem=94000M
+  --mem=64000M
 
 # when the prompt changes to the compute node, start an interactive shell
 srun --pty bash -l

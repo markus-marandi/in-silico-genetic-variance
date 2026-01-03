@@ -96,7 +96,7 @@ class PipelineSpec:
             gene_output=gene_path,
             variants_af_path=variants_af_path,
             gnomad_path=Path(gnomad_af) if gnomad_af else None,
-            is_ism="ism" in layout.sample_id.lower(),
+            is_ism=("ism" in layout.sample_id.lower()) or ("null" in layout.sample_id.lower()),
         )
 
     @staticmethod

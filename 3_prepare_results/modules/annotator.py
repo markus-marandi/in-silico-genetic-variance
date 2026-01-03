@@ -11,13 +11,14 @@ def annotate_af(lf: pl.LazyFrame, variants_path: Optional[Path]) -> Tuple[pl.Laz
     if variants_path is None or not variants_path.exists():
         return lf, False
 
-    af_cols = ["CHROM", "POS", "REF", "ALT", "AF", "variant_id"]
+    af_cols = ["CHROM", "POS", "REF", "ALT", "AF", "variant_id", "AF_x", "AF_y", "af", "af_x", "af_y"]
     variants = pl.scan_csv(
         variants_path,
         separator="\t",
         has_header=True,
         null_values=["", "NA", "None"],
         infer_schema_length=1000,
+        low_memory=True,
     )
     keep = [c for c in variants.columns if c in af_cols]
     variants = variants.select(keep).with_columns(

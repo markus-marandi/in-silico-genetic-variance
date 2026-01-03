@@ -40,17 +40,32 @@ def aggregate_genes(
     # collect schema once safely
     schema_cols = set(lf.collect_schema().names())
 
-    # normalize af column name when provided as af_x/af_y
-    if "AF" not in schema_cols:
-        for af_alias in ("AF_x", "AF_y"):
-            if af_alias in schema_cols:
-                lf = lf.rename({af_alias: "AF"})
-                schema_cols.remove(af_alias)
-                schema_cols.add("AF")
-                break
+    # normalize/select AF source once (case-insensitive), then drop extras
+    af_candidates = ["AF", "AF_x", "AF_y", "af", "af_x", "af_y"]
+    af_source = next((c for c in af_candidates if c in schema_cols), None)
+
+    if af_source and af_source != "AF":
+        lf = lf.with_columns(pl.col(af_source).alias("AF"))
+        schema_cols.add("AF")
+
+    # allow missing AF in ism/null runs by injecting a zero column
+    if "AF" not in schema_cols and is_ism:
+        lf = lf.with_columns(pl.lit(0.0).alias("AF"))
+        schema_cols.add("AF")
+
+    # drop secondary AF columns to avoid duplicates later
+    extras = [c for c in af_candidates if c != "AF" and c in schema_cols]
+    if extras:
+        lf = lf.drop(extras)
+        schema_cols.difference_update(extras)
+
+    # allow missing AF in ism/null runs by injecting a zero column
+    if "AF" not in schema_cols and is_ism:
+        lf = lf.with_columns(pl.lit(0.0).alias("AF"))
+        schema_cols.add("AF")
 
     # 3. validation
-    required_cols = {"raw_score", "AF"}
+    required_cols = {"raw_score"} if is_ism else {"raw_score", "AF"}
     missing = required_cols.difference(schema_cols)
     if missing:
         missing_cols = ", ".join(sorted(missing))
