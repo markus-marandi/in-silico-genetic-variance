@@ -30,9 +30,9 @@ def stitch_variants(chunks_dir: Path, gene_list_path: Optional[Path] = None) -> 
         low_memory=True,
     )
 
-    # DYNAMIC SCHEMA CHECK (Safe)
-    # This prevents the "ColumnNotFoundError: gene_tag" crash
-    # We inspect the actual file columns before building the expressions
+    # DYNAMIC SCHEMA CHECK
+    # we prevent the "ColumnNotFoundError: gene_tag" crash
+    # and then inspect the actual file columns before building the expressions
     schema_cols = set(lf.collect_schema().names())
 
     has_gene_id = "gene_id" in schema_cols

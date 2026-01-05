@@ -107,7 +107,7 @@ def aggregate_genes(
     lf = lf.with_columns(abs_score=pl.col("raw_score").abs())
 
     # dedupe variant rows keeping highest abs_score per variant
-    # this drastically reduces row count before expensive spatial logic
+    # this reduces row count before expensive spatial logic
     lf = (
         lf.sort("abs_score", descending=True, nulls_last=True)
         .unique(subset=["variant_id"], keep="first", maintain_order=True)
@@ -142,13 +142,13 @@ def aggregate_genes(
 
     # 8. define aggregations (comprehensive list)
     agg_exprs = [
-        # --- basic counts & vg ---
+        #  basic counts & vg
         pl.count().alias("n_variants"),
         pl.col("vg_contribution").sum().alias("vg_predicted"),
         pl.col("raw_score").pow(2).sum().alias("sum_sq_raw_score"),
         pl.col("raw_score").mean().alias("mean_raw_score"),
         
-        # --- global stats (exon/window) ---
+        #  global stats (exon/window)
         pl.col("abs_score").mean().alias("mean_abs_effect"),
         pl.col("abs_score").median().alias("median_abs_effect"),
         pl.col("abs_score").std().alias("std_abs_effect"),
@@ -157,23 +157,23 @@ def aggregate_genes(
         pl.col("abs_score").skew().alias("skewness_effect"),
         pl.col("abs_score").quantile(0.9).alias("q90_abs_effect"),
         
-        # --- id tracking (min/max score) ---
+        #  id tracking (min/max score)
         pl.col("variant_id").sort_by("raw_score").first().alias("min_variant_id"),
         pl.col("raw_score").min().alias("min_variant_score"),
         pl.col("variant_id").sort_by("raw_score").last().alias("max_variant_id"),
         pl.col("raw_score").max().alias("max_variant_score"),
 
-        # --- distance stats ---
+        #  distance stats
         pl.col("dist_to_tss").mean().alias("mean_dist_to_tss"),
         pl.col("dist_to_tss").median().alias("median_dist_to_tss"),
         pl.col("dist_to_tss").min().alias("min_dist_to_tss"),
         pl.col("dist_to_tss").max().alias("max_dist_to_tss"),
 
-        # --- high impact counts ---
+        #  high impact counts
         (pl.col("abs_score") > 0.5).sum().alias("n_high_impact_gt05"),
         (pl.col("abs_score") > 1.0).sum().alias("n_high_impact_gt1"),
 
-        # --- spatial bins ---
+        #  spatial bins
         # promoter (<= 2kb from tss)
         pl.col("abs_score").filter(pl.col("dist_to_tss") <= 2000).mean().alias("mean_abs_promoter"),
         (pl.col("dist_to_tss") <= 2000).sum().alias("n_variants_promoter"),

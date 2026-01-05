@@ -8,8 +8,6 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
-# --- FIX 1: Add current directory to sys.path to allow absolute imports ---
-# This fixes "ImportError: attempted relative import with no known parent package"
 HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
@@ -23,10 +21,8 @@ from modules.external_data_loader import ExternalDataLoader
 DATE_FMT = "%Y%m%d"
 
 def _load_project_layout():
-    # Adjusted path logic to work reliably
     helper_path = HERE.parent / "helpers" / "path_manager.py"
     
-    # Check if file exists to give a better error
     if not helper_path.exists():
         raise FileNotFoundError(f"Path manager helper not found at: {helper_path}")
 
@@ -35,7 +31,6 @@ def _load_project_layout():
         raise ImportError(f"unable to load path manager from {helper_path}")
     
     module = importlib.util.module_from_spec(spec)
-    # FIX 3: Register in sys.modules to prevent dataclass errors later
     sys.modules["path_manager"] = module
     
     spec.loader.exec_module(module)  # type: ignore[arg-type]
