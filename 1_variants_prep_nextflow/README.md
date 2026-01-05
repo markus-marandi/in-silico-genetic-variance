@@ -63,5 +63,6 @@ Pass `--runtime_conf conf/runtime_example.yml` to set spark_conf, tmp_dir, gnoma
 ## Notes and validation
 - ENSG list must not be empty; pipeline fails fast otherwise.
 - MANE symbol is optional; mapping uses longest transcript per ENSG and canonical chromosomes.
+- Strand-aware tss: + strand uses transcript start (min coord); - strand uses transcript end (max coord); the bed window centers on that strand-specific tss with ±pad.
 - Hail requires a working JVM and gcs connector if accessing `gs://`; if `spark_conf` contains `{GCS_CONNECTOR_JAR}`, you must provide a value or use a container that bundles it.
 - Frequency fields are guarded when exporting AF/AC/AN.
