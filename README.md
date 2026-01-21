@@ -9,7 +9,20 @@ The workflow is divided into three distinct stages:
 2.  **Scoring:** Scoring via the AlphaGenome API.
 3.  **Aggregation:** Calculating $V_{G,pred}$ and gene-level metrics.
 
----
+### Preparing the repository
+
+This project depends on the MANE (Matched Annotation from NCBI and EMBL-EBI) summary file for GRCh38 (release 1.4).
+
+#### Download MANE summary file
+
+Download the compressed file from the NCBI FTP server and extract it into the `data/` directory:
+
+```bash
+mkdir -p data
+curl -L https://ftp.ncbi.nih.gov/refseq/MANE/MANE_human/release_1.4/MANE.GRCh38.v1.4.summary.txt.gz \
+  -o data/MANE.GRCh38.v1.4.summary.txt.gz
+gunzip data/MANE.GRCh38.v1.4.summary.txt.gz
+```
 
 ### Stage 1: Variant Generation
 
