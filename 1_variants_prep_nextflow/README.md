@@ -60,9 +60,42 @@ Pass `--runtime_conf conf/runtime_example.yml` to set spark_conf, tmp_dir, gnoma
     --gcs_connector_jar /opt/gcs/gcs-connector-hadoop3-latest.jar
   ```
 
+## Synthetic variant generation
+
+The pipeline can optionally generate mutation-rate matched synthetic (null) variants.
+
+### Enable synthetic generation
+```bash
+nextflow run main.nf -profile conda \
+  --genelist /path/to/genelist.tsv \
+  --mane /path/to/MANE.GRCh38.v1.4.summary.txt \
+  --runtime_conf conf/runtime_example.yml \
+  --generate_synthetic true
+```
+
+### Synthetic generation workflow
+1. After real gnomAD variants are extracted and merged
+2. Generates all possible SNVs from reference genome within BED intervals
+3. Excludes observed gnomAD variants (anti-join)
+4. Matches mutation spectrum (6-class + methylation) to observed distribution
+5. Assigns gene_id based on BED intervals
+6. Downsamples to match real variant counts per gene
+
+### Synthetic outputs
+- `${outdir}/${prefix}_synthetic_variants.tsv.gz`: Full synthetic set (mutation-rate matched)
+- `${outdir}/${prefix}_synthetic_matched.tsv.gz`: Downsampled to match real counts per gene
+
+### Synthetic parameters
+- `--generate_synthetic` (default false): Enable synthetic variant generation
+- `--mutation_rates`: Optional mutation rates table (Karczewski format)
+- `--methylation_ht` (default gnomAD methylation HT): Methylation scores for CpG context
+- `--grch38_fasta` / `--grch38_fai`: Reference genome paths
+- `--target_synthetic_n` (default 1,800,000): Initial target synthetic count before downsampling
+
 ## Notes and validation
-- ENSG list must not be empty; pipeline fails fast otherwise.
+- ENSG list must not be empty; pipeline fails otherwise.
 - MANE symbol is optional; mapping uses longest transcript per ENSG and canonical chromosomes.
 - Strand-aware tss: + strand uses transcript start (min coord); - strand uses transcript end (max coord); the bed window centers on that strand-specific tss with ±pad.
 - Hail requires a working JVM and gcs connector if accessing `gs://`; if `spark_conf` contains `{GCS_CONNECTOR_JAR}`, you must provide a value or use a container that bundles it.
 - Frequency fields are guarded when exporting AF/AC/AN.
+- Synthetic generation requires real variants to complete first; mutation spectrum is derived from gnomAD variants.

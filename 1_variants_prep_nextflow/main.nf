@@ -57,6 +57,13 @@ def padLabel(Integer pad) {
     return "${pad}bp"
 }
 
+def asBoolean(value) {
+    if (value == null) return false
+    if (value instanceof Boolean) return value
+    if (value instanceof String) return value.toLowerCase() in ['true', 'yes', '1']
+    return false
+}
+
 /*
 parameters and defaults
 */
@@ -101,6 +108,22 @@ def qcFilename = "${prefix}_mapping_qc.tsv"
 def missingFilename = "${prefix}_missing_ensg.txt"
 def mergedFilename = "${prefix}_variants.tsv.gz"
 
+// synthetic variant generation params
+def generateSynthetic = asBoolean(params.generate_synthetic ?: runtime.generate_synthetic)
+def methylationHt = params.methylation_ht ?:
+        runtime.methylation_ht ?:
+        "gs://gcp-public-data--gnomad/resources/grch38/methylation_sites/methylation.ht"
+def grch38Fasta = params.grch38_fasta ?:
+        runtime.grch38_fasta ?:
+        "gs://hail-common/references/Homo_sapiens_assembly38.fasta.gz"
+def grch38Fai = params.grch38_fai ?:
+        runtime.grch38_fai ?:
+        "gs://hail-common/references/Homo_sapiens_assembly38.fasta.fai"
+def mutationRates = params.mutation_rates ?: runtime.mutation_rates
+def targetSyntheticN = (params.target_synthetic_n ?: runtime.target_synthetic_n ?: 1_800_000) as Integer
+def syntheticFilename = "${prefix}_synthetic_variants.tsv.gz"
+def downsampledFilename = "${prefix}_synthetic_matched.tsv.gz"
+
 log.info "prefix: ${prefix}"
 log.info "outdir: ${outdir}"
 log.info "pad_tss: ${padTss}"
@@ -108,6 +131,11 @@ log.info "bed filename: ${bedFilename}"
 log.info "gnomad_ht: ${gnomadHt}"
 log.info "spark_conf: ${sparkConfFile}"
 log.info "tmp_dir: ${tmpDir}"
+log.info "generate_synthetic: ${generateSynthetic}"
+if (generateSynthetic) {
+    log.info "methylation_ht: ${methylationHt}"
+    log.info "target_synthetic_n: ${targetSyntheticN}"
+}
 
 /*
 channels
@@ -152,6 +180,26 @@ Channel
 Channel
     .fromPath(sparkConfFile)
     .set { spark_conf_ch }
+
+Channel
+    .value(methylationHt)
+    .set { methylation_ht_ch }
+
+Channel
+    .value(grch38Fasta)
+    .set { grch38_fasta_ch }
+
+Channel
+    .value(grch38Fai)
+    .set { grch38_fai_ch }
+
+Channel
+    .value(mutationRates)
+    .set { mutation_rates_ch }
+
+Channel
+    .value(targetSyntheticN)
+    .set { target_synthetic_n_ch }
 
 /*
 processes
@@ -270,6 +318,75 @@ process MERGE_VARIANTS {
     """
 }
 
+process GENERATE_SYNTHETIC {
+    tag "$prefix"
+    publishDir { outdir }, mode: 'copy', overwrite: true
+
+    input:
+    path bed
+    path real_variants
+    path spark_conf
+    val methylation_ht
+    val grch38_fasta
+    val grch38_fai
+    val mutation_rates
+    val target_n
+    val tmp_dir
+    val gcs_connector_jar
+    val hail_home
+    val prefix
+    val outdir
+    val synthetic_filename
+
+    output:
+    path "${synthetic_filename}", emit: synthetic
+
+    script:
+    def spark_arg = spark_conf?.name != "null" ? "--spark-conf ${spark_conf}" : ""
+    def gcs_arg = gcs_connector_jar && gcs_connector_jar != "null" ? "--gcs-connector-jar ${gcs_connector_jar}" : ""
+    def hail_arg = hail_home && hail_home != "null" ? "--hail-home ${hail_home}" : ""
+    def mu_arg = mutation_rates && mutation_rates != "null" ? "--mutation-rates ${mutation_rates}" : ""
+    """
+    generate_synthetic_snvs.py \
+      --bed ${bed} \
+      --observed-variants ${real_variants} \
+      --output ${synthetic_filename} \
+      --tmp-dir ${tmp_dir} \
+      --methylation-ht ${methylation_ht} \
+      --grch38-fasta ${grch38_fasta} \
+      --grch38-fai ${grch38_fai} \
+      --target-n ${target_n} \
+      ${spark_arg} \
+      ${gcs_arg} \
+      ${hail_arg} \
+      ${mu_arg}
+    """
+}
+
+process DOWNSAMPLE_SYNTHETIC {
+    tag "$prefix"
+    publishDir { outdir }, mode: 'copy', overwrite: true
+
+    input:
+    path synthetic
+    path real_variants
+    val prefix
+    val outdir
+    val downsampled_filename
+
+    output:
+    path "${downsampled_filename}", emit: downsampled
+
+    script:
+    """
+    downsample_to_real.py \
+      --synthetic ${synthetic} \
+      --real ${real_variants} \
+      --output ${downsampled_filename} \
+      --seed 42
+    """
+}
+
 /*
 workflow
 */
@@ -296,5 +413,32 @@ workflow {
         prefix_ch,
         outdir_ch
     )
-    MERGE_VARIANTS(per_gene.per_gene_dir, prefix_ch, outdir_ch, mergedFilename)
+    merged = MERGE_VARIANTS(per_gene.per_gene_dir, prefix_ch, outdir_ch, mergedFilename)
+
+    // conditional synthetic variant generation
+    if (generateSynthetic) {
+        synthetic = GENERATE_SYNTHETIC(
+            bed.bed,
+            merged.merged,
+            spark_conf_ch,
+            methylation_ht_ch,
+            grch38_fasta_ch,
+            grch38_fai_ch,
+            mutation_rates_ch,
+            target_synthetic_n_ch,
+            tmp_dir_ch,
+            gcs_connector_jar_ch,
+            hail_home_ch,
+            prefix_ch,
+            outdir_ch,
+            syntheticFilename
+        )
+        DOWNSAMPLE_SYNTHETIC(
+            synthetic.synthetic,
+            merged.merged,
+            prefix_ch,
+            outdir_ch,
+            downsampledFilename
+        )
+    }
 }

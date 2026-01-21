@@ -5,7 +5,7 @@ This repository contains a computational pipeline designed to predict gene expre
 ## Pipeline Overview
 
 The workflow is divided into three distinct stages:
-1.  **Generation:** Creating variant sets (gnomAD/Null).
+1.  **Generation:** Creating variant sets (gnomAD observed/synthetic).
 2.  **Scoring:** Scoring via the AlphaGenome API.
 3.  **Aggregation:** Calculating $V_{G,pred}$ and gene-level metrics.
 
@@ -19,7 +19,7 @@ This stage prepares the input data for the model. It handles the generation of b
 
 **Key Objectives:**
 * Select target genes (MANE Select transcripts).
-* Generate SNPs within a defined window (1Mb around TSS).
+* Generate SNPs within a defined window (10+-kB around TSS).
 * Annotate variants with observed Allele Frequencies (AF) where available.
 
 ---

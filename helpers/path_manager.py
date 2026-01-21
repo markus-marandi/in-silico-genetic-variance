@@ -124,3 +124,53 @@ def copy_inputs(src_variants: Path, src_targets: Path, layout: ProjectLayout) ->
             raise FileNotFoundError(f"missing input: {source}")
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source.as_posix(), dest.as_posix())
+
+
+@dataclass(frozen=True)
+class SyntheticVariantPaths:
+    """manage paths for synthetic variant generation workflow.
+    
+    args:
+        dataset_name (str): name of the dataset, e.g. ClinGen or Background.
+        base_dir (Path): base directory for intermediate files.
+        output_dir (Path): directory for final outputs.
+    
+    returns:
+        SyntheticVariantPaths: immutable view of paths.
+    """
+    
+    dataset_name: str
+    base_dir: Path
+    output_dir: Path
+    
+    @property
+    def raw_variants_tsv(self) -> Path:
+        return self.base_dir / f"{self.dataset_name}_variants.tsv"
+    
+    @property
+    def keyed_ht(self) -> Path:
+        return self.base_dir / f"{self.dataset_name}_variants.keyed.ht"
+    
+    @property
+    def bed_file(self) -> Path:
+        return self.base_dir / f"{self.dataset_name}_gene_set±10kb.tab.bed"
+    
+    @property
+    def candidates_ht(self) -> Path:
+        return self.output_dir / f"{self.dataset_name}.matched_synthetic.candidates.ht"
+    
+    @property
+    def sampled_ht(self) -> Path:
+        return self.output_dir / f"{self.dataset_name}.matched_synthetic.sampled.ht"
+    
+    @property
+    def sampled_tsv(self) -> Path:
+        return self.output_dir / f"{self.dataset_name}.matched_synthetic.sampled.tsv.bgz"
+    
+    @property
+    def observed_dist_plot(self) -> Path:
+        return self.output_dir / f"{self.dataset_name}.observed_dist.png"
+    
+    @property
+    def sampled_dist_plot(self) -> Path:
+        return self.output_dir / f"{self.dataset_name}.sampled_dist.png"

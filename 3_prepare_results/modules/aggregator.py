@@ -229,7 +229,7 @@ def aggregate_genes(
     # 11. post-aggregation calculations (ratios & fractions)
     enriched = enriched.with_columns(
         # cv = std / mean
-        cv_effect = pl.col("std_abs_effect") / pl.col("mean_abs_effect"),
+        cv_effect = pl.col("std_abs_effect") / pl.col("mean_abs_effect"), # relative spread
         
         # fractions
         frac_high_impact_05 = pl.col("n_high_impact_gt05") / pl.col("n_variants"),
