@@ -48,14 +48,14 @@ Pass `--runtime_conf conf/runtime_example.yml` to set spark_conf, tmp_dir, gnoma
   ```
   nextflow run main.nf -profile conda \
     --genelist /path/to/genelist.tsv \
-    --mane /path/to/MANE.GRCh38.v1.4.summary.txt \
+    --mane /data/MANE.GRCh38.v1.4.summary.txt \
     --runtime_conf conf/runtime_example.yml
   ```
 - Docker:
   ```
   nextflow run main.nf -profile docker \
     --genelist /path/to/genelist.tsv \
-    --mane /path/to/MANE.GRCh38.v1.4.summary.txt \
+    --mane /data/MANE.GRCh38.v1.4.summary.txt \
     --spark_conf conf/spark_local.json \
     --gcs_connector_jar /opt/gcs/gcs-connector-hadoop3-latest.jar
   ```
@@ -68,7 +68,7 @@ The pipeline can optionally generate mutation-rate matched synthetic (null) vari
 ```bash
 nextflow run main.nf -profile conda \
   --genelist /path/to/genelist.tsv \
-  --mane /path/to/MANE.GRCh38.v1.4.summary.txt \
+  --mane /data/MANE.GRCh38.v1.4.summary.txt \
   --runtime_conf conf/runtime_example.yml \
   --generate_synthetic true
 ```
