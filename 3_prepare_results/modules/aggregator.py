@@ -40,11 +40,19 @@ def aggregate_genes(
     # collect schema once safely
     schema_cols = set(lf.collect_schema().names())
 
+    # handle perm_AF for ism/null permutation runs
+    has_perm_af = "perm_AF" in schema_cols
+    use_perm_af = is_ism and has_perm_af
+    
     # normalize/select AF source once (case-insensitive), then drop extras
-    af_candidates = ["AF", "AF_x", "AF_y", "af", "af_x", "af_y"]
+    af_candidates = ["AF", "AF_x", "AF_y", "af", "af_x", "af_y", "perm_AF"]
     af_source = next((c for c in af_candidates if c in schema_cols), None)
 
-    if af_source and af_source != "AF":
+    if use_perm_af:
+        # for ism with perm_AF, rename to AF for vg calculation
+        lf = lf.with_columns(pl.col("perm_AF").alias("AF"))
+        schema_cols.add("AF")
+    elif af_source and af_source != "AF":
         lf = lf.with_columns(pl.col(af_source).alias("AF"))
         schema_cols.add("AF")
 
@@ -58,11 +66,6 @@ def aggregate_genes(
     if extras:
         lf = lf.drop(extras)
         schema_cols.difference_update(extras)
-
-    # allow missing AF in ism/null runs by injecting a zero column
-    if "AF" not in schema_cols and is_ism:
-        lf = lf.with_columns(pl.lit(0.0).alias("AF"))
-        schema_cols.add("AF")
 
     # 3. validation
     required_cols = {"raw_score"} if is_ism else {"raw_score", "AF"}
@@ -141,10 +144,13 @@ def aggregate_genes(
     )
 
     # 8. define aggregations (comprehensive list)
+    # use vg_predicted_perm for ism with perm_AF
+    vg_col_name = "vg_predicted_perm" if use_perm_af else "vg_predicted"
+    
     agg_exprs = [
         #  basic counts & vg
         pl.count().alias("n_variants"),
-        pl.col("vg_contribution").sum().alias("vg_predicted"),
+        pl.col("vg_contribution").sum().alias(vg_col_name),
         pl.col("raw_score").pow(2).sum().alias("sum_sq_raw_score"),
         pl.col("raw_score").mean().alias("mean_raw_score"),
         
