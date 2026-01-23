@@ -17,7 +17,7 @@ from modules.normalizer import normalize_and_backfill
 from modules.annotator import annotate_af, annotate_gnomad
 from modules.aggregator import aggregate_genes
 from modules.external_data_loader import ExternalDataLoader
-from modules.synthetic_variant_deduplicator import deduplicate_by_variant
+from modules.synthetic_variant_deduplicator import deduplicate_by_gene_and_variant
 from modules.synthetic_variant_downsampler import load_real_variant_counts, downsample_to_real_counts
 
 DATE_FMT = "%Y%m%d"
@@ -84,11 +84,14 @@ class PipelineSpec:
         tag = datetime.now().strftime(DATE_FMT)
         is_ism = ("ism" in layout.sample_id.lower()) or ("null" in layout.sample_id.lower())
         
-        # for ism/null, append _dedup_downsampled to variant filename
-        if is_ism and not variant_out:
-            variant_path = layout.results_dir / f"{layout.sample_id}_variants_dedup_downsampled_{tag}.parquet"
+        # all datasets get _dedup, ism/null also get _downsampled
+        if not variant_out:
+            if is_ism:
+                variant_path = layout.results_dir / f"{layout.sample_id}_variants_dedup_downsampled_{tag}.parquet"
+            else:
+                variant_path = layout.results_dir / f"{layout.sample_id}_variants_dedup_{tag}.parquet"
         else:
-            variant_path = Path(variant_out).resolve() if variant_out else layout.results_dir / f"{layout.sample_id}_variants_{tag}.parquet"
+            variant_path = Path(variant_out).resolve()
         
         gene_path = Path(gene_out).resolve() if gene_out else layout.results_dir / f"{layout.sample_id}_genes_{tag}.parquet"
         variants_af_path = Path(variants_af).resolve() if variants_af else layout.inputs_dir / "variants.tsv.gz"
@@ -147,7 +150,15 @@ def main() -> None:
         # infer is_ism from path
         is_ism = "ism" in str(variant_path).lower() or "null" in str(variant_path).lower()
         
-        # for ism, require real reference and apply dedup+downsample
+        print(f"loading variants from {variant_path}...")
+        import polars as pl
+        df = pl.read_parquet(variant_path)
+        
+        # always deduplicate by gene_id + variant_id
+        print("deduplicating by gene_id and variant_id...")
+        df = deduplicate_by_gene_and_variant(df, verbose=True)
+        
+        # for ism, require real reference and downsample
         if is_ism:
             if not args.real_reference:
                 raise ValueError("--real-reference is required for ISM/NULL datasets")
@@ -155,12 +166,6 @@ def main() -> None:
             real_ref = Path(args.real_reference).resolve()
             if not real_ref.exists():
                 raise FileNotFoundError(f"real reference not found: {real_ref}")
-            
-            print(f"processing ISM/NULL variants from {variant_path}...")
-            print("loading and deduplicating...")
-            import polars as pl
-            df = pl.read_parquet(variant_path)
-            df = deduplicate_by_variant(df, verbose=True)
             
             print(f"loading real variant counts from {real_ref}...")
             real_counts = load_real_variant_counts(real_ref)
@@ -171,6 +176,12 @@ def main() -> None:
             # update variant path to processed version
             processed_path = variant_path.with_name(f"{variant_path.stem}_dedup_downsampled.parquet")
             print(f"writing processed variants to {processed_path}...")
+            df.write_parquet(processed_path)
+            variant_path = processed_path
+        else:
+            # for real datasets, just write deduplicated version
+            processed_path = variant_path.with_name(f"{variant_path.stem}_dedup.parquet")
+            print(f"writing deduplicated variants to {processed_path}...")
             df.write_parquet(processed_path)
             variant_path = processed_path
         
@@ -225,30 +236,24 @@ def main() -> None:
 
     is_ism = spec.is_ism or not has_af
     
-    # for ism, apply dedup and downsample before writing final variants
+    # collect and deduplicate (always, for all datasets)
+    print("Collecting and deduplicating...")
+    df = lf.collect()
+    
+    print("  deduplicating by gene_id and variant_id...")
+    df = deduplicate_by_gene_and_variant(df, verbose=True)
+    
+    # for ism, downsample after deduplication
     if is_ism:
-        print("ISM/NULL mode: deduplicating and downsampling...")
-        
-        # collect lazy frame to dataframe
-        print("  collecting variants...")
-        df = lf.collect()
-        
-        print("  deduplicating by variant_id...")
-        df = deduplicate_by_variant(df, verbose=True)
-        
         print(f"  loading real variant counts from {spec.real_reference}...")
         real_counts = load_real_variant_counts(spec.real_reference)
         
         print("  downsampling to match real counts...")
         df = downsample_to_real_counts(df, real_counts, seed=42, verbose=True)
-        
-        print(f"Writing processed variants to {spec.variant_output}...")
-        spec.variant_output.parent.mkdir(parents=True, exist_ok=True)
-        df.write_parquet(spec.variant_output, compression="zstd")
-    else:
-        print(f"Writing variants to {spec.variant_output}...")
-        spec.variant_output.parent.mkdir(parents=True, exist_ok=True)
-        lf.sink_parquet(spec.variant_output, compression="zstd")
+    
+    print(f"Writing variants to {spec.variant_output}...")
+    spec.variant_output.parent.mkdir(parents=True, exist_ok=True)
+    df.write_parquet(spec.variant_output, compression="zstd")
 
     print(f"Aggregating genes (ISM mode={is_ism})...")
     aggregate_genes(

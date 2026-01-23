@@ -6,14 +6,17 @@ from pathlib import Path
 import polars as pl
 
 
-def deduplicate_by_variant(
+def deduplicate_by_gene_and_variant(
     df: pl.DataFrame,
     verbose: bool = True,
 ) -> pl.DataFrame:
-    """deduplicate scores by variant, keeping row with max absolute score.
+    """deduplicate by gene_id and variant_id, keeping row with max absolute score.
+    
+    applies to all datasets (real and synthetic) to keep only the highest
+    scoring annotation per gene-variant pair.
     
     args:
-        df (pl.DataFrame): variant dataframe with variant_id and raw_score/score.
+        df (pl.DataFrame): variant dataframe with gene_id, variant_id, and raw_score/score.
         verbose (bool): print diagnostic info.
     
     returns:
@@ -38,12 +41,12 @@ def deduplicate_by_variant(
     # filter null scores
     df = df.filter(pl.col('raw_score').is_not_null())
     
-    # keep row with max absolute score per variant_id
+    # keep row with max absolute score per gene_id + variant_id
     dedup = (
         df
         .with_columns(pl.col('raw_score').abs().alias('_abs_score'))
         .sort('_abs_score', descending=True)
-        .unique(subset=['variant_id'], keep='first', maintain_order=False)
+        .unique(subset=['gene_id', 'variant_id'], keep='first', maintain_order=False)
         .drop('_abs_score')
     )
     
@@ -72,4 +75,4 @@ def deduplicate_from_parquet(
         print(f'  loading {label} from {path}')
     
     df = pl.read_parquet(path)
-    return deduplicate_by_variant(df, verbose=verbose)
+    return deduplicate_by_gene_and_variant(df, verbose=verbose)
