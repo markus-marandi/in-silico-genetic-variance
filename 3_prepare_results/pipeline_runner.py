@@ -7,6 +7,7 @@ import sys
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
+import polars as pl
 
 HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
@@ -17,8 +18,9 @@ from modules.normalizer import normalize_and_backfill
 from modules.annotator import annotate_af, annotate_gnomad
 from modules.aggregator import aggregate_genes
 from modules.external_data_loader import ExternalDataLoader
-from modules.synthetic_variant_deduplicator import deduplicate_by_gene_and_variant
+from modules.variant_deduplicator import deduplicate_by_gene_and_variant
 from modules.synthetic_variant_downsampler import load_real_variant_counts, downsample_to_real_counts
+from modules.permuted_af import load_gene_af_pools, add_perm_af_gene_aware
 
 DATE_FMT = "%Y%m%d"
 
@@ -133,6 +135,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--variants-af", type=Path, help="initial variants tsv/tsv.gz with AF (defaults to 01_inputs/variants.tsv.gz)")
     parser.add_argument("--variants-parquet", type=Path, help="existing variants parquet to aggregate directly")
     parser.add_argument("--real-reference", type=Path, help="real dataset reference for downsampling (gene-level or variant-level parquet, required for ISM/NULL)")
+    parser.add_argument("--deduplicate", action="store_true", help="deduplicate existing variants parquet (and downsample if ISM/NULL)")
+    parser.add_argument("--permute-af", action="store_true", help="Generate perm_AF from real reference and compute vg_predicted_perm")
+    parser.add_argument("--calc-ci", action="store_true", help="Calculate 5th/95th CI via Monte Carlo")
     return parser.parse_args()
 
 
@@ -144,58 +149,120 @@ def main() -> None:
             os.getenv("ROOT_DIR") or os.getenv("PDC_TMP") or "/cfs/klemming/scratch/m/mmarandi"
         )
         variant_path = Path(args.variants_parquet).resolve()
+        
+        # 1. Infer dataset type
+        is_ism = "ism" in str(variant_path).lower() or "null" in str(variant_path).lower()
+        
+        # 2. Handle Processing
+        if args.deduplicate:
+            print(f"Loading variants from {variant_path}...")
+            df = pl.read_parquet(variant_path)
+
+            # [OPTIMIZATION] Filter FIRST, before expensive deduplication
+            if args.gene_list:
+                print(f"Filtering variants using whitelist: {args.gene_list}")
+                whitelist_df = pl.read_csv(
+                    args.gene_list, 
+                    has_header=False, 
+                    new_columns=["gene_id"], 
+                    separator="\t"
+                )
+                whitelist = whitelist_df["gene_id"].to_list()
+                df = df.filter(pl.col("gene_id").is_in(whitelist))
+                print(f"  Rows after filtering: {len(df)}")
+            
+            # Step A: Rigid Deduplication
+            print("Deduplicating by gene_id and variant_id...")
+            df = deduplicate_by_gene_and_variant(df, verbose=True)
+            
+            # Step B: Downsampling (ISM/NULL only)
+            if is_ism:
+                if not args.real_reference:
+                    raise ValueError("Flag --real-reference is required for ISM/NULL processing.")
+                
+                real_ref = Path(args.real_reference).resolve()
+                if not real_ref.exists():
+                    raise FileNotFoundError(f"Real reference not found: {real_ref}")
+                
+                print(f"Loading real variant counts from {real_ref}...")
+                real_counts = load_real_variant_counts(real_ref)
+                
+                print("Downsampling to match real counts...")
+                df = downsample_to_real_counts(df, real_counts, seed=42, verbose=True)
+                
+                suffix = "_downsampled"
+            else:
+                suffix = "_dedup"
+
+            # Step C: AF Permutation (For both ISM and Sanity Check)
+            if args.permute_af:
+                print("--- Starting AF Permutation ---")
+                perm_ref_path = None
+                
+                if args.real_reference:
+                    # Use explicit reference if provided (Standard for ISM)
+                    perm_ref_path = Path(args.real_reference).resolve()
+                elif not is_ism: 
+                    # Sanity Check Logic: Use input variants as source if no ref provided
+                    print("  No external reference provided for real data; using input variants as AF source.")
+                    perm_ref_path = variant_path
+                
+                if not perm_ref_path:
+                    raise ValueError("Cannot permute AF: No reference provided (use --real-reference).")
+
+                if not perm_ref_path.exists():
+                    raise FileNotFoundError(f"Permutation reference not found: {perm_ref_path}")
+
+                print(f"  Loading AF pools from {perm_ref_path}...")
+                af_pools = load_gene_af_pools(perm_ref_path)
+
+                print("  Sampling and assigning perm_AF...")
+                df = add_perm_af_gene_aware(df, af_pools, seed=42)
+                
+                suffix += "_perm"
+
+            # Determine output path safely
+            if args.variant_out:
+                processed_path = Path(args.variant_out).resolve()
+            else:
+                # Auto-naming: check if suffix exists to avoid duplication
+                stem = variant_path.stem
+                if not stem.endswith(suffix):
+                    stem += suffix
+                processed_path = variant_path.with_name(f"{stem}.parquet")
+
+            print(f"Writing processed variants to {processed_path}...")
+            df.write_parquet(processed_path)
+            
+            # Update variant_path so aggregation uses the NEW file
+            variant_path = processed_path
+        
+        # 3. Aggregate Genes
         gene_path = Path(args.gene_out).resolve() if args.gene_out else variant_path.with_name(f"{variant_path.stem}_genes.parquet")
         gene_list = Path(args.gene_list).resolve() if args.gene_list else None
 
-        # infer is_ism from path
-        is_ism = "ism" in str(variant_path).lower() or "null" in str(variant_path).lower()
-        
-        print(f"loading variants from {variant_path}...")
-        import polars as pl
-        df = pl.read_parquet(variant_path)
-        
-        # always deduplicate by gene_id + variant_id
-        print("deduplicating by gene_id and variant_id...")
-        df = deduplicate_by_gene_and_variant(df, verbose=True)
-        
-        # for ism, require real reference and downsample
-        if is_ism:
-            if not args.real_reference:
-                raise ValueError("--real-reference is required for ISM/NULL datasets")
-            
-            real_ref = Path(args.real_reference).resolve()
-            if not real_ref.exists():
-                raise FileNotFoundError(f"real reference not found: {real_ref}")
-            
-            print(f"loading real variant counts from {real_ref}...")
-            real_counts = load_real_variant_counts(real_ref)
-            
-            print("downsampling to match real counts...")
-            df = downsample_to_real_counts(df, real_counts, seed=42, verbose=True)
-            
-            # update variant path to processed version
-            processed_path = variant_path.with_name(f"{variant_path.stem}_dedup_downsampled.parquet")
-            print(f"writing processed variants to {processed_path}...")
-            df.write_parquet(processed_path)
-            variant_path = processed_path
-        else:
-            # for real datasets, just write deduplicated version
-            processed_path = variant_path.with_name(f"{variant_path.stem}_dedup.parquet")
-            print(f"writing deduplicated variants to {processed_path}...")
-            df.write_parquet(processed_path)
-            variant_path = processed_path
-        
-        print(f"aggregating genes from {variant_path}...")
+        # Determine reference for CI
+        ci_ref = None
+        if args.real_reference:
+            ci_ref = Path(args.real_reference).resolve()
+        elif not is_ism:
+            ci_ref = variant_path # Self-reference for sanity check
+
+        print(f"Aggregating genes from {variant_path}...")
         aggregate_genes(
             variant_path,
             gene_path,
             base_ref=base_root,
             is_ism=is_ism,
             gene_list_path=gene_list,
+            calculate_ci=args.calc_ci,
+            real_reference_path=ci_ref, # [FIXED] Pass the calculated ci_ref, not args.real_reference
+            n_permutations=1000,
         )
-        print("done.")
+        print("Done.")
         return
 
+    # ... (rest of the file is fine) ...
     spec = PipelineSpec.from_args(
         dataset_id=args.dataset_id or os.getenv("DATASET_ID"),
         sample_id=args.sample_id or os.getenv("SAMPLE_ID"),
@@ -208,7 +275,6 @@ def main() -> None:
         real_ref=str(args.real_reference) if args.real_reference else None,
     )
     
-    # validate: ism requires real reference
     if spec.is_ism and not spec.real_reference:
         raise ValueError(
             f"ISM/NULL dataset '{spec.sample_id}' requires --real-reference for downsampling"
@@ -236,14 +302,12 @@ def main() -> None:
 
     is_ism = spec.is_ism or not has_af
     
-    # collect and deduplicate (always, for all datasets)
     print("Collecting and deduplicating...")
     df = lf.collect()
     
     print("  deduplicating by gene_id and variant_id...")
     df = deduplicate_by_gene_and_variant(df, verbose=True)
     
-    # for ism, downsample after deduplication
     if is_ism:
         print(f"  loading real variant counts from {spec.real_reference}...")
         real_counts = load_real_variant_counts(spec.real_reference)

@@ -47,9 +47,20 @@ parser.add_argument("--variants-parquet", type=Path, help="existing variants par
 
 `python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/dataset5_Background_NULL_variant_level_summary.parquet --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_gene_set_380.tsv --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/dataset5_Background_NULL_gene_level_summary.parquet`
 
+python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/output/alphagenome/dataset5_null/background_ISM/dataset5_Background_NULL_variant_level_summary_2301_downsampled.parquet --gene-out  /cfs/klemming/scratch/m/mmarandi/output/alphagenome/dataset5_null/background_ISM/dataset5_Background_NULL_gene_level_summary_2301_downsampled.parquet
+
+python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/output/alphagenome/dataset5_null/background_ISM/dataset5_Background_NULL_variant_level_summary_2301_downsampled.parquet --deduplicate
 
 # Clingen NULL
 
 `python pipeline_runner.py --chunks-dir/cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/02_chunks/chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv --gene-list cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/01_inputs/ClinGen_gene_curation_list_GRCh38.ensg.txt`
 
+
 `python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/03_results/dataset5_ClinGen_NULL_variant_level_summary.parquet --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/01_inputs/ClinGen_gene_curation_list_GRCh38.ensg.txt --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/03_results/dataset5_ClinGen_NULL_gene_level_summary.parquet`
+
+
+python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/output/alphagenome/dataset5_null/clingen_ISM/dataset5_ClinGen_NULL_variant_level_summary_2301_downsampled.parquet --gene-out /cfs/klemming/scratch/m/mmarandi/output/alphagenome/dataset5_null/clingen_ISM/dataset5_ClinGen_NULL_gene_level_summary_2301_downsampled.parquet
+
+python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/output/alphagenome/dataset5_null/clingen_ISM/dataset5_ClinGen_NULL_variant_level_summary_2301_downsampled.parquet --deduplicate --real 
+
+

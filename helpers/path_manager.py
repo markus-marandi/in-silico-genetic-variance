@@ -66,7 +66,7 @@ class ProjectLayout:
 
     @property
     def is_ism_run(self) -> bool:
-        return "ism" in self.sample_id.lower()
+        return ("ism" in self.sample_id.lower()) or ("null" in self.sample_id.lower())
 
     def make_dirs(self) -> None:
         """ensure experiment directories exist."""

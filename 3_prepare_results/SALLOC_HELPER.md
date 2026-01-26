@@ -6,9 +6,8 @@ salloc \
   -p shared \
   -n 1 \
   -c 2 \
-  --mem=64000M
+  --mem=84000M
 
-# when the prompt changes to the compute node, start an interactive shell
 srun --pty bash -l
 
 # restore Lmod defaults
