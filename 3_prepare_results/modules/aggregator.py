@@ -73,7 +73,6 @@ def aggregate_genes(
     lf = pl.scan_parquet(variants_path)
     schema_cols = set(lf.collect_schema().names())
 
-    # --- AF Handling Logic (Updated to keep both) ---
     has_perm_af = "perm_AF" in schema_cols
     
     # Normalize 'AF' column source
@@ -162,7 +161,6 @@ def aggregate_genes(
     print("Collecting dataframe for aggregation...")
     df = lf.collect()
 
-    # --- CI Simulation Step ---
     ci_results = None
     if calculate_ci:
         print(f"Starting Monte Carlo CI simulation ({n_permutations} iterations)...")

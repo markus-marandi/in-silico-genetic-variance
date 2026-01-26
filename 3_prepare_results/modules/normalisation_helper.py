@@ -37,7 +37,7 @@ def normalize_gene_id_column(df: pd.DataFrame, col: str) -> pd.Series:
 
 
 def _parse_gtf_attributes(attr: str) -> dict[str, str]:
-    # minimal robust parser for gtf attributes
+    # parser for gtf attributes
     out: dict[str, str] = {}
     for item in attr.strip().strip(';').split(';'):
         item = item.strip()
@@ -190,7 +190,7 @@ def gtex_variant_to_canonical(variant_id: Any) -> str | None:
 
 
 _METHOD_MAP: dict[str, str] = {
-    # normalize to the requested friendly labels
+    # normalize to the friendly labels
     'genemasklfcscorer': 'gene_exonmask_delta_log2',
     'genemask_lfc': 'gene_exonmask_delta_log2',
     'gene_exonmask_delta_log2': 'gene_exonmask_delta_log2',
@@ -231,7 +231,6 @@ def choose_column(df: pd.DataFrame, candidates: list[str]) -> str:
     for c in candidates:
         if c in df.columns:
             return c
-    # try case-insensitive
     lower = {c.lower(): c for c in df.columns}
     for c in candidates:
         if c.lower() in lower:

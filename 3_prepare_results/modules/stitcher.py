@@ -4,8 +4,6 @@ from pathlib import Path
 from typing import Optional
 
 import polars as pl
-
-# Import helper directly from the neighbor module
 from .normalisation_helper import strip_ensembl_version
 
 
@@ -30,9 +28,6 @@ def stitch_variants(chunks_dir: Path, gene_list_path: Optional[Path] = None) -> 
         low_memory=True,
     )
 
-    # DYNAMIC SCHEMA CHECK
-    # we prevent the "ColumnNotFoundError: gene_tag" crash
-    # and then inspect the actual file columns before building the expressions
     schema_cols = set(lf.collect_schema().names())
 
     has_gene_id = "gene_id" in schema_cols
@@ -52,7 +47,6 @@ def stitch_variants(chunks_dir: Path, gene_list_path: Optional[Path] = None) -> 
     elif has_gene_tag:
         norm_expr = pl.col("gene_tag").map_elements(strip_fn, return_dtype=pl.Utf8)
     else:
-        # Fallback (should not happen based on your files)
         norm_expr = pl.lit(None).cast(pl.Utf8)
 
     lf = lf.with_columns(gene_norm=norm_expr)

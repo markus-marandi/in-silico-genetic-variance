@@ -13,7 +13,7 @@ def load_gene_af_pools(perm_variants_path: Path) -> dict[str, np.ndarray]:
     log.info('loading per-gene AF pools from %s', perm_variants_path)
     df = pl.read_parquet(perm_variants_path, columns=["gene_id", "AF"])
     
-    # filter to non-null AFs (include AF=0 to preserve full distribution)
+    # filter to non-null AFs (include AF=0)
     df = df.filter(pl.col('AF').is_not_null())
     
     if len(df) == 0:
@@ -56,7 +56,6 @@ def add_perm_af_gene_aware(
     perm_afs = []
     
     # iterate over genes in the target dataframe
-    # We use partition_by to iterate safely
     for gene_df in df.partition_by('gene_id', maintain_order=True):
         gene_id = gene_df[0, "gene_id"]
         n_needed = len(gene_df)
@@ -71,11 +70,8 @@ def add_perm_af_gene_aware(
         
         perm_afs.append(sampled)
     
-    # flatten and attach
     perm_afs_array = np.concatenate(perm_afs)
     
-    # polars concat needs to be careful about alignment, but since we sorted input
-    # and iterated in order, the array aligns 1:1 with 'df'
     df = df.with_columns(pl.Series('perm_AF', perm_afs_array))
     
     return df

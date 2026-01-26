@@ -1,66 +1,216 @@
-single entrypoint
------------------
-- export DATASET_ID, SAMPLE_ID (optionally ROOT_DIR/PDC_TMP).
-- run `python pipeline_runner.py --chunks-dir /cfs/.../02_chunks --variants-af /cfs/.../01_inputs/variants.tsv.gz --gnomad-af /cfs/.../gnomad.parquet`.
-- optional gene whitelist: `--gene-list /path/to/gene_list.tsv` or place `01_inputs/gene_list.tsv`.
+## Single Entrypoint
 
-what it does (modules/)
-- stitcher.py: lazy scan chunk_*.tsv.gz, normalize gene ids, optional whitelist.
-- normalizer.py: ensure CHROM/POS/REF/ALT, gene_tag, method_friendly, variant_id_canonical.
-- annotator.py: join AF from initial variants file; optional gnomAD join.
-- aggregator.py: gene counts; VG = variance(raw_score) when AF present and non-ISM; promoter/upstream/downstream means; enrich with MANE/GTF/TPM/VGH.
-- helpers/external_data_loader.py: loads MANE, GTF, TPM, VGH from $PDC_TMP/initial_data_external.
+The main driver here is `pipeline_runner.py`. It handles two primary modes:
 
-outputs
-- variants parquet: `{sample_id}_variants_{YYYYMMDD}.parquet`
-- genes parquet: `{sample_id}_genes_{YYYYMMDD}.parquet`
+1. **Raw Processing:** Stitching raw chunk files  Variants  Genes.
+2. **Post-Processing:** Loading existing Variant Parquets  Deduplication/Permutation  Genes.
 
-## To run the pipeline
+### Environment Variables
+
+* `DATASET_ID`: Logical dataset grouping (e.g., `dataset5_null`).
+* `SAMPLE_ID`: Run-specific sample name (e.g., `background_ISM`).
+* `ROOT_DIR` (Optional): Base scratch root (defaults to `$PDC_TMP` or `/cfs/...`).
+
+---
+
+## Key Features & Modules
+
+* **`stitcher.py`**: Lazy scans `chunk_*.tsv.gz`, normalizes IDs, and applies optional gene whitelisting.
+* **`normalizer.py`**: Standardizes columns (`CHROM`, `POS`, `REF`, `ALT`) and ensures method-friendly tagging.
+* **`annotator.py`**: Joins Allele Frequency (AF) from inputs or gnomAD.
+* **`deduplicator.py` (New)**:
+* **Rigid Deduplication**: Removes duplicate variants by selecting the one with the highest absolute score.
+* **Deterministic Tie-Breaking**: Sorts by `abs_score` (desc) then `variant_id` (asc) to ensure 100% reproducibility.
+
+
+* **`downsampler.py`**:
+* **Rigid Downsampling**: For synthetic (ISM/Null) datasets, randomly downsamples variants to match the exact count of variants found in a "Real" reference dataset, gene-by-gene. Uses a fixed seed (`42`).
+
+
+* **`permuted_af.py`**:
+* **AF Permutation**: "Borrows" the AF distribution from a real dataset and randomly assigns it to synthetic variants (preserving the per-gene AF distribution).
+
+
+* **`aggregator.py`**:
+* **Gene Counts & Stats**: Aggregates variance (), spatial bins (Promoter/Upstream), and enrichment scores.
+* **Dual Metrics**: Calculates `vg_predicted` (using real AF) and `vg_predicted_perm` (using permuted AF) simultaneously.
+* **Confidence Intervals**: [Optional] Runs a Monte Carlo simulation (1,000 iterations) during aggregation to calculate the 5th and 95th percentiles for .
+
+
+
+---
+
+## Usage
+
+### 1. Standard Run (Chunks  Output)
+
+Process raw scoring chunks into final outputs.
 
 ```bash
-parser = argparse.ArgumentParser(description="Stitch, annotate, and summarize chunked scores.")
-parser.add_argument("--chunks-dir", type=Path, help="directory containing chunk_*.tsv.gz")
-parser.add_argument("--dataset-id", type=str, help="dataset id (preferred)")
-parser.add_argument("--sample-id", type=str, help="sample id (preferred)")
-parser.add_argument("--root-dir", type=Path, help="override root dir (defaults to $PDC_TMP)")
-parser.add_argument("--variant-out", type=Path, help="override variant parquet output path")
-parser.add_argument("--gene-out", type=Path, help="override gene parquet output path")
-parser.add_argument("--gene-list", type=Path, help="optional gene whitelist (one id per line)")
-parser.add_argument("--gnomad-af", type=Path, help="optional gnomAD parquet with CHROM,POS,REF,ALT,AF")
-parser.add_argument("--variants-af", type=Path, help="initial variants tsv/tsv.gz with AF (defaults to 01_inputs/variants.tsv.gz)")
-parser.add_argument("--variants-parquet", type=Path, help="existing variants parquet to aggregate directly")
+python pipeline_runner.py \
+  --chunks-dir /cfs/.../02_chunks \
+  --variants-af /cfs/.../01_inputs/variants.tsv.gz \
+  --gnomad-af /cfs/.../gnomad.parquet \
+  --gene-list /path/to/gene_list.tsv
+
 ```
 
-# Background
+### 2. Post-Processing / Migration (Existing Parquet  Output)
 
-`python pipeline_runner.py --chunks-dir /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/02_chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_gene_set_380.tsv --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/background_genes_20260102.parquet`
+Use this mode to apply deduplication, downsampling, or AF permutation to existing files.
 
-`python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/background_variants_20260102.parquet --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_gene_set_380.tsv --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/background_genes_20260102.parquet`
+#### Flags Reference
 
-# Clingen
+| Flag | Description |
+| --- | --- |
+| `--variants-parquet` | Input variant parquet file to process. |
+| `--deduplicate` | Triggers rigid deduplication (and downsampling if ISM). |
+| `--real-reference` | Path to "Real" dataset. Required for ISM downsampling or AF permutation. |
+| `--permute-af` | Generates `perm_AF` column by sampling from the reference pool. |
+| `--calc-ci` | Runs Monte Carlo simulation to compute  confidence intervals (p5/p95). |
+| `--gene-list` | Optional whitelist to filter variants *before* processing. |
 
-`python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/clingen_alphagenome_scores_all_aggs_variantids_long.backfilled.parquet --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/01_inputs/ClinGen_gene_curation_list_GRCh38.ensg.txt --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/clingen_genes_20260102.parquet`
+---
 
-# Background NULL 
+## Workflows: Real vs. Synthetic
 
-`python pipeline_runner.py --chunks-dir /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/02_chunks/chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_gene_set_380.tsv `
+These 4 commands represent the standard workflow to generate the **Background** and **ClinGen** datasets for "Observed vs Simulated" analysis.
 
-`python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/dataset5_Background_NULL_variant_level_summary.parquet --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_gene_set_380.tsv --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/dataset5_Background_NULL_gene_level_summary.parquet`
+### 1. Background Real (GnomAD)
 
-python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/output/alphagenome/dataset5_null/background_ISM/dataset5_Background_NULL_variant_level_summary_2301_downsampled.parquet --gene-out  /cfs/klemming/scratch/m/mmarandi/output/alphagenome/dataset5_null/background_ISM/dataset5_Background_NULL_gene_level_summary_2301_downsampled.parquet
+*Goal: Clean, deduplicate, and create a sanity-check permutation (shuffling AFs within genes).*
 
-python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/output/alphagenome/dataset5_null/background_ISM/dataset5_Background_NULL_variant_level_summary_2301_downsampled.parquet --deduplicate
+```bash
+python pipeline_runner.py \
+  --variants-parquet /cfs/.../background_variants_20260102.parquet \
+  --variant-out /cfs/.../Background_Gnomad_variants_dedup_perm.parquet \
+  --gene-out /cfs/.../Background_Gnomad_genes.parquet \
+  --deduplicate \
+  --permute-af \
+  --calc-ci
 
-# Clingen NULL
+```
 
-`python pipeline_runner.py --chunks-dir/cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/02_chunks/chunks --variants-af /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv --gene-list cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/01_inputs/ClinGen_gene_curation_list_GRCh38.ensg.txt`
+### 2. ClinGen Real (GnomAD)
+
+*Goal: Filter to specific ClinGen genes, deduplicate, and create sanity-check permutation.*
+
+```bash
+python pipeline_runner.py \
+  --variants-parquet /cfs/.../clingen_alphagenome_scores.backfilled.parquet \
+  --gene-list /cfs/.../ClinGen_gene_curation_list_GRCh38.ensg.txt \
+  --variant-out /cfs/.../ClinGen_HI_Gnomad_variants_dedup.parquet \
+  --gene-out /cfs/.../ClinGen_HI_Gnomad_genes.parquet \
+  --deduplicate \
+  --permute-af \
+  --calc-ci
+
+```
+
+### 3. Background Synthetic (Null/ISM)
+
+*Goal: Downsample synthetic variants to match Real Background counts, then borrow Real AFs.*
+
+```bash
+python pipeline_runner.py \
+  --variants-parquet /cfs/.../dataset5_Background_NULL_variant_level_summary.parquet \
+  --real-reference /cfs/.../Background_Gnomad_variants_dedup_perm.parquet \
+  --variant-out /cfs/.../Background_Synth_variants_downsampled_perm.parquet \
+  --gene-out /cfs/.../Background_Synth_genes.parquet \
+  --deduplicate \
+  --permute-af \
+  --calc-ci
+
+```
+
+### 4. ClinGen Synthetic (Null/ISM)
+
+*Goal: Downsample synthetic variants to match Real ClinGen counts, then borrow Real AFs.*
+
+```bash
+python pipeline_runner.py \
+  --variants-parquet /cfs/.../dataset5_ClinGen_NULL_variant_level_summary.parquet \
+  --real-reference /cfs/.../ClinGen_HI_Gnomad_variants_dedup.parquet \
+  --variant-out /cfs/.../ClinGen_HI_Synth_variants_downsampled_perm.parquet \
+  --gene-out /cfs/.../ClinGen_HI_Synth_genes.parquet \
+  --deduplicate \
+  --permute-af \
+  --calc-ci
+
+```
+
+---
+
+## Output Columns (Gene Level)
+
+The aggregator produces comprehensive gene-level metrics. Key columns include:
+
+* **`vg_predicted`**: Genetic Variance calculated using the standard `AF` column.
+* **`vg_predicted_perm`**: Genetic Variance calculated using the `perm_AF` column (if `--permute-af` was used).
+* **`vg_perm_mean`, `vg_perm_p05`, `vg_perm_p95**`: Monte Carlo statistics for error bars (if `--calc-ci` was used).
+* **`n_variants`**: Final count of variants (after deduplication/downsampling).
+* **`mean_abs_effect`**: Mean absolute score of variants in the gene.
+* **`mean_abs_promoter` / `mean_abs_gene_body**`: Spatial scoring breakdown.
 
 
-`python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/03_results/dataset5_ClinGen_NULL_variant_level_summary.parquet --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/01_inputs/ClinGen_gene_curation_list_GRCh38.ensg.txt --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/03_results/dataset5_ClinGen_NULL_gene_level_summary.parquet`
+----------
 
 
-python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/output/alphagenome/dataset5_null/clingen_ISM/dataset5_ClinGen_NULL_variant_level_summary_2301_downsampled.parquet --gene-out /cfs/klemming/scratch/m/mmarandi/output/alphagenome/dataset5_null/clingen_ISM/dataset5_ClinGen_NULL_gene_level_summary_2301_downsampled.parquet
+python pipeline_runner.py \
+  --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/background_variants_20260102.parquet \
+  --variant-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/Background_Gnomad_variants_dedup_perm.parquet \
+  --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/Background_Gnomad_genes.parquet \
+  --deduplicate \
+  --permute-af
 
-python pipeline_runner.py --variants-parquet /cfs/klemming/scratch/m/mmarandi/output/alphagenome/dataset5_null/clingen_ISM/dataset5_ClinGen_NULL_variant_level_summary_2301_downsampled.parquet --deduplicate --real 
+
+python -c "import polars as pl; df = pl.read_parquet('/cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/Background_Gnomad_variants_dedup_perm.parquet'); print(f'Total Rows: {len(df)}'); print(f'Unique Genes: {df[\"gene_id\"].n_unique()}')"
+
+python -c "import polars as pl; df = pl.read_parquet('/cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/Background_Gnomad_genes.parquet'); print(f'Total Rows: {len(df)}'); print(f'Unique Genes: {df[\"gene_id\"].n_unique()}')"
+
+Total Rows: 1999142
+Unique Genes: 349
+
+2. ClinGen Real (Filter + Cleanup)
+
+python pipeline_runner.py \
+  --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/clingen_alphagenome_scores_all_aggs_variantids_long.backfilled.parquet \
+  --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/01_inputs/ClinGen_gene_curation_list_GRCh38.ensg.txt \
+  --variant-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/ClinGen_HI_Gnomad_variants_dedup_26012026.parquet \
+  --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/ClinGen_HI_Gnomad_genes_26012026.parquet \
+  --deduplicate
+
+python -c "import polars as pl; df = pl.read_parquet('/cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/ClinGen_HI_Gnomad_variants_dedup_26012026.parquet'); print(f'Total Rows: {len(df)}'); print(f'Unique Genes: {df[\"gene_id\"].n_unique()}')"
+Total Rows: 1743183
+Unique Genes: 316
+python -c "import polars as pl; df = pl.read_parquet('/cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/ClinGen_HI_Gnomad_genes_26012026.parquet'); print(f'Total Rows: {len(df)}'); print(f'Unique Genes: {df[\"gene_id\"].n_unique()}')"
 
 
+3. Background Synth (Downsample + Permute)
+
+
+python pipeline_runner.py \
+  --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/dataset5_Background_NULL_variant_level_summary.parquet \
+  --real-reference /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/Background_Gnomad_variants_dedup_perm_26012026.parquet \
+  --variant-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/Background_Synth_variants_downsampled_perm_26012026.parquet \
+  --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/Background_Synth_genes.parquet \
+  --deduplicate \
+  --permute-af
+
+python -c "import polars as pl; df = pl.read_parquet('/cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/Background_Synth_variants_downsampled_perm_26012026.parquet'); print(f'Total Rows: {len(df)}'); print(f'Unique Genes: {df[\"gene_id\"].n_unique()}')"
+
+python -c "import polars as pl; df = pl.read_parquet('/cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/Background_Synth_genes.parquet'); print(f'Total Rows: {len(df)}'); print(f'Unique Genes: {df[\"gene_id\"].n_unique()}')"
+
+  downsample output: (1987481, 34)
+349 genes
+
+
+4. ClinGen Synth (Downsample + Permute)
+
+python pipeline_runner.py \
+  --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/03_results/dataset5_ClinGen_NULL_variant_level_summary.parquet \
+  --real-reference /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/ClinGen_HI_Gnomad_variants_dedup_26012026.parquet \
+  --variant-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/03_results/ClinGen_HI_Synth_variants_downsampled_perm_26012026.parquet \
+  --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/03_results/ClinGen_HI_Synth_genes_26012026.parquet \
+  --deduplicate \
+  --permute-af

@@ -37,7 +37,7 @@ def _load_project_layout():
     module = importlib.util.module_from_spec(spec)
     sys.modules["path_manager"] = module
     
-    spec.loader.exec_module(module)  # type: ignore[arg-type]
+    spec.loader.exec_module(module)
     return module.ProjectLayout
 
 @dataclass(frozen=True)
@@ -158,7 +158,7 @@ def main() -> None:
             print(f"Loading variants from {variant_path}...")
             df = pl.read_parquet(variant_path)
 
-            # [OPTIMIZATION] Filter FIRST, before expensive deduplication
+            # Filter FIRST, before expensive deduplication
             if args.gene_list:
                 print(f"Filtering variants using whitelist: {args.gene_list}")
                 whitelist_df = pl.read_csv(
@@ -171,7 +171,6 @@ def main() -> None:
                 df = df.filter(pl.col("gene_id").is_in(whitelist))
                 print(f"  Rows after filtering: {len(df)}")
             
-            # Step A: Rigid Deduplication
             print("Deduplicating by gene_id and variant_id...")
             df = deduplicate_by_gene_and_variant(df, verbose=True)
             
@@ -194,7 +193,7 @@ def main() -> None:
             else:
                 suffix = "_dedup"
 
-            # Step C: AF Permutation (For both ISM and Sanity Check)
+            # AF Permutation (For both ISM and Sanity Check)
             if args.permute_af:
                 print("--- Starting AF Permutation ---")
                 perm_ref_path = None
@@ -256,13 +255,12 @@ def main() -> None:
             is_ism=is_ism,
             gene_list_path=gene_list,
             calculate_ci=args.calc_ci,
-            real_reference_path=ci_ref, # [FIXED] Pass the calculated ci_ref, not args.real_reference
+            real_reference_path=ci_ref,
             n_permutations=1000,
         )
         print("Done.")
         return
 
-    # ... (rest of the file is fine) ...
     spec = PipelineSpec.from_args(
         dataset_id=args.dataset_id or os.getenv("DATASET_ID"),
         sample_id=args.sample_id or os.getenv("SAMPLE_ID"),

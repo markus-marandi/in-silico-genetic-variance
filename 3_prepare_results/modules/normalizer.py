@@ -4,7 +4,6 @@ from pathlib import Path
 
 import polars as pl
 
-# Import functions directly
 from .normalisation_helper import friendly_method_name, ag_variant_to_canonical
 
 
@@ -16,8 +15,6 @@ def normalize_and_backfill(lf: pl.LazyFrame) -> pl.LazyFrame:
     friendly_fn = friendly_method_name
     canon_fn = ag_variant_to_canonical
 
-    # 1. Collect Schema ONCE (Schema-Safe)
-    # This prevents the "ColumnNotFoundError" by checking what actually exists first.
     schema_cols = set(lf.collect_schema().names())
 
     has_vid = "variant_id" in schema_cols
@@ -32,12 +29,11 @@ def normalize_and_backfill(lf: pl.LazyFrame) -> pl.LazyFrame:
     has_vid_canon = "variant_id_canonical" in schema_cols
     has_var_scorer = "variant_scorer" in schema_cols
 
-    # 2. Ensure variant_id exists
     lf = lf.with_columns(
         pl.col("variant_id").cast(pl.Utf8) if has_vid else pl.lit(None).alias("variant_id")
     )
 
-    # 3. Extract parts from variant_id (for backfilling)
+    # Extract parts from variant_id (for backfilling)
     lf = lf.with_columns(
         pl.when(pl.col("variant_id").is_not_null())
         .then(pl.col("variant_id").str.extract(VARIANT_RE, group_index=1))
@@ -57,7 +53,7 @@ def normalize_and_backfill(lf: pl.LazyFrame) -> pl.LazyFrame:
         .alias("_alt_from_id"),
     )
 
-    # 4. Create or cast core columns safely
+    # Create or cast core columns safely
     lf = lf.with_columns(
         pl.col("CHROM").cast(pl.Utf8) if has_chrom else pl.lit(None).alias("CHROM"),
         pl.col("POS").cast(pl.Int64) if has_pos else pl.lit(None).alias("POS"),
@@ -70,8 +66,7 @@ def normalize_and_backfill(lf: pl.LazyFrame) -> pl.LazyFrame:
         ALT=pl.col("ALT").fill_null(pl.col("_alt_from_id")),
     )
 
-    # 5. Consolidate Gene Tag (SAFE LOGIC)
-    # Only references columns that definitely exist
+    # Consolidate Gene Tag
     if has_gene_tag and has_gene_id:
         tag_expr = pl.when(pl.col("gene_tag").is_null()).then(pl.col("gene_id")).otherwise(pl.col("gene_tag"))
     elif has_gene_tag:
@@ -83,9 +78,8 @@ def normalize_and_backfill(lf: pl.LazyFrame) -> pl.LazyFrame:
 
     lf = lf.with_columns(gene_tag=tag_expr.alias("gene_tag"))
 
-    # 6. Friendly Method Name
+    # Friendly Method Name
     if has_method:
-        # If method_friendly exists, prioritize it, backfill from scorer
         fallback_col = "scorer_friendly" if has_scorer else ("variant_scorer" if has_var_scorer else None)
         if fallback_col:
              method_expr = (
@@ -105,7 +99,7 @@ def normalize_and_backfill(lf: pl.LazyFrame) -> pl.LazyFrame:
 
     lf = lf.with_columns(method_friendly=method_expr)
 
-    # 7. Canonical Variant ID
+    # Canonical Variant ID
     if has_vid_canon:
         canon_base = pl.col("variant_id_canonical")
     else:
@@ -138,6 +132,5 @@ def normalize_and_backfill(lf: pl.LazyFrame) -> pl.LazyFrame:
 
     lf = lf.with_columns(variant_id_canonical=final_canon)
 
-    # Cleanup temp columns
     lf = lf.drop("_chrom_from_id", "_pos_from_id", "_ref_from_id", "_alt_from_id")
     return lf
