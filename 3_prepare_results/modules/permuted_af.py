@@ -38,7 +38,11 @@ def add_perm_af_gene_aware(
     gene_af_pools: dict[str, np.ndarray],
     seed: int = 42,
 ) -> pl.DataFrame:
-    """add perm_AF column by sampling from the same gene's AF pool."""
+    """add perm_AF column by sampling from the same gene's AF pool.
+    
+    uses replace=False (shuffle) when possible to preserve exact distribution.
+    falls back to replace=True only when pool size < needed variants.
+    """
     log.info('adding perm_AF to %d variants...', len(df))
     
     # clean up potential collision columns
@@ -60,13 +64,24 @@ def add_perm_af_gene_aware(
         gene_id = gene_df[0, "gene_id"]
         n_needed = len(gene_df)
         
+        # determine which pool to use
         if gene_id in gene_af_pools:
-            # Sample with replacement from specific gene pool
-            gene_pool = gene_af_pools[gene_id]
-            sampled = rng.choice(gene_pool, size=n_needed, replace=True)
+            pool = gene_af_pools[gene_id]
         else:
-            # Fallback to global pool
-            sampled = rng.choice(global_pool, size=n_needed, replace=True)
+            pool = global_pool
+        
+        n_available = len(pool)
+        
+        # prefer shuffling to preserve exact distribution
+        if n_available >= n_needed:
+            sampled = rng.choice(pool, size=n_needed, replace=False)
+        else:
+            # fallback to resampling when pool is smaller than needed
+            log.debug(
+                'gene %s: resampling with replacement (need %d, have %d)',
+                gene_id, n_needed, n_available
+            )
+            sampled = rng.choice(pool, size=n_needed, replace=True)
         
         perm_afs.append(sampled)
     

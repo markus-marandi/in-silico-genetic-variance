@@ -535,10 +535,9 @@ def load_vgh_metrics(metrics_path: Path) -> pd.DataFrame:
             **read_kwargs,
         )
 
-    if 'vgh' not in lf.columns:
-        raise ValueError('vgh column not found in VGH metrics file')
-
-    lf = lf.rename({'vgh': 'gene_id'}).with_columns(
+    # rename first column to gene_id and strip version suffix
+    first_col = lf.columns[0]
+    lf = lf.rename({first_col: 'gene_id'}).with_columns(
         pl.col('gene_id').cast(pl.Utf8).str.split('.').list.get(0)
     )
 

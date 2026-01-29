@@ -164,6 +164,7 @@ def aggregate_genes(
     ci_results = None
     if calculate_ci:
         print(f"Starting Monte Carlo CI simulation ({n_permutations} iterations)...")
+        print(f"  Using gene_col: {gene_col}")
         ref_path_for_pools = real_reference_path if real_reference_path else variants_path
         
         af_pools = load_gene_af_pools(ref_path_for_pools)
@@ -174,19 +175,27 @@ def aggregate_genes(
         partitioned = df.partition_by(gene_col, as_dict=True)
         result_rows = []
         
-        for gid, sub_df in partitioned.items():
-            if gid is None: continue
+        for gid_key, sub_df in partitioned.items():
+            if gid_key is None or len(sub_df) == 0:
+                continue
+            
+            # extract gene_id directly from dataframe to avoid type issues with partition keys
+            gene_id_value = sub_df[gene_col][0]
             
             stats = calculate_vg_ci_struct(
                 sub_df["raw_score"], 
-                gid, 
+                gene_id_value, 
                 af_pools, 
                 n_iter=n_permutations
             )
-            stats[gene_col] = gid
+            # always use gene_id as column name for consistent joining
+            stats["gene_id"] = gene_id_value
             result_rows.append(stats)
             
         ci_results = pl.DataFrame(result_rows)
+        print(f"  CI results shape: {ci_results.shape}")
+        print(f"  CI results dtypes: {ci_results.dtypes}")
+        print(f"  CI results columns: {ci_results.columns}")
 
     # 9. Standard Aggregations
     
@@ -258,7 +267,9 @@ def aggregate_genes(
 
     # 10. Merge CI Results
     if calculate_ci and ci_results is not None:
-        genes = genes.join(ci_results, left_on="gene_id", right_on=gene_col, how="left")
+        print(f"  Genes dataframe gene_id dtype: {genes['gene_id'].dtype}")
+        print(f"  CI results gene_id dtype: {ci_results['gene_id'].dtype}")
+        genes = genes.join(ci_results, on="gene_id", how="left")
         genes = genes.with_columns([
             pl.col("vg_perm_mean").fill_null(0.0),
             pl.col("vg_perm_p05").fill_null(0.0),
