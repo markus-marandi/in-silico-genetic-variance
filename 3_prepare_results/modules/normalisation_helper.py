@@ -470,6 +470,7 @@ def parse_gtf_utr5_lengths(gtf_path: Path, mane: pd.DataFrame) -> pd.DataFrame:
 def load_vgh_metrics(metrics_path: Path) -> pd.DataFrame:
     """load vgh gene-level metrics."""
     metrics = [
+        'vgh',
         'ncRVIS',
         'loeuf_score',
         'ncGERP',
@@ -486,9 +487,15 @@ def load_vgh_metrics(metrics_path: Path) -> pd.DataFrame:
         'vg_eqtl',
     ]
 
+    # file has unnamed first column (gene ids) followed by 15 named columns
+    # specify all column names explicitly including gene_id for the first column
+    column_names = ['gene_id'] + metrics
+
     read_kwargs = dict(
         separator='\t',
         has_header=True,
+        skip_rows=1,  # skip the original header with missing column name
+        new_columns=column_names,
         null_values=['NA', 'NaN', ''],
     )
 
@@ -535,9 +542,8 @@ def load_vgh_metrics(metrics_path: Path) -> pd.DataFrame:
             **read_kwargs,
         )
 
-    # rename first column to gene_id and strip version suffix
-    first_col = lf.columns[0]
-    lf = lf.rename({first_col: 'gene_id'}).with_columns(
+    # strip version suffix from gene ids
+    lf = lf.with_columns(
         pl.col('gene_id').cast(pl.Utf8).str.split('.').list.get(0)
     )
 
