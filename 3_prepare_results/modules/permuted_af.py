@@ -8,22 +8,30 @@ import polars as pl
 
 log = logging.getLogger(__name__)
 
-def load_gene_af_pools(perm_variants_path: Path) -> dict[str, np.ndarray]:
-    """extract non-zero AFs per gene from source file."""
-    log.info('loading per-gene AF pools from %s', perm_variants_path)
-    df = pl.read_parquet(perm_variants_path, columns=["gene_id", "AF"])
+def load_gene_af_pools(source: Path | pl.DataFrame) -> dict[str, np.ndarray]:
+    """extract non-zero AFs per gene from source file or DataFrame."""
+    
+    # --- START FIX ---
+    if isinstance(source, (str, Path)):
+        log.info('loading per-gene AF pools from file: %s', source)
+        df = pl.read_parquet(source, columns=["gene_id", "AF"])
+    else:
+        log.info('loading per-gene AF pools from in-memory DataFrame')
+        # Select only necessary columns to avoid overhead
+        df = source.select(["gene_id", "AF"])
+    # --- END FIX ---
+    
+    # DELETE the old lines that were here (reading perm_variants_path)
     
     # filter to non-null AFs (include AF=0)
     df = df.filter(pl.col('AF').is_not_null())
     
     if len(df) == 0:
-        raise ValueError(f'no valid AFs found in {perm_variants_path}')
+        raise ValueError('no valid AFs found in source')
     
     # group by gene and collect AFs
-    # conversion to python dict of numpy arrays is efficient for sampling loop
     gene_af_pools = {}
     
-    # Use partition_by for speed if dataset fits in memory, otherwise loop
     for gene_df in df.partition_by('gene_id', as_dict=False):
         gene_id = gene_df[0, "gene_id"]
         afs = gene_df['AF'].to_numpy()

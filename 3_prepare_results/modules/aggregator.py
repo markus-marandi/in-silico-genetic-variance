@@ -4,9 +4,9 @@ from pathlib import Path
 import numpy as np
 import polars as pl
 
-from .external_data_loader import ExternalDataLoader
-from .normalisation_helper import strip_ensembl_version
-from .permuted_af import load_gene_af_pools
+from modules.external_data_loader import ExternalDataLoader
+from modules.normalisation_helper import strip_ensembl_version
+from modules.permuted_af import load_gene_af_pools
 
 
 def _load_gene_meta(base: Path) -> tuple[pl.DataFrame, pl.DataFrame, pl.DataFrame, pl.DataFrame]:
@@ -260,7 +260,10 @@ def aggregate_genes(
         pl.col("vg_contribution_perm").sum().alias("vg_predicted_perm"),  # From perm_AF
 
         # Pack data for Architecture Analysis (Step 11)
-        pl.struct(["vg_contribution", "abs_score"].alias("v", "e")).alias("arch_data"),
+        pl.struct([
+            pl.col("vg_contribution").alias("v"), 
+            pl.col("abs_score").alias("e")
+        ]).alias("arch_data"),
 
         pl.col("raw_score").pow(2).sum().alias("sum_sq_raw_score"),
         pl.col("raw_score").mean().alias("mean_raw_score"),
@@ -319,6 +322,8 @@ def aggregate_genes(
         print(f"Starting Monte Carlo CI simulation ({n_permutations} iterations)...")
         ref_path_for_pools = real_reference_path if real_reference_path else variants_path
         af_pools = load_gene_af_pools(ref_path_for_pools)
+
+        af_pools = {k.split('.')[0]: v for k, v in af_pools.items()}
 
         raw_lf = pl.scan_parquet(variants_path).select([gene_col, "raw_score"])
 

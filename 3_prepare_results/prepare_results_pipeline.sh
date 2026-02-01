@@ -40,13 +40,14 @@ fi
 echo "starting pipeline runs at $(date)"
 echo ""
 
-# dataset 4: background (real gnomad variants)
+# dataset 3: clingen (real gnomad variants)
 echo "===== dataset3 clingen (real) ====="
-python pipeline_runner.py \
+echo "start: $(date)"
+$PYTHON pipeline_runner.py \
   --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/clingen_alphagenome_scores_all_aggs_variantids_long.backfilled.parquet \
   --gene-list /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/01_inputs/ClinGen_gene_curation_list_GRCh38.ensg.txt \
-  --variant-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/ClinGen_HI_Gnomad_variants_dedup_29012026.parquet \
-  --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/ClinGen_HI_Gnomad_genes_29012026.parquet \
+  --variant-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/ClinGen_HI_Gnomad_variants_dedup_31012026.parquet \
+  --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/ClinGen_HI_Gnomad_genes_31012026.parquet \
   --deduplicate \
   --permute-af \
   --calc-ci
@@ -59,8 +60,8 @@ echo "===== dataset4 background (real) ====="
 echo "start: $(date)"
 $PYTHON pipeline_runner.py \
   --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/background_variants_20260102.parquet \
-  --variant-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/Background_Gnomad_variants_dedup_perm_29012026.parquet \
-  --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/Background_Gnomad_genes_29012026.parquet \
+  --variant-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/Background_Gnomad_variants_dedup_perm_31012026.parquet \
+  --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/Background_Gnomad_genes_31012026.parquet \
   --deduplicate \
   --permute-af \
   --calc-ci
@@ -73,9 +74,9 @@ echo "===== dataset5 background_NULL (synthetic) ====="
 echo "start: $(date)"
 $PYTHON pipeline_runner.py \
   --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/dataset5_Background_NULL_variant_level_summary.parquet \
-  --real-reference /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/Background_Gnomad_variants_dedup_perm_29012026.parquet \
-  --variant-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/Background_Synth_variants_downsampled_perm_29012026.parquet \
-  --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/Background_Synth_genes_29012026.parquet \
+  --real-reference /cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/03_results/Background_Gnomad_variants_dedup_perm_31012026.parquet \
+  --variant-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/Background_Synth_variants_downsampled_perm_31012026.parquet \
+  --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/background_NULL/03_results/Background_Synth_genes_31012026.parquet \
   --deduplicate \
   --permute-af \
   --calc-ci
@@ -88,9 +89,9 @@ echo "===== dataset5 clingen_NULL (synthetic) ====="
 echo "start: $(date)"
 $PYTHON pipeline_runner.py \
   --variants-parquet /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/03_results/dataset5_ClinGen_NULL_variant_level_summary.parquet \
-  --real-reference /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/ClinGen_HI_Gnomad_variants_dedup_29012026.parquet \
-  --variant-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/03_results/ClinGen_HI_Synth_variants_downsampled_perm_29012026.parquet \
-  --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/03_results/ClinGen_HI_Synth_genes_29012026.parquet \
+  --real-reference /cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/03_results/ClinGen_HI_Gnomad_variants_dedup_31012026.parquet \
+  --variant-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/03_results/ClinGen_HI_Synth_variants_downsampled_perm_31012026.parquet \
+  --gene-out /cfs/klemming/scratch/m/mmarandi/experiments/dataset5/clingen_NULL/03_results/ClinGen_HI_Synth_genes_31012026.parquet \
   --deduplicate \
   --permute-af \
   --calc-ci
