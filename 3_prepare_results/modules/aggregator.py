@@ -56,23 +56,24 @@ def calculate_vg_ci_struct(
     }
 
 
-def calc_architecture_stats(struct_list: list[dict]) -> dict:
-    """
-    Computes N90, N85, and properties of the 'driver' variants.
-    Expects list of dicts: [{'v': vg_contribution, 'e': abs_score}, ...]
+def calc_architecture_stats(struct_list: list[dict], suffix: str = "") -> dict:
+    """computes N90, N85, and properties of the 'driver' variants.
+    
+    args:
+        struct_list: list of dicts [{'v': vg_contribution, 'e': abs_score}, ...]
+        suffix: suffix to append to output keys (e.g., "_perm")
     """
     if not struct_list:
         return {
-            "N90": 0, "N85": 0,
-            "variance_N90": 0.0, "cv_effect_N90": 0.0,
-            "mean_effect_N90": 0.0
+            f"N90{suffix}": 0, f"N85{suffix}": 0,
+            f"variance_N90{suffix}": 0.0, f"cv_effect_N90{suffix}": 0.0,
+            f"mean_effect_N90{suffix}": 0.0
         }
 
-    # Extract arrays
     v = np.array([x['v'] for x in struct_list])
     e = np.array([x['e'] for x in struct_list])
 
-    # Sort descending by Variance Contribution (v)
+    # sort descending by variance contribution (v)
     sort_idx = np.argsort(v)[::-1]
     v_sorted = v[sort_idx]
     e_sorted = e[sort_idx]
@@ -80,47 +81,39 @@ def calc_architecture_stats(struct_list: list[dict]) -> dict:
     total_vg = np.sum(v_sorted)
     if total_vg == 0:
         return {
-            "N90": 0, "N85": 0,
-            "variance_N90": 0.0, "cv_effect_N90": 0.0,
-            "mean_effect_N90": 0.0
+            f"N90{suffix}": 0, f"N85{suffix}": 0,
+            f"variance_N90{suffix}": 0.0, f"cv_effect_N90{suffix}": 0.0,
+            f"mean_effect_N90{suffix}": 0.0
         }
 
     cumsum = np.cumsum(v_sorted)
 
-    # --- Logic for N90 (90% of variance) ---
+    # logic for N90 (90% of variance)
     idx_90 = np.searchsorted(cumsum, 0.90 * total_vg)
 
-    # The subset of variants driving this 90%
+    # subset of variants driving this 90%
     subset_e_90 = e_sorted[:idx_90 + 1]
 
-    # Stats for N90 subset
     n90_count = idx_90 + 1
     mean_90 = np.mean(subset_e_90) if len(subset_e_90) > 0 else 0.0
     std_90 = np.std(subset_e_90) if len(subset_e_90) > 0 else 0.0
     cv_90 = (std_90 / mean_90) if mean_90 > 0 else 0.0
 
-    # --- Logic for N85 ---
+    # logic for N85
     idx_85 = np.searchsorted(cumsum, 0.85 * total_vg)
     n85_count = idx_85 + 1
 
     return {
-        "N90": int(n90_count),
-        "N85": int(n85_count),
-        "variance_N90": float(cumsum[idx_90]),  # Actual Vg sum of the top 90%
-        "cv_effect_N90": float(cv_90),
-        "mean_effect_N90": float(mean_90)
+        f"N90{suffix}": int(n90_count),
+        f"N85{suffix}": int(n85_count),
+        f"variance_N90{suffix}": float(cumsum[idx_90]),
+        f"cv_effect_N90{suffix}": float(cv_90),
+        f"mean_effect_N90{suffix}": float(mean_90)
     }
 
 
-# --- 4. Spatial Window Expression Generator ---
 def get_window_exprs(windows: dict[str, tuple[int, int]], vg_col: str = "vg_contribution", suffix: str = "") -> list[pl.Expr]:
-    """generates agg expressions for N, Mean Abs, and Sum Vg for spatial windows.
-    
-    args:
-        windows: dict mapping window names to (start, end) ranges
-        vg_col: which vg column to use for variance calculations
-        suffix: suffix to append to vg column names (e.g., "_perm")
-    """
+    #expression generation for N, Mean Abs, and Sum Vg for spatial windows
     exprs = []
     for name, (start, end) in windows.items():
         # condition: start <= dist_signed < end
@@ -134,7 +127,6 @@ def get_window_exprs(windows: dict[str, tuple[int, int]], vg_col: str = "vg_cont
     return exprs
 
 
-# --- 5. Main Aggregation Function ---
 def aggregate_genes(
         variants_path: Path,
         out_path: Path,
@@ -148,19 +140,15 @@ def aggregate_genes(
 ) -> None:
     """aggregate variant parquet to gene metrics."""
 
-    # 1. Load metadata
     mane, gtf, tpm, vgh = _load_gene_meta(base_ref)
 
-    # 2. Scan variants
     lf = pl.scan_parquet(variants_path)
     schema_cols = set(lf.collect_schema().names())
     has_perm_af = "perm_AF" in schema_cols
 
-    # Normalize 'AF' column source
     af_candidates = ["AF", "AF_x", "AF_y", "af", "af_x", "af_y"]
     af_source = next((c for c in af_candidates if c in schema_cols), None)
 
-    # Ensure we have a clean 'AF' column
     if af_source and af_source != "AF":
         lf = lf.with_columns(pl.col(af_source).alias("AF"))
         schema_cols.add("AF")
@@ -168,11 +156,9 @@ def aggregate_genes(
         lf = lf.with_columns(pl.lit(0.0).alias("AF"))
         schema_cols.add("AF")
 
-    # Clean aliases
     extras = [c for c in af_candidates if c != "AF" and c in schema_cols]
     if extras: lf = lf.drop(extras)
 
-    # 3. Gene ID Normalization
     if "gene_norm" in schema_cols:
         gene_col = "gene_norm"
     elif "gene_id" in schema_cols:
@@ -182,7 +168,6 @@ def aggregate_genes(
     else:
         gene_col = "gene_id"
 
-    # 4. Whitelist Filter
     if gene_list_path and gene_list_path.exists():
         gene_whitelist = {
             strip_ensembl_version(line.strip())
@@ -192,26 +177,22 @@ def aggregate_genes(
         if gene_whitelist:
             lf = lf.filter(pl.col(gene_col).is_in(gene_whitelist))
 
-    # 5. Attach Spatial Info
     gtf_spatial = gtf.lazy().select(
         [pl.col("gene_id"), "tss", "strand", "start", "end"]
     ).unique("gene_id")
     lf = lf.join(gtf_spatial, left_on=gene_col, right_on="gene_id", how="left")
 
-    # 6. Deduplication (Max Impact)
     lf = lf.with_columns(abs_score=pl.col("raw_score").abs())
     lf = (
         lf.sort("abs_score", descending=True, nulls_last=True)
         .unique(subset=["variant_id"], keep="first", maintain_order=True)
     )
 
-    # 7. Pre-Calculations (Distances & Vg components)
     lf = lf.with_columns(
         dist_to_tss=pl.when((pl.col("POS").is_not_null()) & (pl.col("tss").is_not_null()))
         .then((pl.col("POS") - pl.col("tss")).abs())
         .otherwise(None),
 
-        # Signed Distance: - = Upstream, + = Downstream
         dist_signed=pl.when(
             (pl.col("POS").is_not_null()) & (pl.col("tss").is_not_null()) & (pl.col("strand").is_not_null())
         )
@@ -222,14 +203,12 @@ def aggregate_genes(
         )
         .otherwise(None),
 
-        # Real Vg
         vg_contribution=pl.when(
             pl.col("raw_score").is_not_null() & pl.col("AF").is_not_null()
         )
         .then(2.0 * pl.col("AF") * (1.0 - pl.col("AF")) * pl.col("raw_score").pow(2))
         .otherwise(0.0),
 
-        # Permuted Vg
         vg_contribution_perm=pl.when(
             pl.col("raw_score").is_not_null() & pl.col("perm_AF").is_not_null()
         )
@@ -239,28 +218,22 @@ def aggregate_genes(
 
     spatial_windows = {
         # 1. Distal Upstream (-10kb to -2kb)
-        # Regulatory region (Enhancers)
         "distal_upstream": (-10000, -2000),
 
         # 2. Proximal Upstream (-2kb to -200bp)
-        # Immediate regulatory environment
         "proximal_upstream": (-2000, -200),
 
         # 3. Core Promoter (-200bp to +200bp)
-        # The physical landing pad for RNA Pol II (Crossing 0)
         "promoter_core": (-200, 200),
 
         # 4. Downstream Proximal (+200bp to +2kb)
-        # 5' UTR and First Intron (Splicing/Translation regulation)
+        # 5' UTR and First Intron
         "down_proximal": (200, 2000),
 
         # 5. Downstream Distal (+2kb to +10kb)
-        # The rest of the gene body you scored
         "down_distal": (2000, 10000)
     }
 
-    # --- 8. Determine variance mode ---
-    # in synthetic mode, use only perm_AF-based metrics with _perm suffix
     if is_synthetic:
         vg_col = "vg_contribution_perm"
         vg_suffix = "_perm"
@@ -270,16 +243,14 @@ def aggregate_genes(
         vg_suffix = ""
         vg_label = "vg_predicted"
 
-    # --- 9. Build Aggregation Expressions ---
+    # Expression aggregation
     agg_exprs = [
         pl.count().alias("n_variants"),
 
         pl.col(vg_col).sum().alias(vg_label),
         
-        # always include perm if available (for sanity checks in real data)
         pl.col("vg_contribution_perm").sum().alias("vg_predicted_perm") if has_perm_af and not is_synthetic else None,
 
-        # architecture data using the appropriate vg column
         pl.struct([
             pl.col(vg_col).alias("v"), 
             pl.col("abs_score").alias("e")
@@ -288,7 +259,6 @@ def aggregate_genes(
         pl.col("raw_score").pow(2).sum().alias("sum_sq_raw_score"),
         pl.col("raw_score").mean().alias("mean_raw_score"),
 
-        # global stats (unchanged, based on raw_score)
         pl.col("abs_score").mean().alias("mean_abs_effect"),
         pl.col("abs_score").median().alias("median_abs_effect"),
         pl.col("abs_score").std().alias("std_abs_effect"),
@@ -297,37 +267,29 @@ def aggregate_genes(
         pl.col("abs_score").skew().alias("skewness_effect"),
         pl.col("abs_score").quantile(0.99).alias("q99_abs_effect"),
 
-        # id tracking
         pl.col("variant_id").sort_by("raw_score").first().alias("min_variant_id"),
         pl.col("raw_score").min().alias("min_variant_score"),
         pl.col("variant_id").sort_by("raw_score").last().alias("max_variant_id"),
         pl.col("raw_score").max().alias("max_variant_score"),
 
-        # distance stats
         pl.col("dist_to_tss").mean().alias("mean_dist_to_tss"),
         pl.col("dist_to_tss").median().alias("median_dist_to_tss"),
         pl.col("dist_to_tss").min().alias("min_dist_to_tss"),
         pl.col("dist_to_tss").max().alias("max_dist_to_tss"),
 
-        # high impact counts
         (pl.col("abs_score") > 0.5).sum().alias("n_high_impact_gt05"),
         (pl.col("abs_score") > 1.0).sum().alias("n_high_impact_gt1"),
     ]
     
-    # filter out None entries
     agg_exprs = [e for e in agg_exprs if e is not None]
 
-    # add dynamic spatial window expressions
     agg_exprs.extend(get_window_exprs(spatial_windows, vg_col=vg_col, suffix=vg_suffix))
 
-    # --- 10. Perform Aggregation ---
     print("Collecting and Aggregating Genes...")
     df_agg = lf.group_by(gene_col).agg(agg_exprs).collect()
 
-    # --- 11. Post-Aggregation: Compute Architecture (Python UDF) ---
     print("Computing Architecture Metrics (N90, CV_N90)...")
 
-    # architecture metrics with appropriate suffix
     arch_col_suffix = "_perm" if is_synthetic else ""
     
     arch_schema = pl.Struct({
@@ -340,12 +302,11 @@ def aggregate_genes(
 
     df_agg = df_agg.with_columns(
         pl.col("arch_data").map_elements(
-            lambda x: calc_architecture_stats(x),
+            lambda x: calc_architecture_stats(x, suffix=arch_col_suffix),
             return_dtype=arch_schema
         ).alias("arch_metrics")
     ).unnest("arch_metrics").drop("arch_data")
 
-    # --- 12. Monte Carlo CI (optional with CLI flag) ---
     if calculate_ci:
         print(f"Starting Monte Carlo CI simulation ({n_permutations} iterations)...")
         ref_path_for_pools = real_reference_path if real_reference_path else variants_path
@@ -355,7 +316,6 @@ def aggregate_genes(
 
         raw_lf = pl.scan_parquet(variants_path).select([gene_col, "raw_score"])
 
-        # Normalize Gene ID again
         if gene_col == "gene_norm":
             raw_lf = raw_lf.with_columns(gene_norm=pl.col("gene_id").str.split(".").list.get(0))
 
@@ -381,7 +341,6 @@ def aggregate_genes(
         pl.all().exclude(["tss", "strand", "start", "end"])
     ).unique("gene_id")
 
-    # Handle MANE
     if "gene_id" in mane.columns:
         mane_meta = mane.select(
             [pl.col("gene_id"), pl.col("mane_transcript_id"), pl.lit(True).alias("is_mane")]
@@ -402,7 +361,6 @@ def aggregate_genes(
         .join(vgh_meta, on="gene_id", how="left")
     )
 
-    # build enrichment columns with appropriate suffix
     promoter_col = f"vg_promoter_core{vg_suffix}"
     vg_global_col = vg_label
     enrich_col = f"enrich_promoter_vg{vg_suffix}"
@@ -413,14 +371,12 @@ def aggregate_genes(
         frac_high_impact_10=pl.col("n_high_impact_gt1") / pl.col("n_variants"),
         variants_per_kb=(pl.col("n_variants") / (pl.col("genomic_length") / 1000.0)).fill_nan(0.0),
 
-        # spatial enrichment with appropriate column names
         **{enrich_col: (
             (pl.col(promoter_col) / pl.col("n_variants_promoter_core").clip(1)) /
             (pl.col(vg_global_col) / pl.col("n_variants").clip(1))
         ).fill_nan(0.0)}
     )
 
-    # 14. Write Output
     out_path.parent.mkdir(parents=True, exist_ok=True)
     enriched.write_parquet(out_path, compression="zstd")
     print(f"Saved aggregated gene metrics to {out_path}")

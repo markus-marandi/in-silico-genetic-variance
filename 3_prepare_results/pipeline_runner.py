@@ -56,25 +56,27 @@ def calculate_vg_ci_struct(
     }
 
 
-def calc_architecture_stats(struct_list: list[dict] | pl.Series) -> dict:
+def calc_architecture_stats(struct_list: list[dict] | pl.Series, suffix: str = "") -> dict:
+    """computes N90, N85, and properties of the 'driver' variants.
+    
+    args:
+        struct_list: list of dicts or polars series [{'v': vg_contribution, 'e': abs_score}, ...]
+        suffix: suffix to append to output keys (e.g., "_perm")
     """
-    Computes N90, N85, and properties of the 'driver' variants.
-    Expects list of dicts: [{'v': vg_contribution, 'e': abs_score}, ...]
-    """
-    # --- FIX: Handle Polars Series ambiguity ---
+    # handle polars series ambiguity
     if struct_list is None or len(struct_list) == 0:
         return {
-            "N90": 0, "N85": 0,
-            "variance_N90": 0.0, "cv_effect_N90": 0.0,
-            "mean_effect_N90": 0.0
+            f"N90{suffix}": 0, f"N85{suffix}": 0,
+            f"variance_N90{suffix}": 0.0, f"cv_effect_N90{suffix}": 0.0,
+            f"mean_effect_N90{suffix}": 0.0
         }
 
-    # Extract arrays
-    # Note: iterating over a Series of structs yields dictionaries, so this works for both List and Series
+    # extract arrays
+    # note: iterating over a series of structs yields dictionaries, so this works for both list and series
     v = np.array([x['v'] for x in struct_list])
     e = np.array([x['e'] for x in struct_list])
 
-    # Sort descending by Variance Contribution (v)
+    # sort descending by variance contribution (v)
     sort_idx = np.argsort(v)[::-1]
     v_sorted = v[sort_idx]
     e_sorted = e[sort_idx]
@@ -82,35 +84,35 @@ def calc_architecture_stats(struct_list: list[dict] | pl.Series) -> dict:
     total_vg = np.sum(v_sorted)
     if total_vg == 0:
         return {
-            "N90": 0, "N85": 0,
-            "variance_N90": 0.0, "cv_effect_N90": 0.0,
-            "mean_effect_N90": 0.0
+            f"N90{suffix}": 0, f"N85{suffix}": 0,
+            f"variance_N90{suffix}": 0.0, f"cv_effect_N90{suffix}": 0.0,
+            f"mean_effect_N90{suffix}": 0.0
         }
 
     cumsum = np.cumsum(v_sorted)
 
-    # --- Logic for N90 (90% of variance) ---
+    # logic for N90 (90% of variance)
     idx_90 = np.searchsorted(cumsum, 0.90 * total_vg)
 
-    # The subset of variants driving this 90%
+    # subset of variants driving this 90%
     subset_e_90 = e_sorted[:idx_90 + 1]
 
-    # Stats for N90 subset
+    # stats for N90 subset
     n90_count = idx_90 + 1
     mean_90 = np.mean(subset_e_90) if len(subset_e_90) > 0 else 0.0
     std_90 = np.std(subset_e_90) if len(subset_e_90) > 0 else 0.0
     cv_90 = (std_90 / mean_90) if mean_90 > 0 else 0.0
 
-    # --- Logic for N85 ---
+    # logic for N85
     idx_85 = np.searchsorted(cumsum, 0.85 * total_vg)
     n85_count = idx_85 + 1
 
     return {
-        "N90": int(n90_count),
-        "N85": int(n85_count),
-        "variance_N90": float(cumsum[idx_90]),  # Actual Vg sum of the top 90%
-        "cv_effect_N90": float(cv_90),
-        "mean_effect_N90": float(mean_90)
+        f"N90{suffix}": int(n90_count),
+        f"N85{suffix}": int(n85_count),
+        f"variance_N90{suffix}": float(cumsum[idx_90]),
+        f"cv_effect_N90{suffix}": float(cv_90),
+        f"mean_effect_N90{suffix}": float(mean_90)
     }
 
 
@@ -342,7 +344,7 @@ def aggregate_genes(
 
     df_agg = df_agg.with_columns(
         pl.col("arch_data").map_elements(
-            lambda x: calc_architecture_stats(x),
+            lambda x: calc_architecture_stats(x, suffix=arch_col_suffix),
             return_dtype=arch_schema
         ).alias("arch_metrics")
     ).unnest("arch_metrics").drop("arch_data")
