@@ -112,6 +112,36 @@ def calc_architecture_stats(struct_list: list[dict], suffix: str = "") -> dict:
     }
 
 
+def _calculate_entropy(scores: pl.Series) -> float:
+    """Calculate Shannon entropy of effect sizes."""
+    scores_arr = scores.to_numpy()
+    scores_arr = scores_arr[scores_arr > 0]  # Remove zeros
+    if len(scores_arr) == 0:
+        return 0.0
+    p = scores_arr / np.sum(scores_arr)
+    return float(-np.sum(p * np.log(p + 1e-10)))  # Add epsilon for numerical stability
+
+
+def _calculate_af_gradient(struct_series) -> float:
+    """Calculate Spearman correlation between distance and AF."""
+    from scipy.stats import spearmanr
+    
+    df = struct_series.struct.unnest()
+    dist = df["dist_to_tss"].to_numpy()
+    af = df["AF"].to_numpy()
+    
+    # Remove nulls
+    valid_mask = ~np.isnan(dist) & ~np.isnan(af)
+    dist = dist[valid_mask]
+    af = af[valid_mask]
+    
+    if len(dist) < 3:  # Need at least 3 points for correlation
+        return 0.0
+    
+    corr, _ = spearmanr(np.abs(dist), af)
+    return float(corr) if not np.isnan(corr) else 0.0
+
+
 def get_window_exprs(windows: dict[str, tuple[int, int]], vg_col: str = "vg_contribution", suffix: str = "") -> list[pl.Expr]:
     #expression generation for N, Mean Abs, and Sum Vg for spatial windows
     exprs = []
@@ -124,6 +154,15 @@ def get_window_exprs(windows: dict[str, tuple[int, int]], vg_col: str = "vg_cont
             pl.col(vg_col).filter(cond).sum().alias(f"vg_{name}{suffix}"),
             cond.sum().alias(f"n_variants_{name}")
         ])
+    return exprs
+
+
+def get_window_vg_exprs(windows: dict[str, tuple[int, int]], vg_col: str = "vg_contribution", suffix: str = "") -> list[pl.Expr]:
+    """generates only vg sum expressions for spatial windows (for perm metrics)."""
+    exprs = []
+    for name, (start, end) in windows.items():
+        cond = (pl.col("dist_signed") >= start) & (pl.col("dist_signed") < end)
+        exprs.append(pl.col(vg_col).filter(cond).sum().alias(f"vg_{name}{suffix}"))
     return exprs
 
 
@@ -251,6 +290,26 @@ def aggregate_genes(
         
         pl.col("vg_contribution_perm").sum().alias("vg_predicted_perm") if has_perm_af and not is_synthetic else None,
 
+        # AF cutoff metrics: variant counts
+        pl.col("AF").filter(pl.col("AF") >= 0.05).count().alias("n_variants_common"),
+        pl.col("AF").filter(pl.col("AF") < 0.05).count().alias("n_variants_rare"),
+        
+        # AF cutoff metrics: variance contributions
+        pl.col("vg_contribution").filter(pl.col("AF") >= 0.05).sum().alias("vg_common"),
+        pl.col("vg_contribution").filter(pl.col("AF") < 0.05).sum().alias("vg_rare"),
+    ]
+    
+    # Add permuted AF cutoff metrics if available
+    if has_perm_af:
+        agg_exprs.extend([
+            pl.col("perm_AF").filter(pl.col("perm_AF") >= 0.05).count().alias("n_variants_common_perm"),
+            pl.col("perm_AF").filter(pl.col("perm_AF") < 0.05).count().alias("n_variants_rare_perm"),
+            pl.col("vg_contribution_perm").filter(pl.col("perm_AF") >= 0.05).sum().alias("vg_common_perm"),
+            pl.col("vg_contribution_perm").filter(pl.col("perm_AF") < 0.05).sum().alias("vg_rare_perm"),
+        ])
+    
+    agg_exprs.extend([
+
         pl.struct([
             pl.col(vg_col).alias("v"), 
             pl.col("abs_score").alias("e")
@@ -279,11 +338,67 @@ def aggregate_genes(
 
         (pl.col("abs_score") > 0.5).sum().alias("n_high_impact_gt05"),
         (pl.col("abs_score") > 1.0).sum().alias("n_high_impact_gt1"),
-    ]
+        
+        # Spatial distribution: median distance to TSS for high-impact variants
+        pl.col("dist_to_tss").filter(pl.col("abs_score") > 0.1).median().alias("median_dist_tss_high_abs"),
+        pl.col("dist_to_tss").filter(pl.col("abs_score") >= pl.col("abs_score").quantile(0.90)).median().alias("median_dist_tss_high_rel"),
+        
+        # Selection signature: weighted mean effect
+        (pl.col("AF") * pl.col("abs_score")).sum().alias("_af_times_abs"),
+        pl.col("AF").sum().alias("_af_sum"),
+        
+        # Collect data for post-aggregation metrics
+        pl.col("abs_score").alias("scores_all"),
+        pl.struct(["dist_to_tss", "AF"]).alias("_dist_af_struct"),
+        
+        # Collect abs_score lists per window for entropy calculation (will be processed after aggregation)
+        pl.col("abs_score").filter((pl.col("dist_signed") >= -200) & (pl.col("dist_signed") < 200)).alias("scores_promoter_core"),
+        pl.col("abs_score").filter((pl.col("dist_signed") >= -2000) & (pl.col("dist_signed") < -200)).alias("scores_proximal_upstream"),
+        pl.col("abs_score").filter((pl.col("dist_signed") >= -10000) & (pl.col("dist_signed") < -2000)).alias("scores_distal_upstream"),
+        pl.col("abs_score").filter((pl.col("dist_signed") >= 200) & (pl.col("dist_signed") < 2000)).alias("scores_down_proximal"),
+        pl.col("abs_score").filter((pl.col("dist_signed") >= 2000) & (pl.col("dist_signed") < 10000)).alias("scores_down_distal"),
+    ])
+    
+    # Add permuted AF-specific metrics if available
+    if has_perm_af:
+        agg_exprs.extend([
+            (pl.col("perm_AF") * pl.col("abs_score")).sum().alias("_perm_af_times_abs"),
+            pl.col("perm_AF").sum().alias("_perm_af_sum"),
+            
+            # Depletion scores
+            (pl.col("AF").filter(pl.col("abs_score") >= pl.col("abs_score").quantile(0.90)).mean()).alias("_af_high_impact"),
+            (pl.col("perm_AF").filter(pl.col("abs_score") >= pl.col("abs_score").quantile(0.90)).mean()).alias("_perm_af_high_impact"),
+            
+            (pl.col("AF").filter(pl.col("AF") >= 0.05).mean()).alias("_af_common"),
+            (pl.col("perm_AF").filter(pl.col("perm_AF") >= 0.05).mean()).alias("_perm_af_common"),
+            
+            (pl.col("AF").filter(pl.col("AF") < 0.05).mean()).alias("_af_rare"),
+            (pl.col("perm_AF").filter(pl.col("perm_AF") < 0.05).mean()).alias("_perm_af_rare"),
+            
+            # Depletion scores per spatial window
+            (pl.col("AF").filter((pl.col("dist_signed") >= -200) & (pl.col("dist_signed") < 200)).mean()).alias("_af_promoter_core"),
+            (pl.col("perm_AF").filter((pl.col("dist_signed") >= -200) & (pl.col("dist_signed") < 200)).mean()).alias("_perm_af_promoter_core"),
+            
+            (pl.col("AF").filter((pl.col("dist_signed") >= -2000) & (pl.col("dist_signed") < -200)).mean()).alias("_af_proximal_upstream"),
+            (pl.col("perm_AF").filter((pl.col("dist_signed") >= -2000) & (pl.col("dist_signed") < -200)).mean()).alias("_perm_af_proximal_upstream"),
+            
+            (pl.col("AF").filter((pl.col("dist_signed") >= -10000) & (pl.col("dist_signed") < -2000)).mean()).alias("_af_distal_upstream"),
+            (pl.col("perm_AF").filter((pl.col("dist_signed") >= -10000) & (pl.col("dist_signed") < -2000)).mean()).alias("_perm_af_distal_upstream"),
+            
+            (pl.col("AF").filter((pl.col("dist_signed") >= 200) & (pl.col("dist_signed") < 2000)).mean()).alias("_af_down_proximal"),
+            (pl.col("perm_AF").filter((pl.col("dist_signed") >= 200) & (pl.col("dist_signed") < 2000)).mean()).alias("_perm_af_down_proximal"),
+            
+            (pl.col("AF").filter((pl.col("dist_signed") >= 2000) & (pl.col("dist_signed") < 10000)).mean()).alias("_af_down_distal"),
+            (pl.col("perm_AF").filter((pl.col("dist_signed") >= 2000) & (pl.col("dist_signed") < 10000)).mean()).alias("_perm_af_down_distal"),
+        ])
     
     agg_exprs = [e for e in agg_exprs if e is not None]
 
     agg_exprs.extend(get_window_exprs(spatial_windows, vg_col=vg_col, suffix=vg_suffix))
+    
+    # for real data with perm_AF, also create _perm vg window metrics (just vg, not counts/means)
+    if has_perm_af and not is_synthetic:
+        agg_exprs.extend(get_window_vg_exprs(spatial_windows, vg_col="vg_contribution_perm", suffix="_perm"))
 
     print("Collecting and Aggregating Genes...")
     df_agg = lf.group_by(gene_col).agg(agg_exprs).collect()
@@ -365,17 +480,116 @@ def aggregate_genes(
     vg_global_col = vg_label
     enrich_col = f"enrich_promoter_vg{vg_suffix}"
     
-    enriched = enriched.with_columns(
-        cv_effect=pl.col("std_abs_effect") / pl.col("mean_abs_effect"),
-        frac_high_impact_05=pl.col("n_high_impact_gt05") / pl.col("n_variants"),
-        frac_high_impact_10=pl.col("n_high_impact_gt1") / pl.col("n_variants"),
-        variants_per_kb=(pl.col("n_variants") / (pl.col("genomic_length") / 1000.0)).fill_nan(0.0),
-
-        **{enrich_col: (
-            (pl.col(promoter_col) / pl.col("n_variants_promoter_core").clip(1)) /
-            (pl.col(vg_global_col) / pl.col("n_variants").clip(1))
-        ).fill_nan(0.0)}
-    )
+    # Build post-aggregation computed columns
+    computed_cols = [
+        # Existing metrics
+        pl.col("n_high_impact_gt05").truediv(pl.col("n_variants")).alias("frac_high_impact_05"),
+        pl.col("n_high_impact_gt1").truediv(pl.col("n_variants")).alias("frac_high_impact_10"),
+        (pl.col("n_variants") / (pl.col("genomic_length") / 1000.0)).fill_nan(0.0).alias("variants_per_kb"),
+        
+        # Weighted mean effect
+        (pl.col("_af_times_abs") / pl.col("_af_sum")).fill_nan(0.0).alias("weighted_mean_effect"),
+        
+        # Gene-wide entropy and AF gradient
+        pl.col("scores_all").map_elements(lambda s: _calculate_entropy(s), return_dtype=pl.Float64).alias("entropy_effect"),
+        pl.col("_dist_af_struct").map_elements(lambda s: _calculate_af_gradient(s), return_dtype=pl.Float64).alias("af_gradient"),
+        
+        # Entropy per window
+        pl.col("scores_promoter_core").map_elements(lambda s: _calculate_entropy(s), return_dtype=pl.Float64).alias("entropy_promoter_core"),
+        pl.col("scores_proximal_upstream").map_elements(lambda s: _calculate_entropy(s), return_dtype=pl.Float64).alias("entropy_proximal_upstream"),
+        pl.col("scores_distal_upstream").map_elements(lambda s: _calculate_entropy(s), return_dtype=pl.Float64).alias("entropy_distal_upstream"),
+        pl.col("scores_down_proximal").map_elements(lambda s: _calculate_entropy(s), return_dtype=pl.Float64).alias("entropy_down_proximal"),
+        pl.col("scores_down_distal").map_elements(lambda s: _calculate_entropy(s), return_dtype=pl.Float64).alias("entropy_down_distal"),
+        
+        # Proportion of vg in each window
+        (pl.col(f"vg_promoter_core{vg_suffix}") / pl.col(vg_global_col)).fill_nan(0.0).alias(f"prop_vg_promoter_core{vg_suffix}"),
+        (pl.col(f"vg_proximal_upstream{vg_suffix}") / pl.col(vg_global_col)).fill_nan(0.0).alias(f"prop_vg_proximal_upstream{vg_suffix}"),
+        (pl.col(f"vg_distal_upstream{vg_suffix}") / pl.col(vg_global_col)).fill_nan(0.0).alias(f"prop_vg_distal_upstream{vg_suffix}"),
+        (pl.col(f"vg_down_proximal{vg_suffix}") / pl.col(vg_global_col)).fill_nan(0.0).alias(f"prop_vg_down_proximal{vg_suffix}"),
+        (pl.col(f"vg_down_distal{vg_suffix}") / pl.col(vg_global_col)).fill_nan(0.0).alias(f"prop_vg_down_distal{vg_suffix}"),
+        
+        # Enrichment scores per window
+        ((pl.col(f"vg_promoter_core{vg_suffix}") / pl.col("n_variants_promoter_core").clip(1)) /
+         (pl.col(vg_global_col) / pl.col("n_variants").clip(1))).fill_nan(0.0).alias(f"enrich_vg_promoter_core{vg_suffix}"),
+        
+        ((pl.col(f"vg_proximal_upstream{vg_suffix}") / pl.col("n_variants_proximal_upstream").clip(1)) /
+         (pl.col(vg_global_col) / pl.col("n_variants").clip(1))).fill_nan(0.0).alias(f"enrich_vg_proximal_upstream{vg_suffix}"),
+        
+        ((pl.col(f"vg_distal_upstream{vg_suffix}") / pl.col("n_variants_distal_upstream").clip(1)) /
+         (pl.col(vg_global_col) / pl.col("n_variants").clip(1))).fill_nan(0.0).alias(f"enrich_vg_distal_upstream{vg_suffix}"),
+        
+        ((pl.col(f"vg_down_proximal{vg_suffix}") / pl.col("n_variants_down_proximal").clip(1)) /
+         (pl.col(vg_global_col) / pl.col("n_variants").clip(1))).fill_nan(0.0).alias(f"enrich_vg_down_proximal{vg_suffix}"),
+        
+        ((pl.col(f"vg_down_distal{vg_suffix}") / pl.col("n_variants_down_distal").clip(1)) /
+         (pl.col(vg_global_col) / pl.col("n_variants").clip(1))).fill_nan(0.0).alias(f"enrich_vg_down_distal{vg_suffix}"),
+    ]
+    
+    # Add permuted AF-specific computed columns if available (only in non-synthetic mode)
+    # In synthetic mode, these are already created in the main computed_cols with _perm suffix
+    if has_perm_af and not is_synthetic:
+        computed_cols.extend([
+            # Weighted mean effect for perm_AF
+            (pl.col("_perm_af_times_abs") / pl.col("_perm_af_sum")).fill_nan(0.0).alias("weighted_mean_effect_perm"),
+            
+            # Depletion scores
+            (pl.col("_af_high_impact") / pl.col("_perm_af_high_impact")).fill_nan(0.0).alias("depletion_high_impact"),
+            (pl.col("_af_common") / pl.col("_perm_af_common")).fill_nan(0.0).alias("depletion_common"),
+            (pl.col("_af_rare") / pl.col("_perm_af_rare")).fill_nan(0.0).alias("depletion_rare"),
+            
+            # Depletion scores per window
+            (pl.col("_af_promoter_core") / pl.col("_perm_af_promoter_core")).fill_nan(0.0).alias("depletion_promoter_core"),
+            (pl.col("_af_proximal_upstream") / pl.col("_perm_af_proximal_upstream")).fill_nan(0.0).alias("depletion_proximal_upstream"),
+            (pl.col("_af_distal_upstream") / pl.col("_perm_af_distal_upstream")).fill_nan(0.0).alias("depletion_distal_upstream"),
+            (pl.col("_af_down_proximal") / pl.col("_perm_af_down_proximal")).fill_nan(0.0).alias("depletion_down_proximal"),
+            (pl.col("_af_down_distal") / pl.col("_perm_af_down_distal")).fill_nan(0.0).alias("depletion_down_distal"),
+            
+            # Proportions and enrichments for _perm
+            (pl.col("vg_promoter_core_perm") / pl.col("vg_predicted_perm")).fill_nan(0.0).alias("prop_vg_promoter_core_perm"),
+            (pl.col("vg_proximal_upstream_perm") / pl.col("vg_predicted_perm")).fill_nan(0.0).alias("prop_vg_proximal_upstream_perm"),
+            (pl.col("vg_distal_upstream_perm") / pl.col("vg_predicted_perm")).fill_nan(0.0).alias("prop_vg_distal_upstream_perm"),
+            (pl.col("vg_down_proximal_perm") / pl.col("vg_predicted_perm")).fill_nan(0.0).alias("prop_vg_down_proximal_perm"),
+            (pl.col("vg_down_distal_perm") / pl.col("vg_predicted_perm")).fill_nan(0.0).alias("prop_vg_down_distal_perm"),
+            
+            ((pl.col("vg_promoter_core_perm") / pl.col("n_variants_promoter_core").clip(1)) /
+             (pl.col("vg_predicted_perm") / pl.col("n_variants").clip(1))).fill_nan(0.0).alias("enrich_vg_promoter_core_perm"),
+            
+            ((pl.col("vg_proximal_upstream_perm") / pl.col("n_variants_proximal_upstream").clip(1)) /
+             (pl.col("vg_predicted_perm") / pl.col("n_variants").clip(1))).fill_nan(0.0).alias("enrich_vg_proximal_upstream_perm"),
+            
+            ((pl.col("vg_distal_upstream_perm") / pl.col("n_variants_distal_upstream").clip(1)) /
+             (pl.col("vg_predicted_perm") / pl.col("n_variants").clip(1))).fill_nan(0.0).alias("enrich_vg_distal_upstream_perm"),
+            
+            ((pl.col("vg_down_proximal_perm") / pl.col("n_variants_down_proximal").clip(1)) /
+             (pl.col("vg_predicted_perm") / pl.col("n_variants").clip(1))).fill_nan(0.0).alias("enrich_vg_down_proximal_perm"),
+            
+            ((pl.col("vg_down_distal_perm") / pl.col("n_variants_down_distal").clip(1)) /
+             (pl.col("vg_predicted_perm") / pl.col("n_variants").clip(1))).fill_nan(0.0).alias("enrich_vg_down_distal_perm"),
+        ])
+    
+    enriched = enriched.with_columns(computed_cols)
+    
+    # Drop intermediate columns
+    cols_to_drop = [
+        "_af_times_abs", "_af_sum", "scores_all", "_dist_af_struct",
+        "scores_promoter_core", "scores_proximal_upstream", "scores_distal_upstream",
+        "scores_down_proximal", "scores_down_distal"
+    ]
+    
+    if has_perm_af:
+        cols_to_drop.extend([
+            "_perm_af_times_abs", "_perm_af_sum",
+            "_af_high_impact", "_perm_af_high_impact",
+            "_af_common", "_perm_af_common",
+            "_af_rare", "_perm_af_rare",
+            "_af_promoter_core", "_perm_af_promoter_core",
+            "_af_proximal_upstream", "_perm_af_proximal_upstream",
+            "_af_distal_upstream", "_perm_af_distal_upstream",
+            "_af_down_proximal", "_perm_af_down_proximal",
+            "_af_down_distal", "_perm_af_down_distal",
+        ])
+    
+    enriched = enriched.drop([c for c in cols_to_drop if c in enriched.columns])
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     enriched.write_parquet(out_path, compression="zstd")

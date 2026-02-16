@@ -11,7 +11,6 @@ log = logging.getLogger(__name__)
 def load_gene_af_pools(source: Path | pl.DataFrame) -> dict[str, np.ndarray]:
     """extract non-zero AFs per gene from source file or DataFrame."""
     
-    # --- START FIX ---
     if isinstance(source, (str, Path)):
         log.info('loading per-gene AF pools from file: %s', source)
         df = pl.read_parquet(source, columns=["gene_id", "AF"])
@@ -19,10 +18,7 @@ def load_gene_af_pools(source: Path | pl.DataFrame) -> dict[str, np.ndarray]:
         log.info('loading per-gene AF pools from in-memory DataFrame')
         # Select only necessary columns to avoid overhead
         df = source.select(["gene_id", "AF"])
-    # --- END FIX ---
-    
-    # DELETE the old lines that were here (reading perm_variants_path)
-    
+        
     # filter to non-null AFs (include AF=0)
     df = df.filter(pl.col('AF').is_not_null())
     

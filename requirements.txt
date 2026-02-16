@@ -1,6 +1,7 @@
 polars
 pandas
 numpy
+scipy
 python-dotenv
 
 # alphagenome python client for scoring
