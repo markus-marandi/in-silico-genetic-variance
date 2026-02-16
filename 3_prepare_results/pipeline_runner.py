@@ -653,6 +653,7 @@ def main() -> None:
     from modules.variant_deduplicator import deduplicate_by_gene_and_variant
     from modules.synthetic_variant_downsampler import load_real_variant_counts, downsample_to_real_counts
     from modules.permuted_af import add_perm_af_gene_aware
+    from modules.snv_filter import filter_to_snvs
 
     parser = argparse.ArgumentParser(description='process and aggregate variant scores')
     parser.add_argument('--variants-parquet', type=Path, required=True, help='input variants parquet')
@@ -665,6 +666,7 @@ def main() -> None:
     parser.add_argument('--permute-af', action='store_true', help='generate perm_AF')
     parser.add_argument('--calc-ci', action='store_true', help='calculate confidence intervals')
     parser.add_argument('--synthetic', action='store_true', help='synthetic/null mode: use only perm_AF for all Vg metrics')
+    parser.add_argument('--filter-snvs', action='store_true', help='filter to keep only SNVs (removes indels and MNVs)')
     
     args = parser.parse_args()
 
@@ -685,7 +687,12 @@ def main() -> None:
         print(f'  Loaded {len(df):,} rows, {len(df.columns)} columns', flush=True)
         sys.stdout.flush()
 
-        # filter by gene list first
+        # filter to SNVs only (CRITICAL: do this before deduplication)
+        if args.filter_snvs:
+            print('Filtering to SNVs only (removing indels and MNVs)...')
+            df = filter_to_snvs(df, verbose=True)
+        
+        # filter by gene list
         if args.gene_list:
             print(f'Filtering variants using whitelist: {args.gene_list}')
             whitelist_df = pl.read_csv(
@@ -696,7 +703,7 @@ def main() -> None:
             )
             whitelist = whitelist_df['gene_id'].to_list()
             df = df.filter(pl.col('gene_id').is_in(whitelist))
-            print(f'  Rows after filtering: {len(df)}')
+            print(f'  Rows after gene list filtering: {len(df):,}')
         
         print('Deduplicating by gene_id and variant_id...')
         df = deduplicate_by_gene_and_variant(df, verbose=True)
@@ -711,7 +718,7 @@ def main() -> None:
                 raise FileNotFoundError(f'Real reference not found: {real_ref}')
             
             print(f'Loading real variant counts from {real_ref}...')
-            real_counts = load_real_variant_counts(real_ref)
+            real_counts = load_real_variant_counts(real_ref, filter_snvs=args.filter_snvs)
             
             print('Downsampling to match real counts...')
             df = downsample_to_real_counts(df, real_counts, seed=42, verbose=True)
@@ -719,6 +726,10 @@ def main() -> None:
             suffix = '_downsampled'
         else:
             suffix = '_dedup'
+        
+        # add snv filter suffix if applied
+        if args.filter_snvs:
+            suffix += '_snv'
 
         # permute af
         if args.permute_af:
