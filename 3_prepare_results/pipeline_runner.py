@@ -9,6 +9,41 @@ from modules.normalisation_helper import strip_ensembl_version
 from modules.permuted_af import load_gene_af_pools
 
 
+def _build_mane_tss_lazy(base_ref: Path) -> pl.LazyFrame:
+    """load MANE summary and compute strand-aware TSS keyed by normalized gene_id."""
+    mane_path = base_ref / "initial_data_external/MANE.GRCh38.v1.4.summary.txt"
+    if not mane_path.exists():
+        return pl.DataFrame({"gene_id": [], "tss_mane": []}, schema={"gene_id": pl.Utf8, "tss_mane": pl.Int64}).lazy()
+
+    mane_lf = pl.scan_csv(mane_path, separator="\t", infer_schema_length=5000)
+    cols = set(mane_lf.collect_schema().names())
+    required = {"Ensembl_Gene", "chr_start", "chr_end", "chr_strand"}
+    if not required.issubset(cols):
+        return pl.DataFrame({"gene_id": [], "tss_mane": []}, schema={"gene_id": pl.Utf8, "tss_mane": pl.Int64}).lazy()
+
+    if "MANE_status" in cols:
+        mane_lf = mane_lf.filter(pl.col("MANE_status") == "MANE Select")
+
+    return (
+        mane_lf
+        .with_columns(
+            pl.col("Ensembl_Gene").cast(pl.Utf8).str.strip_chars().str.split(".").list.get(0).alias("gene_id"),
+            pl.col("chr_start").cast(pl.Int64, strict=False),
+            pl.col("chr_end").cast(pl.Int64, strict=False),
+            pl.col("chr_strand").cast(pl.Utf8).str.strip_chars().alias("chr_strand"),
+        )
+        .with_columns(
+            pl.when(pl.col("chr_strand") == "+")
+            .then(pl.col("chr_start"))
+            .otherwise(pl.col("chr_end"))
+            .alias("tss_mane")
+        )
+        .select(["gene_id", "tss_mane"])
+        .drop_nulls(["gene_id", "tss_mane"])
+        .unique("gene_id")
+    )
+
+
 def _load_gene_meta(base: Path) -> tuple[pl.DataFrame, pl.DataFrame, pl.DataFrame, pl.DataFrame]:
     """load and normalize all reference metadata (returns eager dataframes)."""
     loader = ExternalDataLoader(base)
@@ -235,10 +270,16 @@ def aggregate_genes(
         if gene_whitelist:
             lf = lf.filter(pl.col(gene_col).is_in(gene_whitelist))
 
-    # 5. Attach Spatial Info
-    gtf_spatial = gtf.lazy().select(
-        [pl.col("gene_id"), "tss", "strand", "start", "end"]
-    ).unique("gene_id")
+    # 5. Attach Spatial Info (prefer MANE TSS, fallback to GTF TSS)
+    mane_tss = _build_mane_tss_lazy(base_ref)
+    gtf_spatial = (
+        gtf.lazy()
+        .select([pl.col("gene_id"), "tss", "strand", "start", "end"])
+        .unique("gene_id")
+        .join(mane_tss, on="gene_id", how="left")
+        .with_columns(pl.coalesce(["tss_mane", "tss"]).alias("tss"))
+        .drop("tss_mane")
+    )
     lf = lf.join(gtf_spatial, left_on=gene_col, right_on="gene_id", how="left")
 
     # 6. Deduplication (Max Impact)
