@@ -75,11 +75,13 @@ def filter_to_snvs(df: pl.DataFrame, verbose: bool = True) -> pl.DataFrame:
             )
             
             # Count by type
-            removed_types = removed.group_by(
-                pl.struct(['REF', 'ALT'])
-            ).agg(
-                pl.count().alias('n')
-            ).sort('n', descending=True).head(10)
+            removed_types = (
+                removed
+                .group_by(['REF', 'ALT'])
+                .agg(pl.len().alias('n'))
+                .sort('n', descending=True)
+                .head(10)
+            )
             
             print(f"  Top 10 removed variant types:")
             for row in removed_types.iter_rows(named=True):
