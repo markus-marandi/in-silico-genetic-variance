@@ -20,6 +20,12 @@ from alphagenome.models import dna_client as _dc
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PATH_MANAGER = Path("/cfs/klemming/home/m/mmarandi/lab/users/mmarandi/alphagenome/in-silico-genetic-variance/helpers/path_manager.py")
+PREPARE_RESULTS_DIR = REPO_ROOT / "3_prepare_results"
+
+if PREPARE_RESULTS_DIR.as_posix() not in sys.path:
+    sys.path.insert(0, PREPARE_RESULTS_DIR.as_posix())
+
+from modules.normalisation_helper import add_protocol_track_columns  # noqa: E402
 
 def _load_layout():
     if not PATH_MANAGER.exists():
@@ -37,12 +43,17 @@ def _load_layout():
     return module.ProjectLayout.from_env()
 
 # dataset-specific input overrides
-VAR_TSV = "/cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv"
-TSS_BED = "/cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_gene_set±10kb.bed"
-GENE_LIST_PATH = "/cfs/klemming/scratch/m/mmarandi/intermediate_input/dataset5_null/background_gene_set_380.tsv"
+#VAR_TSV = "/cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_variants.tsv"
+#TSS_BED = "/cfs/klemming/scratch/m/mmarandi/experiments/dataset4/background/01_inputs/background_gene_set±10kb.bed"
+#GENE_LIST_PATH = "/cfs/klemming/scratch/m/mmarandi/intermediate_input/dataset5_null/background_gene_set_380.tsv"
 
-os.environ.setdefault("DATASET_ID", "dataset_4")
-os.environ.setdefault("SAMPLE_ID", "background_gnomad")
+
+GENE_LIST_PATH = "/cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/01_inputs/ClinGen_gene_curation_list_GRCh38.ensg.txt"
+TSS_BED = "/cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/01_inputs/ClinGen_gene_curation_list_GRCh38.ensg±10kb.bed"
+VAR_TSV = "/cfs/klemming/scratch/m/mmarandi/experiments/dataset3/clingen/01_inputs/ClinGen_variants_all.tsv"
+
+os.environ.setdefault("DATASET_ID", "dataset_3")
+os.environ.setdefault("SAMPLE_ID", "clingen")
 
 layout = _load_layout()
 layout.make_dirs()
@@ -224,7 +235,7 @@ def scores_to_df(scores, meta_df):
                         "gene_tag": mrow.gene_tag,
                     })
 
-    return pd.DataFrame(rows)
+    return add_protocol_track_columns(pd.DataFrame(rows))
 
 def _ensure_variant_ids(df: pd.DataFrame, interval_to_varid: dict[str, str]) -> None:
     """fill missing variant_id values from scored_interval_str using a lookup map.
@@ -502,6 +513,7 @@ for b in batch_ids:
             tidy = variant_scorers.tidy_scores(scores, match_gene_strand=False)
             tidy = normalize_tidy(tidy)
             _ensure_variant_ids(tidy, gm_interval_to_varid)
+            tidy = add_protocol_track_columns(tidy)
             anchor_map = dict(zip(meta["variant_id"], meta["is_anchor"]))
             tidy["is_anchor"] = tidy["variant_id"].map(anchor_map).fillna(False)
             tidy["seq_len"] = L

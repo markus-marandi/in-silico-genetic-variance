@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #SBATCH -A naiss2025-5-479
 #SBATCH -J alphagenome_window
-#SBATCH -t 60:00:00
+#SBATCH -t 00:30:00
 #SBATCH -p shared
 #SBATCH -n 1
 #SBATCH -c 2
@@ -76,6 +76,15 @@ exit ${status}
 
 # TO RUN IT
 # ENV_PATH= # add here the file where your API key .env file is located
-# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=FIRST_KEY,JOB_INDEX=0,JOB_TOTAL=3,DATASET_ID=dataset4,SAMPLE_ID=background  run_alphagenome_batch_window.sh
-# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=SECOND_KEY,JOB_INDEX=1,JOB_TOTAL=3,DATASET_ID=dataset4,SAMPLE_ID=background run_alphagenome_batch_window.sh
-# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=THIRD_KEY,JOB_INDEX=2,JOB_TOTAL=3,DATASET_ID=dataset4,SAMPLE_ID=background run_alphagenome_batch_window.sh
+# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_PERSONAL_1,JOB_INDEX=0,JOB_TOTAL=12,DATASET_ID=dataset3,SAMPLE_ID=clingen  run_alphagenome_batch_window.sh
+# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_PERSONAL_2,JOB_INDEX=1,JOB_TOTAL=12,DATASET_ID=dataset3,SAMPLE_ID=clingen run_alphagenome_batch_window.sh
+# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_PERSONAL_3,JOB_INDEX=2,JOB_TOTAL=12,DATASET_ID=dataset3,SAMPLE_ID=clingen run_alphagenome_batch_window.sh
+# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_PERSONAL_4,JOB_INDEX=2,JOB_TOTAL=12,DATASET_ID=dataset3,SAMPLE_ID=clingen run_alphagenome_batch_window.sh
+# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_1674_PERSONAL_1,JOB_INDEX=2,JOB_TOTAL=12,DATASET_ID=dataset3,SAMPLE_ID=clingen run_alphagenome_batch_window.sh
+# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_1674_PERSONAL_2,JOB_INDEX=2,JOB_TOTAL=12,DATASET_ID=dataset3,SAMPLE_ID=clingen run_alphagenome_batch_window.sh
+# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_1674_PERSONAL_3,JOB_INDEX=2,JOB_TOTAL=12,DATASET_ID=dataset3,SAMPLE_ID=clingen run_alphagenome_batch_window.sh
+# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_1674_PERSONAL_4,JOB_INDEX=2,JOB_TOTAL=12,DATASET_ID=dataset3,SAMPLE_ID=clingen run_alphagenome_batch_window.sh
+# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_SCILIFELAB_1,JOB_INDEX=0,JOB_TOTAL=12,DATASET_ID=dataset3,SAMPLE_ID=clingen  run_alphagenome_batch_window.sh
+# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_SCILIFELAB_2,JOB_INDEX=0,JOB_TOTAL=12,DATASET_ID=dataset3,SAMPLE_ID=clingen  run_alphagenome_batch_window.sh
+# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_SCILIFELAB_3,JOB_INDEX=0,JOB_TOTAL=12,DATASET_ID=dataset3,SAMPLE_ID=clingen  run_alphagenome_batch_window.sh
+# sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_SCILIFELAB_4,JOB_INDEX=0,JOB_TOTAL=12,DATASET_ID=dataset3,SAMPLE_ID=clingen  run_alphagenome_batch_window.sh

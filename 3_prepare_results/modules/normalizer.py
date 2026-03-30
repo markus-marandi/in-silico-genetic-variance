@@ -4,7 +4,11 @@ from pathlib import Path
 
 import polars as pl
 
-from .normalisation_helper import friendly_method_name, ag_variant_to_canonical
+from .normalisation_helper import (
+    ag_variant_to_canonical,
+    friendly_method_name,
+    protocol_track_exprs,
+)
 
 
 VARIANT_RE = r"^(?:chr)?(?P<chrom>[0-9XYM]+):(?P<pos>\d+):(?P<ref>[ACGTN]+)>(?P<alt>[ACGTN]+)$"
@@ -130,7 +134,10 @@ def normalize_and_backfill(lf: pl.LazyFrame) -> pl.LazyFrame:
         .map_elements(canon_fn, return_dtype=pl.Utf8)
     )
 
-    lf = lf.with_columns(variant_id_canonical=final_canon)
+    lf = lf.with_columns(
+        variant_id_canonical=final_canon,
+        *protocol_track_exprs(schema_cols),
+    )
 
     lf = lf.drop("_chrom_from_id", "_pos_from_id", "_ref_from_id", "_alt_from_id")
     return lf

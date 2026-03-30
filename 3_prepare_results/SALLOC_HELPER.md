@@ -6,7 +6,7 @@ salloc \
   -p shared \
   -n 1 \
   -c 2 \
-  --mem=84000M
+  --mem=1200000M
 
 srun --pty bash -l
 

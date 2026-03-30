@@ -19,7 +19,7 @@ The main driver here is `pipeline_runner.py`. It handles two primary modes:
 * **`normalizer.py`**: Standardizes columns (`CHROM`, `POS`, `REF`, `ALT`) and ensures method-friendly tagging.
 * **`annotator.py`**: Joins Allele Frequency (AF) from inputs or gnomAD.
 * **`deduplicator.py` (New)**:
-* **Rigid Deduplication**: Removes duplicate variants by selecting the one with the highest absolute score.
+* **Protocol-Aware Deduplication**: Removes duplicate variants only within the same `gene_id`, `variant_id`, and exact `track_key`.
 * **Deterministic Tie-Breaking**: Sorts by `abs_score` (desc) then `variant_id` (asc) to ensure 100% reproducibility.
 
 
@@ -33,6 +33,7 @@ The main driver here is `pipeline_runner.py`. It handles two primary modes:
 
 * **`aggregator.py`**:
 * **Gene Counts & Stats**: Aggregates variance (), spatial bins (Promoter/Upstream), and enrichment scores.
+* **Protocol-Aware Long Format**: Gene-level outputs keep separate rows per `gene_id` and `protocol_group`.
 * **Dual Metrics**: Calculates `vg_predicted` (using real AF) and `vg_predicted_perm` (using permuted AF) simultaneously.
 * **Confidence Intervals**: [Optional] Runs a Monte Carlo simulation (1,000 iterations) during aggregation to calculate the 5th and 95th percentiles for .
 
@@ -145,12 +146,28 @@ python pipeline_runner.py \
 
 The aggregator produces comprehensive gene-level metrics. Key columns include:
 
+* **`protocol_group`**: protocol-level RNA grouping with values `polyA_plus_rna_seq`, `total_rna_seq`, or `other`.
+* **`n_track_keys`**: number of exact AlphaGenome RNA tracks contributing to that gene/protocol row.
 * **`vg_predicted`**: Genetic Variance calculated using the standard `AF` column.
 * **`vg_predicted_perm`**: Genetic Variance calculated using the `perm_AF` column (if `--permute-af` was used).
 * **`vg_perm_mean`, `vg_perm_p05`, `vg_perm_p95**`: Monte Carlo statistics for error bars (if `--calc-ci` was used).
 * **`n_variants`**: Final count of variants (after deduplication/downsampling).
 * **`mean_abs_effect`**: Mean absolute score of variants in the gene.
 * **`mean_abs_promoter` / `mean_abs_gene_body**`: Spatial scoring breakdown.
+
+## Protocol-Aware Variant Identity
+
+Variant-level RNA outputs now keep two explicit identity columns:
+
+* **`protocol_group`**: clean grouping for protocol-level summaries.
+* **`track_key`**: stable exact track identifier built from AlphaGenome track metadata such as `Assay title` / `Assay_title`, `track_name`, `ontology_curie`, `biosample_name`, and `gtex_tissue`.
+
+This means the same `gene_id` + `variant_id` can legitimately appear multiple times in processed outputs when distinct RNA tracks or protocols are present. `polyA_plus_rna_seq` and `total_rna_seq` are no longer collapsed together.
+
+## Rerun Boundary
+
+* rerun only `3_prepare_results` if your variant parquet or rebuilt chunk-to-parquet step still preserves the raw track metadata needed to derive `track_key`
+* rerun scoring if the existing variant parquet already dropped track metadata and the prepare-results stage can no longer reconstruct exact track identity
 
 
 ----------

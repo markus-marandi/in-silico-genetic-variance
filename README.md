@@ -59,6 +59,13 @@ sbatch --export=DATASET_ID=dataset4,SAMPLE_ID=background ... run_scoring.sh
 
 ```
 
+Raw RNA scoring outputs now keep both exact and grouped RNA identity:
+
+* `track_key`: stable exact AlphaGenome track identifier built from track metadata
+* `protocol_group`: `polyA_plus_rna_seq`, `total_rna_seq`, or `other`
+
+These columns are required downstream so `polyA plus RNA-seq` and `total RNA-seq` remain separate instead of being collapsed.
+
 ---
 
 ### Stage 3: Aggregation & Analysis
@@ -81,6 +88,13 @@ Where:
 
 * **Variant-Level Parquet:** Annotated list of all scored variants.
 * **Gene-Level Parquet:** Aggregated metrics including , mean absolute effects, and spatial effect distributions (Promoter vs. Gene Body).
+
+Aggregation is protocol-aware:
+
+* variant-level outputs preserve exact RNA rows per `track_key`
+* gene-level outputs emit separate rows per `gene_id` and `protocol_group`
+
+If an older variant parquet already dropped track metadata, rebuild it from raw chunk TSVs or rerun scoring before aggregating. If the raw chunk TSVs still contain the original AlphaGenome track metadata, rerunning `3_prepare_results` is sufficient.
 
 ## Installation & Environment
 

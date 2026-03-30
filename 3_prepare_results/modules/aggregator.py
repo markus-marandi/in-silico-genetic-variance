@@ -5,7 +5,11 @@ import numpy as np
 import polars as pl
 
 from modules.external_data_loader import ExternalDataLoader
-from modules.normalisation_helper import strip_ensembl_version
+from modules.normalisation_helper import (
+    UNRESOLVED_TRACK_KEY,
+    protocol_track_exprs,
+    strip_ensembl_version,
+)
 from modules.permuted_af import load_gene_af_pools
 
 
@@ -60,54 +64,123 @@ def _load_gene_meta(base: Path) -> tuple[pl.DataFrame, pl.DataFrame, pl.DataFram
 
     return _norm(mane), _norm(gtf), _norm(tpm), _norm(vgh)
 
-def calculate_vg_ci_struct(
+def _summarize_ci(sim_values: np.ndarray, metric_name: str) -> dict[str, float]:
+    if sim_values.size == 0:
+        return {
+            f"{metric_name}_CI_mean": 0.0,
+            f"{metric_name}_CI_p05": 0.0,
+            f"{metric_name}_CI_p95": 0.0,
+        }
+    return {
+        f"{metric_name}_CI_mean": float(np.mean(sim_values)),
+        f"{metric_name}_CI_p05": float(np.percentile(sim_values, 5)),
+        f"{metric_name}_CI_p95": float(np.percentile(sim_values, 95)),
+    }
+
+
+def calculate_vg_ci_metrics(
         scores: pl.Series,
+        dist_signed: pl.Series,
         gene_id: str,
         af_pools: dict[str, np.ndarray],
         n_iter: int = 1000
 ) -> dict[str, float]:
-    """Monte Carlo simulation for Vg CI."""
+    """Monte Carlo simulation for CI of total, AF-bin, and spatial-window Vg metrics."""
+    metric_names = [
+        "vg_predicted",
+        "vg_common",
+        "vg_rare",
+        "vg_distal_upstream",
+        "vg_proximal_upstream",
+        "vg_promoter_core",
+        "vg_down_proximal",
+        "vg_down_distal",
+    ]
+
+    zero_metrics: dict[str, float] = {}
+    for metric_name in metric_names:
+        zero_metrics.update(_summarize_ci(np.array([]), metric_name))
+
     if len(scores) == 0:
-        return {"vg_perm_mean": 0.0, "vg_perm_p05": 0.0, "vg_perm_p95": 0.0}
+        return zero_metrics
 
     pool = af_pools.get(gene_id)
     if pool is None or len(pool) == 0:
-        return {"vg_perm_mean": 0.0, "vg_perm_p05": 0.0, "vg_perm_p95": 0.0}
+        return zero_metrics
 
-    scores_arr = scores.to_numpy()
+    scores_arr = np.nan_to_num(scores.to_numpy(), nan=0.0)
+    dist_arr = np.nan_to_num(dist_signed.to_numpy(), nan=np.inf)
     n_variants = len(scores_arr)
 
     rng = np.random.default_rng()
-    random_afs = rng.choice(pool, size=(n_iter, n_variants), replace=True)
+    if len(pool) >= n_variants:
+        random_afs = np.vstack([rng.permutation(pool)[:n_variants] for _ in range(n_iter)])
+    else:
+        random_afs = rng.choice(pool, size=(n_iter, n_variants), replace=True)
 
-    term_p = 2.0 * random_afs * (1.0 - random_afs)
-    term_beta = scores_arr ** 2
+    beta_sq = scores_arr ** 2
+    vg_contrib = 2.0 * random_afs * (1.0 - random_afs) * beta_sq
 
-    vg_sims = term_p @ term_beta
+    results: dict[str, float] = {}
+    results.update(_summarize_ci(vg_contrib.sum(axis=1), "vg_predicted"))
+    results.update(_summarize_ci((vg_contrib * (random_afs >= 0.05)).sum(axis=1), "vg_common"))
+    results.update(_summarize_ci((vg_contrib * (random_afs < 0.05)).sum(axis=1), "vg_rare"))
 
-    return {
-        "vg_perm_mean": float(np.mean(vg_sims)),
-        "vg_perm_p05": float(np.percentile(vg_sims, 5)),
-        "vg_perm_p95": float(np.percentile(vg_sims, 95)),
+    window_masks = {
+        "vg_distal_upstream": (dist_arr >= -10000) & (dist_arr < -2000),
+        "vg_proximal_upstream": (dist_arr >= -2000) & (dist_arr < -200),
+        "vg_promoter_core": (dist_arr >= -200) & (dist_arr < 200),
+        "vg_down_proximal": (dist_arr >= 200) & (dist_arr < 2000),
+        "vg_down_distal": (dist_arr >= 2000) & (dist_arr < 10000),
     }
+    for metric_name, mask in window_masks.items():
+        if np.any(mask):
+            results.update(_summarize_ci(vg_contrib[:, mask].sum(axis=1), metric_name))
+        else:
+            results.update(_summarize_ci(np.array([]), metric_name))
+
+    return results
 
 
-def calc_architecture_stats(struct_list: list[dict], suffix: str = "") -> dict:
+def calc_architecture_stats(struct_list, suffix: str = "") -> dict:
     """computes N90, N85, and properties of the 'driver' variants.
     
     args:
         struct_list: list of dicts [{'v': vg_contribution, 'e': abs_score}, ...]
         suffix: suffix to append to output keys (e.g., "_perm")
     """
-    if not struct_list:
+    if struct_list is None:
         return {
             f"N90{suffix}": 0, f"N85{suffix}": 0,
             f"variance_N90{suffix}": 0.0, f"cv_effect_N90{suffix}": 0.0,
             f"mean_effect_N90{suffix}": 0.0
         }
 
-    v = np.array([x['v'] for x in struct_list])
-    e = np.array([x['e'] for x in struct_list])
+    if isinstance(struct_list, pl.Series):
+        if struct_list.is_empty():
+            return {
+                f"N90{suffix}": 0, f"N85{suffix}": 0,
+                f"variance_N90{suffix}": 0.0, f"cv_effect_N90{suffix}": 0.0,
+                f"mean_effect_N90{suffix}": 0.0
+            }
+        entries = struct_list.to_list()
+    elif isinstance(struct_list, list):
+        entries = struct_list
+    else:
+        try:
+            entries = list(struct_list)
+        except TypeError:
+            entries = []
+
+    if len(entries) == 0:
+        return {
+            f"N90{suffix}": 0, f"N85{suffix}": 0,
+            f"variance_N90{suffix}": 0.0, f"cv_effect_N90{suffix}": 0.0,
+            f"mean_effect_N90{suffix}": 0.0
+        }
+
+    v = np.array([x['v'] for x in entries])
+    e = np.array([x['e'] for x in entries])
 
     # sort descending by variance contribution (v)
     sort_idx = np.argsort(v)[::-1]
@@ -202,6 +275,31 @@ def get_window_vg_exprs(windows: dict[str, tuple[int, int]], vg_col: str = "vg_c
     return exprs
 
 
+def _print_protocol_summary(lf: pl.LazyFrame, gene_col: str, label: str) -> None:
+    summary = (
+        lf.group_by("protocol_group")
+        .agg(
+            pl.len().alias("n_rows"),
+            pl.col("track_key").n_unique().alias("n_track_keys"),
+            pl.col("variant_id").n_unique().alias("n_variant_ids"),
+            pl.col(gene_col).n_unique().alias("n_genes"),
+        )
+        .sort("protocol_group")
+        .collect()
+    )
+
+    print(f"Protocol counts {label}:")
+    for row in summary.iter_rows(named=True):
+        print(
+            "  "
+            f"{row['protocol_group']}: "
+            f"rows={row['n_rows']:,}, "
+            f"track_keys={row['n_track_keys']:,}, "
+            f"variant_ids={row['n_variant_ids']:,}, "
+            f"genes={row['n_genes']:,}"
+        )
+
+
 def aggregate_genes(
         variants_path: Path,
         out_path: Path,
@@ -212,6 +310,8 @@ def aggregate_genes(
         real_reference_path: Path | None = None,
         n_permutations: int = 1000,
         is_synthetic: bool = False,
+        include_perm_sanity: bool = False,
+        global_unique_variant_ids: bool = False,
 ) -> None:
     """aggregate variant parquet to gene metrics."""
 
@@ -243,6 +343,19 @@ def aggregate_genes(
     else:
         gene_col = "gene_id"
 
+    lf = lf.with_columns(*protocol_track_exprs(schema_cols))
+    unresolved_track_count = (
+        lf.filter(pl.col("track_key") == UNRESOLVED_TRACK_KEY)
+        .select(pl.len().alias("n_rows"))
+        .collect()
+        .item()
+    )
+    if unresolved_track_count > 0:
+        raise ValueError(
+            "track_key could not be derived for all rows; rebuild the variant parquet from "
+            "chunk outputs with track metadata before aggregating"
+        )
+
     if gene_list_path and gene_list_path.exists():
         gene_whitelist = {
             strip_ensembl_version(line.strip())
@@ -265,10 +378,14 @@ def aggregate_genes(
     lf = lf.join(gtf_spatial, left_on=gene_col, right_on="gene_id", how="left")
 
     lf = lf.with_columns(abs_score=pl.col("raw_score").abs())
-    lf = (
-        lf.sort("abs_score", descending=True, nulls_last=True)
-        .unique(subset=["variant_id"], keep="first", maintain_order=True)
-    )
+    _print_protocol_summary(lf, gene_col, "before aggregation")
+    if global_unique_variant_ids:
+        print("Applying protocol-aware unique-by-gene_id, variant_id, and track_key in aggregation...")
+        lf = (
+            lf.sort("abs_score", descending=True, nulls_last=True)
+            .unique(subset=[gene_col, "variant_id", "track_key"], keep="first", maintain_order=True)
+        )
+        _print_protocol_summary(lf, gene_col, "after protocol-aware unique")
 
     lf = lf.with_columns(
         dist_to_tss=pl.when((pl.col("POS").is_not_null()) & (pl.col("tss").is_not_null()))
@@ -326,12 +443,15 @@ def aggregate_genes(
         vg_label = "vg_predicted"
 
     # Expression aggregation
+    compute_perm_sanity = has_perm_af and include_perm_sanity and not is_synthetic
+
     agg_exprs = [
         pl.count().alias("n_variants"),
+        pl.col("track_key").n_unique().alias("n_track_keys"),
 
         pl.col(vg_col).sum().alias(vg_label),
         
-        pl.col("vg_contribution_perm").sum().alias("vg_predicted_perm") if has_perm_af and not is_synthetic else None,
+        pl.col("vg_contribution_perm").sum().alias("vg_predicted_perm_sanity") if compute_perm_sanity else None,
 
         # AF cutoff metrics: variant counts
         pl.col("AF").filter(pl.col("AF") >= 0.05).count().alias("n_variants_common"),
@@ -343,7 +463,7 @@ def aggregate_genes(
     ]
     
     # Add permuted AF cutoff metrics if available
-    if has_perm_af:
+    if has_perm_af and is_synthetic:
         agg_exprs.extend([
             pl.col("perm_AF").filter(pl.col("perm_AF") >= 0.05).count().alias("n_variants_common_perm"),
             pl.col("perm_AF").filter(pl.col("perm_AF") < 0.05).count().alias("n_variants_rare_perm"),
@@ -403,7 +523,7 @@ def aggregate_genes(
     ])
     
     # Add permuted AF-specific metrics if available
-    if has_perm_af:
+    if compute_perm_sanity:
         agg_exprs.extend([
             (pl.col("perm_AF") * pl.col("abs_score")).sum().alias("_perm_af_times_abs"),
             pl.col("perm_AF").sum().alias("_perm_af_sum"),
@@ -438,13 +558,10 @@ def aggregate_genes(
     agg_exprs = [e for e in agg_exprs if e is not None]
 
     agg_exprs.extend(get_window_exprs(spatial_windows, vg_col=vg_col, suffix=vg_suffix))
-    
-    # for real data with perm_AF, also create _perm vg window metrics (just vg, not counts/means)
-    if has_perm_af and not is_synthetic:
-        agg_exprs.extend(get_window_vg_exprs(spatial_windows, vg_col="vg_contribution_perm", suffix="_perm"))
 
     print("Collecting and Aggregating Genes...")
-    df_agg = lf.group_by(gene_col).agg(agg_exprs).collect()
+    group_cols = [gene_col, "protocol_group"]
+    df_agg = lf.group_by(group_cols).agg(agg_exprs).collect()
 
     print("Computing Architecture Metrics (N90, CV_N90)...")
 
@@ -472,28 +589,39 @@ def aggregate_genes(
 
         af_pools = {k.split('.')[0]: v for k, v in af_pools.items()}
 
-        raw_lf = pl.scan_parquet(variants_path).select([gene_col, "raw_score"])
-
-        if gene_col == "gene_norm":
-            raw_lf = raw_lf.with_columns(gene_norm=pl.col("gene_id").str.split(".").list.get(0))
+        raw_lf = lf.select(group_cols + ["raw_score", "dist_signed"])
 
         raw_df = raw_lf.collect()
-        partitioned = raw_df.partition_by(gene_col, as_dict=True)
+        partitioned = raw_df.partition_by(group_cols, maintain_order=True)
 
         result_rows = []
-        for gid, sub_df in partitioned.items():
+        for sub_df in partitioned:
+            gid = sub_df[0, gene_col]
             if gid is None: continue
-            stats = calculate_vg_ci_struct(sub_df["raw_score"], gid, af_pools, n_iter=n_permutations)
+            stats = calculate_vg_ci_metrics(
+                sub_df["raw_score"],
+                sub_df["dist_signed"],
+                gid,
+                af_pools,
+                n_iter=n_permutations,
+            )
             stats[gene_col] = gid
+            stats["protocol_group"] = sub_df[0, "protocol_group"]
             result_rows.append(stats)
 
         ci_results = pl.DataFrame(result_rows)
-        df_agg = df_agg.join(ci_results, left_on=gene_col, right_on=gene_col, how="left")
-        df_agg = df_agg.with_columns([
-            pl.col("vg_perm_mean").fill_null(0.0),
-            pl.col("vg_perm_p05").fill_null(0.0),
-            pl.col("vg_perm_p95").fill_null(0.0),
-        ])
+        df_agg = df_agg.join(ci_results, on=group_cols, how="left")
+        ci_cols = [
+            "vg_predicted_CI_mean", "vg_predicted_CI_p05", "vg_predicted_CI_p95",
+            "vg_common_CI_mean", "vg_common_CI_p05", "vg_common_CI_p95",
+            "vg_rare_CI_mean", "vg_rare_CI_p05", "vg_rare_CI_p95",
+            "vg_distal_upstream_CI_mean", "vg_distal_upstream_CI_p05", "vg_distal_upstream_CI_p95",
+            "vg_proximal_upstream_CI_mean", "vg_proximal_upstream_CI_p05", "vg_proximal_upstream_CI_p95",
+            "vg_promoter_core_CI_mean", "vg_promoter_core_CI_p05", "vg_promoter_core_CI_p95",
+            "vg_down_proximal_CI_mean", "vg_down_proximal_CI_p05", "vg_down_proximal_CI_p95",
+            "vg_down_distal_CI_mean", "vg_down_distal_CI_p05", "vg_down_distal_CI_p95",
+        ]
+        df_agg = df_agg.with_columns([pl.col(c).fill_null(0.0) for c in ci_cols if c in df_agg.columns])
 
     gtf_meta = gtf.select(
         pl.all().exclude(["tss", "strand", "start", "end"])
@@ -570,10 +698,10 @@ def aggregate_genes(
     
     # Add permuted AF-specific computed columns if available (only in non-synthetic mode)
     # In synthetic mode, these are already created in the main computed_cols with _perm suffix
-    if has_perm_af and not is_synthetic:
+    if compute_perm_sanity:
         computed_cols.extend([
             # Weighted mean effect for perm_AF
-            (pl.col("_perm_af_times_abs") / pl.col("_perm_af_sum")).fill_nan(0.0).alias("weighted_mean_effect_perm"),
+            (pl.col("_perm_af_times_abs") / pl.col("_perm_af_sum")).fill_nan(0.0).alias("weighted_mean_effect_perm_sanity"),
             
             # Depletion scores
             (pl.col("_af_high_impact") / pl.col("_perm_af_high_impact")).fill_nan(0.0).alias("depletion_high_impact"),
@@ -586,28 +714,6 @@ def aggregate_genes(
             (pl.col("_af_distal_upstream") / pl.col("_perm_af_distal_upstream")).fill_nan(0.0).alias("depletion_distal_upstream"),
             (pl.col("_af_down_proximal") / pl.col("_perm_af_down_proximal")).fill_nan(0.0).alias("depletion_down_proximal"),
             (pl.col("_af_down_distal") / pl.col("_perm_af_down_distal")).fill_nan(0.0).alias("depletion_down_distal"),
-            
-            # Proportions and enrichments for _perm
-            (pl.col("vg_promoter_core_perm") / pl.col("vg_predicted_perm")).fill_nan(0.0).alias("prop_vg_promoter_core_perm"),
-            (pl.col("vg_proximal_upstream_perm") / pl.col("vg_predicted_perm")).fill_nan(0.0).alias("prop_vg_proximal_upstream_perm"),
-            (pl.col("vg_distal_upstream_perm") / pl.col("vg_predicted_perm")).fill_nan(0.0).alias("prop_vg_distal_upstream_perm"),
-            (pl.col("vg_down_proximal_perm") / pl.col("vg_predicted_perm")).fill_nan(0.0).alias("prop_vg_down_proximal_perm"),
-            (pl.col("vg_down_distal_perm") / pl.col("vg_predicted_perm")).fill_nan(0.0).alias("prop_vg_down_distal_perm"),
-            
-            ((pl.col("vg_promoter_core_perm") / pl.col("n_variants_promoter_core").clip(1)) /
-             (pl.col("vg_predicted_perm") / pl.col("n_variants").clip(1))).fill_nan(0.0).alias("enrich_vg_promoter_core_perm"),
-            
-            ((pl.col("vg_proximal_upstream_perm") / pl.col("n_variants_proximal_upstream").clip(1)) /
-             (pl.col("vg_predicted_perm") / pl.col("n_variants").clip(1))).fill_nan(0.0).alias("enrich_vg_proximal_upstream_perm"),
-            
-            ((pl.col("vg_distal_upstream_perm") / pl.col("n_variants_distal_upstream").clip(1)) /
-             (pl.col("vg_predicted_perm") / pl.col("n_variants").clip(1))).fill_nan(0.0).alias("enrich_vg_distal_upstream_perm"),
-            
-            ((pl.col("vg_down_proximal_perm") / pl.col("n_variants_down_proximal").clip(1)) /
-             (pl.col("vg_predicted_perm") / pl.col("n_variants").clip(1))).fill_nan(0.0).alias("enrich_vg_down_proximal_perm"),
-            
-            ((pl.col("vg_down_distal_perm") / pl.col("n_variants_down_distal").clip(1)) /
-             (pl.col("vg_predicted_perm") / pl.col("n_variants").clip(1))).fill_nan(0.0).alias("enrich_vg_down_distal_perm"),
         ])
     
     enriched = enriched.with_columns(computed_cols)
@@ -619,7 +725,7 @@ def aggregate_genes(
         "scores_down_proximal", "scores_down_distal"
     ]
     
-    if has_perm_af:
+    if compute_perm_sanity:
         cols_to_drop.extend([
             "_perm_af_times_abs", "_perm_af_sum",
             "_af_high_impact", "_perm_af_high_impact",
@@ -633,6 +739,15 @@ def aggregate_genes(
         ])
     
     enriched = enriched.drop([c for c in cols_to_drop if c in enriched.columns])
+
+    protocol_summary = (
+        enriched.group_by("protocol_group")
+        .agg(pl.len().alias("n_gene_rows"))
+        .sort("protocol_group")
+    )
+    print("Protocol counts after aggregation:")
+    for row in protocol_summary.iter_rows(named=True):
+        print(f"  {row['protocol_group']}: gene_rows={row['n_gene_rows']:,}")
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     enriched.write_parquet(out_path, compression="zstd")
