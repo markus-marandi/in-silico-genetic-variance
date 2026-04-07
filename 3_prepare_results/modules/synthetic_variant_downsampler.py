@@ -6,8 +6,32 @@ from pathlib import Path
 import pandas as pd
 import polars as pl
 
+from .normalisation_helper import UNRESOLVED_TRACK_KEY, protocol_track_exprs
 
-def load_real_variant_counts(real_path: Path, filter_snvs: bool = False) -> dict[str, int]:
+
+def _group_columns(df: pl.DataFrame) -> list[str]:
+    cols = ['gene_id']
+    if 'protocol_group' in df.columns and (
+        len(df) > 0 and df.filter(pl.col('protocol_group') != 'other').height > 0
+    ):
+        cols.append('protocol_group')
+    if 'track_key' in df.columns and (
+        len(df) > 0 and df.filter(pl.col('track_key') != UNRESOLVED_TRACK_KEY).height > 0
+    ):
+        cols.append('track_key')
+    return cols
+
+
+def _group_key(row: dict[str, object], group_cols: list[str]) -> str | tuple[object, ...]:
+    if len(group_cols) == 1:
+        return str(row[group_cols[0]])
+    return tuple(row[col] for col in group_cols)
+
+
+def load_real_variant_counts(
+    real_path: Path,
+    filter_snvs: bool = False,
+) -> dict[str | tuple[object, ...], int]:
     """load per-gene variant counts from real data.
     
     auto-detects gene-level (has n_variants column) or variant-level (needs counting).
@@ -17,9 +41,11 @@ def load_real_variant_counts(real_path: Path, filter_snvs: bool = False) -> dict
         filter_snvs (bool): if True, filter to SNVs only before counting
     
     returns:
-        dict[str, int]: gene_id -> n_variants mapping.
+        dict[str | tuple[object, ...], int]: group key -> n_variants mapping.
     """
     df = pl.read_parquet(real_path)
+    df = df.with_columns(*protocol_track_exprs(df.columns))
+    group_cols = _group_columns(df)
     
     if filter_snvs and 'REF' in df.columns and 'ALT' in df.columns:
         print(f'  Filtering real reference to SNVs only...')
@@ -36,28 +62,21 @@ def load_real_variant_counts(real_path: Path, filter_snvs: bool = False) -> dict
     if 'n_variants' in df.columns and 'gene_id' in df.columns:
         if filter_snvs:
             print("  Warning: SNV filtering requested but input is gene-level (already aggregated)")
-        return (
-            df.select(['gene_id', 'n_variants'])
-            .unique('gene_id')
-            .to_pandas()
-            .set_index('gene_id')['n_variants']
-            .to_dict()
-        )
+        counts_df = df.select(group_cols + ['n_variants']).unique(group_cols)
     elif 'gene_id' in df.columns:
-        counts = (
-            df.group_by('gene_id')
-            .agg(pl.len().alias('n_variants'))
-            .to_pandas()
-            .set_index('gene_id')['n_variants']
-            .to_dict()
-        )
-        return counts
+        counts_df = df.group_by(group_cols).agg(pl.len().alias('n_variants'))
     else:
         raise ValueError(f'missing gene_id column in {real_path}')
 
+    return {
+        _group_key(row, group_cols): int(row['n_variants'])
+        for row in counts_df.iter_rows(named=True)
+    }
+
+
 def downsample_to_real_counts(
     null_df: pl.DataFrame,
-    real_counts: dict[str, int],
+    real_counts: dict[str | tuple[object, ...], int],
     seed: int = 42,
     verbose: bool = True,
     observed_df: pl.DataFrame | None = None,
@@ -76,12 +95,22 @@ def downsample_to_real_counts(
     if verbose:
         print(f'  downsample input: {null_df.shape}')
         print(f'  real gene count: {len(real_counts)}')
+
+    null_df = null_df.with_columns(*protocol_track_exprs(null_df.columns))
+    group_cols = _group_columns(null_df)
+    if verbose:
+        print(f'  downsample groups: {group_cols}')
     
     if enforce_disjoint and observed_df is not None:
+        observed_df = observed_df.with_columns(*protocol_track_exprs(observed_df.columns))
         if verbose:
             print(f'  enforcing disjointness with observed data...')
         
         key_cols = ['CHROM', 'POS', 'REF', 'ALT', 'gene_id']
+        if 'protocol_group' in null_df.columns and 'protocol_group' in observed_df.columns:
+            key_cols.append('protocol_group')
+        if 'track_key' in null_df.columns and 'track_key' in observed_df.columns:
+            key_cols.append('track_key')
         obs_keys = observed_df.select(key_cols).unique()
         
         null_before = len(null_df)
@@ -98,8 +127,9 @@ def downsample_to_real_counts(
     pdf = null_df.to_pandas()
     sampled_parts = []
     
-    for gene, group in pdf.groupby('gene_id'):
-        n_req = int(real_counts.get(gene, 0))
+    for group_value, group in pdf.groupby(group_cols, dropna=False):
+        group_key = group_value if isinstance(group_value, tuple) else str(group_value)
+        n_req = int(real_counts.get(group_key, 0))
         
         if n_req <= 0:
             continue
@@ -111,7 +141,8 @@ def downsample_to_real_counts(
         if avail <= n_req:
             sampled_parts.append(group)
         else:
-            group_sorted = group.sort_values('variant_id')
+            sort_cols = [col for col in ['variant_id', 'track_key', 'protocol_group'] if col in group.columns]
+            group_sorted = group.sort_values(sort_cols) if sort_cols else group
             
             taken = group_sorted.sample(n=n_req, random_state=seed)
             sampled_parts.append(taken)
@@ -120,7 +151,7 @@ def downsample_to_real_counts(
         sampled_pdf = pd.concat(sampled_parts, axis=0)
         result = pl.from_pandas(sampled_pdf)
         
-        result = result.sort(['gene_id', 'variant_id'])
+        result = result.sort([col for col in ['gene_id', 'protocol_group', 'track_key', 'variant_id'] if col in result.columns])
         
         if verbose:
             print(f'  downsample output: {result.shape}')

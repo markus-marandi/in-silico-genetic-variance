@@ -29,6 +29,13 @@ The project expects an AlphaGenome API key in `2_score_variants_with_alphagenome
 API_KEY_PERSONAL=your_alphagenome_api_key_here
 ```
 
+Raw RNA scoring outputs are now treated as protocol-aware downstream data:
+
+- `track_key` is the stable exact RNA track identity reconstructed from AlphaGenome metadata
+- `protocol_group` is the grouped RNA protocol label, such as `polyA_plus_rna_seq` or `total_rna_seq`
+
+This keeps distinct RNA protocols from being silently collapsed during aggregation.
+
 ## Dataset-Centric Layout
 
 The scoring scripts resolve inputs and outputs through `helpers/path_manager.py`.
@@ -287,3 +294,5 @@ Where:
 - The legacy workflow was kept separate from the singleton/haplotype workflow to avoid silently changing existing runs.
 - The singleton/haplotype prep step consumes upstream selected manifests from the analysis repository; this repository only normalizes them for scoring.
 - `2_score_variants_with_alphagenome/batch_stability_scorer.py` now also resolves its legacy inputs from the same dataset-centric layout instead of hardcoded absolute paths.
+- Downstream aggregation is protocol-aware: exact RNA rows are preserved per `track_key`, while gene-level summaries can still be grouped by `protocol_group`.
+- If an older variant parquet already dropped RNA track identity, rebuild it from raw chunk TSVs or rerun scoring before aggregating.

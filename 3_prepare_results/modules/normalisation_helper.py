@@ -1,12 +1,37 @@
 from collections import defaultdict
+from collections.abc import Iterable, Mapping
 import gzip
 import re
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 import pandas as pd
 import polars as pl
 from polars.exceptions import ComputeError
+
+
+TRACK_METADATA_COLUMNS = [
+    'Assay title',
+    'Assay_title',
+    'track_name',
+    'ontology_curie',
+    'biosample_name',
+    'gtex_tissue',
+    'track_strand',
+    'biosample_type',
+]
+PROTOCOL_SOURCE_COLUMNS = ['Assay title', 'Assay_title', 'track_name']
+TRACK_KEY_SOURCE_COLUMNS = [
+    'Assay title',
+    'Assay_title',
+    'track_name',
+    'ontology_curie',
+    'biosample_name',
+    'gtex_tissue',
+    'track_strand',
+    'biosample_type',
+]
+UNRESOLVED_TRACK_KEY = 'track_unresolved'
 
 
 def strip_ensembl_version(gene_id: str) -> str:
@@ -34,6 +59,178 @@ def normalize_gene_id_column(df: pd.DataFrame, col: str) -> pd.Series:
         pd.Series: normalized ids.
     """
     return df[col].astype(str).map(strip_ensembl_version)
+
+
+def _clean_metadata_value(value: Any) -> str | None:
+    # treat empty and null-like placeholders as missing
+    if value is None:
+        return None
+    try:
+        if pd.isna(value):
+            return None
+    except TypeError:
+        pass
+    text = str(value).strip()
+    if not text:
+        return None
+    if text.lower() in {'na', 'nan', 'none', 'null', '<na>'}:
+        return None
+    return text
+
+
+def _normalized_protocol_text(value: Any) -> str:
+    text = _clean_metadata_value(value)
+    if text is None:
+        return ''
+    return re.sub(r'[^a-z0-9]+', ' ', text.lower()).strip()
+
+
+def _first_metadata_value(metadata: Mapping[str, Any], candidates: list[str]) -> str | None:
+    for column in candidates:
+        if column not in metadata:
+            continue
+        value = _clean_metadata_value(metadata[column])
+        if value is not None:
+            return value
+    return None
+
+
+def derive_protocol_group(metadata: Mapping[str, Any]) -> str:
+    """derive a protocol group from assay metadata.
+
+    args:
+        metadata (Mapping[str, Any]): row-like metadata mapping.
+
+    returns:
+        str: protocol label for downstream grouping.
+    """
+    source_label = _first_metadata_value(metadata, PROTOCOL_SOURCE_COLUMNS)
+    normalized = _normalized_protocol_text(source_label)
+    raw_lower = '' if source_label is None else source_label.lower()
+
+    if 'rna seq' not in normalized and 'rna sequencing' not in normalized:
+        return 'other'
+
+    has_polya = 'polya' in normalized or 'poly a' in normalized or 'poly-a' in normalized
+    has_plus = 'plus' in normalized or '+' in raw_lower
+    if has_polya and has_plus:
+        return 'polyA_plus_rna_seq'
+
+    if 'total rna' in normalized:
+        return 'total_rna_seq'
+
+    return 'other'
+
+
+def _escape_track_value(value: str) -> str:
+    return value.replace('\\', '\\\\').replace('|', '%7C').replace('=', '%3D')
+
+
+def build_track_key(metadata: Mapping[str, Any]) -> str:
+    """build a stable exact track identifier from available metadata.
+
+    args:
+        metadata (Mapping[str, Any]): row-like metadata mapping.
+
+    returns:
+        str: exact track key for deduplication and long-format analyses.
+    """
+    parts: list[str] = []
+    for column in TRACK_KEY_SOURCE_COLUMNS:
+        value = _first_metadata_value(metadata, [column])
+        if value is None:
+            continue
+        parts.append(f'{column}={_escape_track_value(value)}')
+
+    if not parts:
+        return UNRESOLVED_TRACK_KEY
+
+    return '|'.join(parts)
+
+
+def add_protocol_track_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """add protocol_group and track_key to a pandas dataframe.
+
+    args:
+        df (pd.DataFrame): scoring output with track metadata columns.
+
+    returns:
+        pd.DataFrame: copy with protocol-aware identity columns.
+    """
+    if df.empty:
+        out = df.copy()
+        if 'protocol_group' not in out.columns:
+            out['protocol_group'] = pd.Series(dtype='object')
+        if 'track_key' not in out.columns:
+            out['track_key'] = pd.Series(dtype='object')
+        return out
+
+    identity = df.apply(
+        lambda row: {
+            'protocol_group': derive_protocol_group(row),
+            'track_key': build_track_key(row),
+        },
+        axis=1,
+        result_type='expand',
+    )
+    out = df.copy()
+    out['protocol_group'] = identity['protocol_group']
+    out['track_key'] = identity['track_key']
+    return out
+
+
+def protocol_track_exprs(schema_cols: Iterable[str]) -> list[pl.Expr]:
+    """build polars expressions for protocol-aware identity columns.
+
+    args:
+        schema_cols (Iterable[str]): available columns in the frame.
+
+    returns:
+        list[pl.Expr]: expressions for protocol_group and track_key.
+    """
+    schema_names = set(schema_cols)
+    metadata_columns = [column for column in TRACK_METADATA_COLUMNS if column in schema_names]
+    if metadata_columns:
+        metadata_struct = pl.struct([pl.col(column) for column in metadata_columns])
+        derived_protocol = metadata_struct.map_elements(
+            derive_protocol_group,
+            return_dtype=pl.Utf8,
+        )
+        derived_track_key = metadata_struct.map_elements(
+            build_track_key,
+            return_dtype=pl.Utf8,
+        )
+    else:
+        derived_protocol = pl.lit('other')
+        derived_track_key = pl.lit(UNRESOLVED_TRACK_KEY)
+
+    if 'protocol_group' in schema_names:
+        protocol_expr = (
+            pl.when(
+                pl.col('protocol_group').cast(pl.Utf8).is_not_null()
+                & (pl.col('protocol_group').cast(pl.Utf8).str.strip_chars() != '')
+            )
+            .then(pl.col('protocol_group').cast(pl.Utf8))
+            .otherwise(derived_protocol)
+            .alias('protocol_group')
+        )
+    else:
+        protocol_expr = derived_protocol.alias('protocol_group')
+
+    if 'track_key' in schema_names:
+        track_expr = (
+            pl.when(
+                pl.col('track_key').cast(pl.Utf8).is_not_null()
+                & (pl.col('track_key').cast(pl.Utf8).str.strip_chars() != '')
+            )
+            .then(pl.col('track_key').cast(pl.Utf8))
+            .otherwise(derived_track_key)
+            .alias('track_key')
+        )
+    else:
+        track_expr = derived_track_key.alias('track_key')
+
+    return [protocol_expr, track_expr]
 
 
 def _parse_gtf_attributes(attr: str) -> dict[str, str]:

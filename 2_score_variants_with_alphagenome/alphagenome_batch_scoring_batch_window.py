@@ -9,11 +9,19 @@ import math
 import os
 import re
 import shutil
+import sys
 import time
 from pathlib import Path
 
 import pandas as pd
 from alphagenome.models import variant_scorers
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+PREPARE_RESULTS_DIR = REPO_ROOT / "3_prepare_results"
+if str(PREPARE_RESULTS_DIR) not in sys.path:
+    sys.path.insert(0, str(PREPARE_RESULTS_DIR))
+
+from modules.normalisation_helper import add_protocol_track_columns
 
 from alphagenome_shared import (
     ORG,
@@ -338,6 +346,7 @@ def main() -> None:
 
             tidy = variant_scorers.tidy_scores(scores, match_gene_strand=False)
             tidy = normalize_tidy(tidy)
+            tidy = add_protocol_track_columns(tidy)
             ensure_variant_ids(tidy, interval_to_varid)
 
             anchor_map = dict(zip(meta["variant_id"], meta["is_anchor"]))

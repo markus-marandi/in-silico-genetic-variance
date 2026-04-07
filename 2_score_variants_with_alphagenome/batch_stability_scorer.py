@@ -37,8 +37,12 @@ from alphagenome.models import dna_client as _dc
 REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
+PREPARE_RESULTS_DIR = REPO_ROOT / "3_prepare_results"
+if str(PREPARE_RESULTS_DIR) not in sys.path:
+    sys.path.insert(0, str(PREPARE_RESULTS_DIR))
 
 from alphagenome_shared import build_layout, resolve_legacy_input_paths
+from modules.normalisation_helper import add_protocol_track_columns
 
 def _env_int(name: str, default: int) -> int:
     """Parse an integer environment variable with fallback."""
@@ -113,54 +117,9 @@ def _interval_to_str(x):
         return f"{x.chromosome}:{int(x.start)}-{int(x.end)}:."
     return str(x)
 
-def _normalize_label(s):
-    """Normalize labels for matching."""
-    import re
-    s = '' if s is None else str(s)
-    return re.sub(r'[^a-z0-9]+', '_', s.lower()).strip('_')
-
-
 def _add_protocol_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """Annotate rows with protocol_group and stable track identity."""
-    df = df.copy()
-
-    assay_col = "Assay_title" if "Assay_title" in df.columns else (
-        "Assay title" if "Assay title" in df.columns else None
-    )
-    assay_source = df[assay_col] if assay_col else pd.Series(pd.NA, index=df.index)
-    track_source = df["track_name"] if "track_name" in df.columns else pd.Series(pd.NA, index=df.index)
-    strand_source = df["track_strand"] if "track_strand" in df.columns else pd.Series(pd.NA, index=df.index)
-    ontology_source = df["ontology_curie"] if "ontology_curie" in df.columns else pd.Series(pd.NA, index=df.index)
-
-    protocol_source = assay_source.fillna(track_source).fillna(ontology_source)
-    protocol_norm = protocol_source.map(_normalize_label)
-
-    df["protocol_group"] = np.where(
-        protocol_norm.str.contains("polya") & protocol_norm.str.contains("rna_seq"),
-        "polyA_plus_rna_seq",
-        np.where(
-            protocol_norm.str.contains("total") & protocol_norm.str.contains("rna_seq"),
-            "total_rna_seq",
-            "other",
-        ),
-    )
-
-    df["assay_label"] = assay_source.astype("string").fillna("")
-    df["track_label"] = track_source.astype("string").fillna("")
-    df["track_key"] = (
-        df["track_label"].replace("", pd.NA)
-        .fillna(df["assay_label"].replace("", pd.NA))
-        .fillna(ontology_source.astype("string").replace("", pd.NA))
-        .fillna("unknown_track")
-    )
-    df["track_key"] = (
-        df["protocol_group"].astype(str)
-        + "||"
-        + df["track_key"].astype(str)
-        + "||"
-        + strand_source.astype("string").fillna("")
-    )
-    return df
+    """Annotate rows with protocol-aware identity using the shared helper."""
+    return add_protocol_track_columns(df)
 
 def _load_gene_whitelist(path: str | None) -> set[str]:
     """Load gene whitelist from TSV."""
