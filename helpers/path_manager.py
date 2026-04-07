@@ -7,7 +7,13 @@ from pathlib import Path
 import sys
 
 
-DEFAULT_ROOT = Path(os.getenv("PDC_TMP", "/cfs/klemming/scratch/m/mmarandi"))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_ROOT = Path(
+    os.getenv(
+        "PDC_TMP",
+        REPO_ROOT / "2_score_variants_with_alphagenome" / "tmp",
+    )
+)
 
 
 @dataclass(frozen=True)
@@ -52,6 +58,10 @@ class ProjectLayout:
         return self.inputs_dir / "targets.bed"
 
     @property
+    def input_gene_list(self) -> Path:
+        return self.inputs_dir / "gene_list.tsv"
+
+    @property
     def run_info(self) -> Path:
         return self.results_dir / "run_info.json"
 
@@ -65,13 +75,99 @@ class ProjectLayout:
         return self.results_dir / f"{self.sample_id}.genes.{tag}.parquet"
 
     @property
+    def singleton_haplotype_inputs_dir(self) -> Path:
+        return self.inputs_dir / "singleton_haplotype"
+
+    @property
+    def singleton_haplotype_jobs_parquet(self) -> Path:
+        return self.singleton_haplotype_inputs_dir / "singleton_haplotype_jobs.parquet"
+
+    @property
+    def singleton_haplotype_jobs_tsv(self) -> Path:
+        return self.singleton_haplotype_inputs_dir / "singleton_haplotype_jobs.tsv.gz"
+
+    @property
+    def singleton_haplotype_background_parquet(self) -> Path:
+        return self.singleton_haplotype_inputs_dir / "singleton_haplotype_background_variants.parquet"
+
+    @property
+    def singleton_haplotype_background_tsv(self) -> Path:
+        return self.singleton_haplotype_inputs_dir / "singleton_haplotype_background_variants.tsv.gz"
+
+    @property
     def is_ism_run(self) -> bool:
         return ("ism" in self.sample_id.lower()) or ("null" in self.sample_id.lower())
 
+    def workflow_results_dir(self, workflow: str) -> Path:
+        return self.results_dir / workflow
+
     def make_dirs(self) -> None:
         """ensure experiment directories exist."""
-        for path in (self.inputs_dir, self.chunks_dir, self.results_dir):
+        for path in (
+            self.inputs_dir,
+            self.chunks_dir,
+            self.results_dir,
+            self.singleton_haplotype_inputs_dir,
+        ):
             path.mkdir(parents=True, exist_ok=True)
+
+    def _resolve_existing_path(
+        self,
+        preferred: Path,
+        patterns: tuple[str, ...],
+        *,
+        description: str,
+        required: bool = True,
+    ) -> Path | None:
+        if preferred.exists():
+            return preferred
+
+        matches: list[Path] = []
+        for pattern in patterns:
+            matches.extend(sorted(self.inputs_dir.glob(pattern)))
+
+        unique_matches: list[Path] = []
+        seen: set[Path] = set()
+        for match in matches:
+            if match in seen or not match.exists():
+                continue
+            unique_matches.append(match)
+            seen.add(match)
+
+        if len(unique_matches) == 1:
+            return unique_matches[0]
+        if len(unique_matches) > 1:
+            msg = ", ".join(path.name for path in unique_matches)
+            raise FileExistsError(
+                f"multiple candidate {description} files found under {self.inputs_dir}: {msg}"
+            )
+        if required:
+            raise FileNotFoundError(
+                f"missing {description} under {self.inputs_dir}; checked {preferred.name}"
+            )
+        return None
+
+    def resolve_input_variants(self) -> Path:
+        return self._resolve_existing_path(
+            self.input_variants,
+            ("variants.tsv.gz", "*_variants.tsv.gz", "*.variants.tsv.gz", "*_variants.tsv"),
+            description="variant table",
+        )
+
+    def resolve_input_targets(self) -> Path:
+        return self._resolve_existing_path(
+            self.input_targets,
+            ("targets.bed", "*_tss*.bed", "*.bed"),
+            description="target BED",
+        )
+
+    def resolve_input_gene_list(self, required: bool = False) -> Path | None:
+        return self._resolve_existing_path(
+            self.input_gene_list,
+            ("gene_list.tsv", "ensg_list.txt", "*gene*list*.tsv", "*gene*subset*.tsv"),
+            description="gene list",
+            required=required,
+        )
 
     @classmethod
     def from_env(cls) -> "ProjectLayout":
