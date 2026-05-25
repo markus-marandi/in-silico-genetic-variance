@@ -1,4 +1,5 @@
 3_prepare_results/logs/*
+.DS_Store
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -210,7 +211,13 @@ __marimo__/
 # Alphagenome outputs
 2_score_variants_with_alphagenome/*.out
 2_score_variants_with_alphagenome/*.err
+2_score_variants_with_alphagenome/tmp/
+2_score_variants_with_alphagenome/experiments/
 1_variants_prep_nextflow/.nextflow/*
 
 
 1_variants_prep_nextflow/reports/*
+
+# Local diagnostics and generated analysis artifacts
+diagnostics/paradox_analysis/
+score_fluctuation_results.csv

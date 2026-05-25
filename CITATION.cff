@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it and the associated thesis."
+title: "In-Silico Genetic Variance Pipeline"
+authors:
+  - family-names: "Marandi"
+    given-names: "Markus"
+year: 2026
+repository-code: "https://github.com/markus-marandi/in-silico-genetic-variance"
+type: software
+abstract: "Pipeline for preparing observed and synthetic variants, scoring them with AlphaGenome, and aggregating predicted expression effect sizes into gene-level cis-regulatory genetic variance."
+keywords:
+  - AlphaGenome
+  - regulatory variation
+  - genetic variance
+  - haploinsufficiency
+  - gnomAD
