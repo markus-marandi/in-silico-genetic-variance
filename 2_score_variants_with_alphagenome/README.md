@@ -121,7 +121,12 @@ This means old batch usage stays conceptually the same, but path selection moves
 
 ## Current SLURM UX Baseline
 
-The baseline launcher style is the template in [`run_alphagenome_batch_window_example.sh`](./run_alphagenome_batch_window_example.sh). It does four important things:
+The baseline launcher style is the pair of templates:
+
+- [`run_alphagenome_batch_window_example.sh`](./run_alphagenome_batch_window_example.sh) for legacy batch scoring
+- [`run_alphagenome_singleton_haplotype_example.sh`](./run_alphagenome_singleton_haplotype_example.sh) for singleton baseline / haplotype scoring
+
+They do four important things:
 
 - loads your modules and Python environment
 - loads a `.env` file via `ENV_FILE`
@@ -298,6 +303,12 @@ If you want this to feel like the current `sbatch --export=...` UX, the recommen
 sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_PERSONAL_1,WORKFLOW=singleton_baseline,DATASET_ID=eqtl_singletons,SAMPLE_ID=singleton_haplotype_v1 run_alphagenome_batch_window.sh
 ```
 
+There is also a dedicated singleton launcher template:
+
+```bash
+sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_PERSONAL_1,MODE=baseline,DATASET_ID=eqtl_singletons,SAMPLE_ID=singleton_haplotype_v1 run_alphagenome_singleton_haplotype_example.sh
+```
+
 Difference from legacy:
 
 - same submission shape
@@ -330,6 +341,12 @@ Recommended single-wrapper submission style:
 
 ```bash
 sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_PERSONAL_1,WORKFLOW=singleton_haplotype,DATASET_ID=eqtl_singletons,SAMPLE_ID=singleton_haplotype_v1,REFERENCE_FASTA=/path/to/GRCh38.fa,REFERENCE_FAI=/path/to/GRCh38.fa.fai run_alphagenome_batch_window.sh
+```
+
+Dedicated singleton launcher style:
+
+```bash
+sbatch --export=ENV_FILE=${ENV_PATH},API_KEY_VAR=API_KEY_PERSONAL_1,MODE=haplotype,DATASET_ID=eqtl_singletons,SAMPLE_ID=singleton_haplotype_v1,REFERENCE_FASTA=/path/to/GRCh38.fa,REFERENCE_FAI=/path/to/GRCh38.fa.fai run_alphagenome_singleton_haplotype_example.sh
 ```
 
 Difference from legacy:
@@ -393,7 +410,7 @@ Important fields include:
 - `gene_id`
 - `gene_symbol`
 - `singleton_variant_id`
-- `track_id`
+- `track_id` as a protocol-aware stable track identifier
 - `raw_score`
 - `scalar_score`
 - `reducer_name = GeneMaskLFCScorer.raw_score`
